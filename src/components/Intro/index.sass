@@ -1,0 +1,132 @@
+.intro
+  width: 100%
+  height: 100%
+  position: relative
+
+.stripContainer
+  width: 100%
+  height: 100%
+  position: absolute
+
+.strip
+  position: absolute
+  top: 0
+  width: 25%
+  background-color: #0e0e0e
+
+.stripOne
+  height: 100%
+  left: 0
+
+.stripOne-exit-active
+  height: 0
+  left: 0
+  transition: all 1s ease
+
+.stripOne-exit-done
+  height: 0
+  left: 0
+
+.stripTwo
+  height: 100%
+  left: 25%
+
+.stripTwo-exit-active
+  height: 0
+  left: 25%
+  transition: all 1s .2s ease
+
+.stripTwo-exit-done
+  height: 0
+  left: 25%
+
+.stripThree
+  height: 100%
+  left: 50%
+
+.stripThree-exit-active
+  height: 0
+  left: 50%
+  transition: all 1s .4s ease
+
+.stripThree-exit-done
+  height: 0
+  left: 50%
+
+.stripFour
+  height: 100%
+  left: 75%
+
+.stripFour-exit-active
+  height: 0
+  left: 75%
+  transition: all 1s .5s ease
+
+.stripFour-exit-done
+  height: 0
+  left: 75%
+
+.introTextWrapper
+  position: absolute
+  color: #e0e0e0
+
+.introTitleWrapper, .introSubtitleWrapper
+  overflow: hidden
+
+.introTitle-appear
+  opacity: 0
+  -webkit-transform: translateY( 200px )
+  -ms-transform: translateY( 200px )
+  transform: translateY( 200px )
+
+.introTitle-appear-active
+  opacity: 1
+  -webkit-transform: translateY( 0 )
+  -ms-transform: translateY( 0 )
+  transform: translateY( 0 )
+  transition: all 1s ease
+
+.introTitle-appear-active-done
+  opacity: 1
+  -webkit-transform: translateY( 0 )
+  -ms-transform: translateY( 0 )
+  transform: translateY( 0 )
+
+.introTitle-exit-active
+  opacity: 0
+  -webkit-transform: translateY( -200px )
+  -ms-transform: translateY( -200px )
+  transform: translateY( -200px )
+  transition: all 1s ease
+
+.introTitle-exit-done
+  opacity: 0
+
+.introSubtitle-appear
+  opacity: 0
+  -webkit-transform: translateY( 100px )
+  -ms-transform: translateY( 100px )
+  transform: translateY( 100px )
+
+.introSubtitle-appear-active
+  opacity: 1
+  -webkit-transform: translateY( 0 )
+  -ms-transform: translateY( 0 )
+  transform: translateY( 0 )
+  transition: all 1s .5s ease
+
+.introSubtitle-appear-active-done
+  opacity: 1
+  -webkit-transform: translateY( 0 )
+  -ms-transform: translateY( 0 )
+  transform: translateY( 0 )
+
+.introSubtitle-exit-active
+  opacity: 0
+  -webkit-transform: translateY( -100px )
+  -ms-transform: translateY( -100px )
+  transform: translateY( -100px )
+  transition: all 1s ease
+
+.introSubtitle-exit-done
+  opacity: 0
