@@ -25,8 +25,20 @@ const App = () => {
   const [ mountIntro, setMountIntro ] = useState( true )
   
   useEffect( () => {
-    setTimeout( () => setShowIntro( false ), 3500 );
-    setTimeout( () => setMountIntro( false ), 5000 );
+    setTimeout( () => setShowIntro( false ), 2500 );
+    setTimeout( () => setMountIntro( false ), 4000 );
+  } );
+
+  //----------HOME TITILE HANDLER----------//
+
+  const [ width, setWidth ] = useState( window.innerWidth );
+  
+  useEffect( () => {
+    const updateWidth = () => {
+      setWidth( window.innerWidth );
+    };
+    window.addEventListener( 'resize', updateWidth );
+    return () => window.removeEventListener( 'resize', updateWidth );
   } );
 
   //----------JSX CODE----------//
@@ -34,12 +46,12 @@ const App = () => {
   return (
     <Router>
       <Container fluid={ true } className="app">
-        {
-          mountIntro && ( <Intro showIntro={ showIntro } /> )
-        }
         <Switch>
           <Route exact path="/">
-            <Home />
+            {
+              mountIntro && ( <Intro showIntro={ showIntro } clientWidth={ width } /> )
+            }
+            <Home clientWidth={ width } />
           </Route>
           <Route path="/about">
             <About />

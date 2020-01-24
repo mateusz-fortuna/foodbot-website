@@ -4,6 +4,17 @@ import { CSSTransition } from 'react-transition-group';
 import './index.sass';
 
 const Index = props => {
+  const state = {
+    style: {
+      introTitle: {
+        fontSize: Math.floor( 0.08 * props.clientWidth )
+      },
+      introSubtitle: {
+        fontSize: Math.floor( 0.03 * props.clientWidth )
+      }
+    }
+  }
+
   return (
     <Row className="h-100">
       <Col className="h-100 p-0">
@@ -25,14 +36,14 @@ const Index = props => {
             </CSSTransition>
             <CSSTransition
               in={ props.showIntro }
-              timeout={ 1400 }
+              timeout={ 1300 }
               classNames="stripThree"
             >
               <div className="strip stripThree" />
             </CSSTransition>
             <CSSTransition
               in={ props.showIntro }
-              timeout={ 1600 }
+              timeout={ 1400 }
               classNames="stripFour"
             >
               <div className="strip stripFour" />
@@ -46,7 +57,7 @@ const Index = props => {
                 classNames="introTitle"
                 appear={ true }
               >
-                <h1 className="introTitle">FoodBot</h1>
+                <h1 className="introTitle" style={ state.style.introTitle }>FoodBot</h1>
               </CSSTransition>
             </div>
             <div className="introSubtitleWrapper">
@@ -56,7 +67,7 @@ const Index = props => {
                 classNames="introSubtitle"
                 appear={ true }
               >
-                <p className="introSubtitle">Create your own dream dessert</p>  
+                <p className="introSubtitle" style={ state.style.introSubtitle }>Create your own dream dessert</p>  
               </CSSTransition>
             </div> 
           </div>
