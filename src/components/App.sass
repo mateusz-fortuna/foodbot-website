@@ -32,6 +32,12 @@
   .horizontalLine
     display: none
 
+  .linkWrapper
+    margin: 16px 8px
+
+  .menuLink
+    font-size: $size3
+
 
 @media screen and (min-width: 380px)
   .homeDescription
@@ -43,10 +49,6 @@
 
   .horizontalLine
     display: none
-
-@media screen and (min-width: 992px)
-  .topLine, .middleLine, .bottomLine
-    background-color: #0e0e0e
 
 @media screen and (min-width: 768px)
   .menuIcon
@@ -72,6 +74,19 @@
   .horizontalLine
     display: block
 
+  .menuLink
+    font-size: $size4
+
+@media screen and (min-width: 992px)
+  .topLine, .middleLine, .bottomLine
+    background-color: #0e0e0e
+
+  .menuLink
+    font-size: $size5
+
+  .linkWrapper
+    margin: 16px
+
 @media screen and (min-width: 1200px)
   .menuIcon
     width: 48px
@@ -95,6 +110,9 @@
   .horizontalLine
     display: block
 
+  .linkWrapper
+    margin: 16px 32px
+
 
 //----------STYLESHEET----------//
 
@@ -111,8 +129,10 @@
 h1
   font-family: 'Source Sans Pro', sans-serif
 
+
 //----------MENU----------//
 
+  
 .menuIcon
   z-index: 2
   background-color: transparent
@@ -134,3 +154,201 @@ h1
   left: 0
   top: 50%
   transition: all .3s
+
+.menu
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1
+
+//----------MENU STRIPS ANIMATION----------//
+
+.menuStrip
+  position: absolute
+  width: 25%
+  top: 0
+  background-color: #0e0e0e
+
+
+.menuStripOne
+  left: 0
+
+.menuStripOne-enter, .menuStripOne-appear
+  height: 0%
+
+.menuStripOne-enter-active, .menuStripOne-appear-active
+  height: 100%
+  transition: all .8s ease
+
+.menuStripOne-enter-done, .menuStripOne-appear-done
+  height: 100%
+
+.menuStripOne-exit
+  height: 100%
+
+.menuStripOne-exit-active
+  height: 0
+  transition: all .6s .5s ease
+
+
+.menuStripTwo
+  z-index: 1
+  left: 25%
+
+.menuStripTwo-enter, .menuStripTwo-appear
+  height: 0%
+
+.menuStripTwo-enter-active, .menuStripTwo-appear-active
+  height: 100%
+  transition: all .8s ease
+
+.menuStripTwo-enter-done, .menuStripTwo-appear-done
+  height: 100%
+
+.menuStripTwo-exit
+  height: 100%
+
+.menuStripTwo-exit-active
+  height: 0
+  transition: all .8s .5s ease
+
+
+.menuStripThree
+  left: 50%
+
+.menuStripThree-enter, .menuStripThree-appear
+  height: 0%
+
+.menuStripThree-enter-active, .menuStripThree-appear-active
+  height: 100%
+  transition: all 1s ease
+
+.menuStripThree-enter-done, .menuStripThree-appear-done
+  height: 100%
+
+.menuStripThree-exit
+  height: 100%
+
+.menuStripThree-exit-active
+  height: 0
+  transition: all 1s .5s ease
+
+
+.menuStripFour
+  left: 75%
+
+.menuStripFour-enter, .menuStripFour-appear
+  height: 0%
+
+.menuStripFour-enter-active, .menuStripFour-appear-active
+  height: 100%
+  transition: all 1.2s ease
+
+.menuStripFour-enter-done, .menuStripFour-appear-done
+  height: 100%
+
+.menuStripFour-exit
+  height: 100%
+
+.menuStripFour-exit-active
+  height: 0
+  transition: all 1.2s .5s ease
+
+//----------THIN LINES----------//
+
+.verticalLineMenu
+  position: absolute
+  width: 1px
+  height: 100%
+  background-color: rgba(224, 224, 224, 0.25)
+
+  //----------MENU LINKS----------//
+
+.linksWrapper
+  position: fixed
+  top: 50%
+  transform: translateY( -50% )
+
+.linkWrapper
+  overflow: hidden
+
+.menuStrip a
+  display: block
+
+.menuLink
+  font-family: 'Source Sans Pro', sans-serif
+  color: #e0e0e0
+  margin: 0
+
+
+.menuLinkHome-enter, .menuLinkHome-appear
+  transform: translateY( 200px )
+  opacity: 0
+
+.menuLinkHome-enter-active, .menuLinkHome-appear-active
+  transform: translateY( 0 )
+  opacity: 1
+  transition: all .5s ease
+
+.menuLinkHome-exit-active
+  transform: translateY( -200px )
+  opacity: 0
+  transition: all .5s ease
+
+.menuLinkAbout-enter, .menuLinkAbout-appear
+  transform: translateY( 200px )
+  opacity: 0
+
+.menuLinkAbout-enter-active, .menuLinkAbout-appear-active
+  transform: translateY( 0 )
+  opacity: 1
+  transition: all .5s .1s ease
+
+.menuLinkAbout-exit-active
+  transform: translateY( -200px )
+  opacity: 0
+  transition: all .5s .1s ease
+
+.menuLinkGallery-enter, .menuLinkGallery-appear
+  transform: translateY( 200px )
+  opacity: 0
+
+.menuLinkGallery-enter-active, .menuLinkGallery-appear-active
+  transform: translateY( 0 )
+  opacity: 1
+  transition: all .5s .2s ease
+
+.menuLinkGallery-exit-active
+  transform: translateY( -200px )
+  opacity: 0
+  transition: all .5s .2s ease
+
+.menuLinkContact-enter, .menuLinkContact-appear
+  transform: translateY( 200px )
+  opacity: 0
+
+.menuLinkContact-enter-active, .menuLinkContact-appear-active
+  transform: translateY( 0 )
+  opacity: 1
+  transition: all .5s .3s ease
+
+.menuLinkContact-exit-active
+  transform: translateY( -200px )
+  opacity: 0
+  transition: all .5s .3s ease
+
+.menuLinkBlog-enter, .menuLinkBlog-appear
+  transform: translateY( 200px )
+  opacity: 0
+
+.menuLinkBlog-enter-active, .menuLinkBlog-appear-active
+  transform: translateY( 0 )
+  opacity: 1
+  transition: all .5s .4s ease
+
+.menuLinkBlog-exit-active
+  transform: translateY( -200px )
+  opacity: 0
+  transition: all .25s .4s ease
