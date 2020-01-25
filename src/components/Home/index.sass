@@ -4,6 +4,10 @@
   height: 100%
   top: 0
 
+  
+//----------BIG PHOTO----------//
+
+
 .homeImageWrapper
   background-color: #0e0e0e
   overflow: hidden
@@ -15,9 +19,39 @@
   background-size: contain
   background-position: center
   background-repeat: no-repeat
-    
+
+
+//----------CONTENT----------//
+
+
 .homeContent
   background-color: #e0e0e0
+
+//----------MENU----------//
+
+.menuIcon
+  z-index: 2
+  background-color: transparent
+  border: none
+
+.menuIcon:hover, .menuIcon:active, .menuIcon:focus, .menuIcon:active:focus    
+  background-color: transparent !important
+  border: none !important
+  box-shadow: none !important
+
+.menuIcon:hover
+  & .topLine, .middleLine, .bottomLine
+    width: 120%
+
+.topLine, .middleLine, .bottomLine
+  position: absolute
+  width: 100%
+  height: 2px
+  left: 0
+  top: 50%
+  transition: all .3s
+
+//----------THIN LINES----------//
 
 .linesContainer
   position: absolute
@@ -38,6 +72,8 @@
   background-color: rgba( 14, 14, 14, 0.25 )
   top: 10%
 
+//----------CONTENT TEXT----------//
+
 .homeTitle
   position: absolute
   bottom: 2.5%
@@ -50,6 +86,8 @@
   left: 5%
   font-weight: 400
   line-height: 1.4
+
+//----------LEARN MORE----------//
 
 .learnMoreButton
   background-color: #transparent
@@ -84,6 +122,3 @@ a:hover
 
 .link:hover + .underline
   width: 120%
-
-
-  

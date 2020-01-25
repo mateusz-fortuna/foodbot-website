@@ -6,6 +6,22 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap&subset=latin-ext');
 
 @media screen and (min-width: 0px)
+  .menuIcon
+    width: 32px
+    height: 32px
+    position: fixed
+    top: 2.5%
+    right: 5%
+
+  .topLine, .middleLine, .bottomLine
+    background-color: #e0e0e0
+
+  .topLine
+    transform: translateY( -10px )
+
+  .bottomLine
+    transform: translateY( 10px )
+
   .homeDescription
     font-size: $size1
     top: 10%
@@ -29,6 +45,19 @@
     display: none
 
 @media screen and (min-width: 768px)
+  .menuIcon
+    width: 48px
+    height: 48px
+    position: fixed
+    top: 2.5%
+    right: 5%
+
+  .topLine
+    transform: translateY( -16px )
+
+  .bottomLine
+    transform: translateY( 16px )
+
   .homeDescription
     font-size: $size2
     top: 20%
@@ -40,6 +69,22 @@
     display: block
 
 @media screen and (min-width: 1200px)
+  .menuIcon
+    width: 48px
+    height: 48px
+    position: absolute
+    top: 2.5%
+    right: 5%
+
+  .topLine, .middleLine, .bottomLine
+    background-color: #0e0e0e
+
+  .topLine
+    transform: translateY( -12px )
+
+  .bottomLine
+    transform: translateY( 12px )
+
   .homeDescription
     top: 20%
 

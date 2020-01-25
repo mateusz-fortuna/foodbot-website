@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './App.sass';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import './App.sass';
 
 import {
   BrowserRouter as Router,
