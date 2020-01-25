@@ -74,7 +74,7 @@ const App = () => {
 
 
   return (
-    <Router>
+    <Router basename='/'>
       <Container fluid={ true } className="app">
 
         {/* ----------MENU BUTTON---------- */}
