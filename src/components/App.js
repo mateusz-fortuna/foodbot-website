@@ -8,7 +8,8 @@ import {
   Route
 } from 'react-router-dom';
 
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
+import Menu from './Menu';
 import Intro from './Intro';
 import Home from './Home';
 import About from './About';
@@ -18,6 +19,16 @@ import Blog from './Blog';
 
 
 const App = () => {
+
+  //----------MENU BUTTON HANDLER----------//
+  const [ menuIsOpen, setMenuIsOpen ] = useState( false );
+  const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
+  const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
+
+  const handleMenuButtonClick = () => {
+    setMenuButtonIsClicked( !menuButtonIsClicked );
+    setMenuIsOpen( true )
+  };
 
   //----------INTRO HANDLERS----------//
 
@@ -41,11 +52,45 @@ const App = () => {
     return () => window.removeEventListener( 'resize', updateWidth );
   } );
 
+  //----------APP STATE----------//
+
+  const state = {
+    style: {
+      homeTitle: {
+        fontSize: Math.floor( 0.08 * width )
+      },
+      menuLines: {
+        backgroundColor: menuLinesBackground
+      }
+    }
+  }
+
+
   //----------JSX CODE----------//
+
 
   return (
     <Router>
       <Container fluid={ true } className="app">
+
+        {/* ----------MENU BUTTON---------- */}
+
+        <Button
+          className="menuIcon"
+          variant="outline-dark"
+          onClick={ handleMenuButtonClick }
+        >
+          <span className="topLine" style={ state.style.menuLines } />
+          <span className="middleLine" style={ state.style.menuLines } />
+          <span className="bottomLine" style={ state.style.menuLines } />
+        </Button>
+
+        {
+          menuIsOpen && (
+            <Menu menuButtonIsClicked={ menuButtonIsClicked } />
+          )
+        }
+
         <Switch>
           <Route exact path="/">
             {

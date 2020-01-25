@@ -1,5 +1,6 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group'
+import { CSSTransition } from 'react-transition-group';
+import { Link } from 'react-router-dom';
 import './index.sass';
 
 const Menu = props => {
@@ -29,7 +30,18 @@ const Menu = props => {
         timeout={ 800 }
         classNames="menuStripTwo"
       >
-        <div className="menuStrip menuStripTwo" />
+        <div className="menuStrip menuStripTwo">
+          <div className="verticalLineMenu" />
+
+          {/* ----------MENU LINKS---------- */}
+
+          <CSSTransition
+          >
+            <Link to="/">
+
+            </Link>
+          </CSSTransition>
+        </div>
       </CSSTransition>
       <CSSTransition
         in={ props.menuButtonIsClicked }
@@ -47,7 +59,9 @@ const Menu = props => {
         timeout={ 1200 }
         classNames="menuStripFour"
       >
-        <div className="menuStrip menuStripFour" />
+        <div className="menuStrip menuStripFour">
+         <div className="verticalLineMenu" />
+        </div>
       </CSSTransition>
       
     </div>

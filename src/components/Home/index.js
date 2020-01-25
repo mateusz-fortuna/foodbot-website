@@ -3,19 +3,8 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
-import Menu from '../Menu'; 
 
 const Home = props => {
-
-  //----------MENU BUTTON HANDLER----------//
-
-  const [ menuIsOpen, setMenuIsOpen ] = useState( false );
-  const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
-
-  const handleMenuButtonClick = () => {
-    setMenuButtonIsClicked( !menuButtonIsClicked );
-    setMenuIsOpen( true )
-  };
 
   //----------STATE STYLES----------//
 
@@ -26,8 +15,6 @@ const Home = props => {
   const linkFontSize = ( props.clientWidth >= 1200 )
     ? Math.floor( 0.018 * props.clientWidth * 0.72 )
     : null;
-
-  const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
 
   const state = {
     style: {
@@ -42,9 +29,6 @@ const Home = props => {
       },
       link: {
         fontSize: linkFontSize
-      },
-      menuLines: {
-        backgroundColor: menuLinesBackground
       }
     }
   }
@@ -53,13 +37,6 @@ const Home = props => {
 
   return (
     <Row className="home">
-
-      {
-        menuIsOpen && (
-          <Menu menuButtonIsClicked={ menuButtonIsClicked } />
-        )
-      }
-
 
       {/* ----------PRINTER COLUMN--------- */}
 
@@ -80,18 +57,6 @@ const Home = props => {
           <div className="verticalLine" />
           <div className="horizontalLine" />
         </div>
-
-        {/* ----------MENU---------- */}
-
-        <Button
-          className="menuIcon"
-          variant="outline-dark"
-          onClick={ handleMenuButtonClick }
-        >
-          <span className="topLine" style={ state.style.menuLines } />
-          <span className="middleLine" style={ state.style.menuLines } />
-          <span className="bottomLine" style={ state.style.menuLines } />
-        </Button>
 
         {/* ----------CONTENT TEXT---------- */}
 
