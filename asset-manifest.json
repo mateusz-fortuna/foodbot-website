@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/foodbot-website/static/css/main.5c5bcae5.chunk.css",
+    "main.js": "/foodbot-website/static/js/main.412ea5f4.chunk.js",
+    "main.js.map": "/foodbot-website/static/js/main.412ea5f4.chunk.js.map",
+    "runtime-main.js": "/foodbot-website/static/js/runtime-main.ac0581cb.js",
+    "runtime-main.js.map": "/foodbot-website/static/js/runtime-main.ac0581cb.js.map",
+    "static/css/2.d4ac2851.chunk.css": "/foodbot-website/static/css/2.d4ac2851.chunk.css",
+    "static/js/2.c04e0cae.chunk.js": "/foodbot-website/static/js/2.c04e0cae.chunk.js",
+    "static/js/2.c04e0cae.chunk.js.map": "/foodbot-website/static/js/2.c04e0cae.chunk.js.map",
+    "index.html": "/foodbot-website/index.html",
+    "precache-manifest.ff95efc165f6d25d5eaae50b66945fc4.js": "/foodbot-website/precache-manifest.ff95efc165f6d25d5eaae50b66945fc4.js",
+    "service-worker.js": "/foodbot-website/service-worker.js",
+    "static/css/2.d4ac2851.chunk.css.map": "/foodbot-website/static/css/2.d4ac2851.chunk.css.map",
+    "static/css/main.5c5bcae5.chunk.css.map": "/foodbot-website/static/css/main.5c5bcae5.chunk.css.map",
+    "static/js/2.c04e0cae.chunk.js.LICENSE": "/foodbot-website/static/js/2.c04e0cae.chunk.js.LICENSE",
+    "static/media/food-printer-w-background.jpg": "/foodbot-website/static/media/food-printer-w-background.f00a6669.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ac0581cb.js",
+    "static/css/2.d4ac2851.chunk.css",
+    "static/js/2.c04e0cae.chunk.js",
+    "static/css/main.5c5bcae5.chunk.css",
+    "static/js/main.412ea5f4.chunk.js"
+  ]
+}
