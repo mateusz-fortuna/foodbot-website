@@ -65,6 +65,9 @@ const App = () => {
       },
       menuLink: {
         fontSize: ( width >= 1200 ) ? Math.floor( 0.06 * width ) : null
+      },
+      menuLabel: {
+        color: menuLinesBackground
       }
     }
   }
@@ -84,6 +87,13 @@ const App = () => {
           variant="outline-dark"
           onClick={ handleMenuButtonClick }
         >
+
+          {
+            ( width >= 992 )
+              ? <p className="menuIcon__label" style={ state.style.menuLabel }>Menu</p>
+              : null
+          }
+
           <span className="topLine" style={ state.style.menuLines } />
           <span className="middleLine" style={ state.style.menuLines } />
           <span className="bottomLine" style={ state.style.menuLines } />
