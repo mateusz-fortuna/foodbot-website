@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
@@ -34,16 +34,35 @@ const Home = props => {
     }
   }
 
-  //----------MOUNT TRANSITION HANDLER----------//
+//----------MOUNT TRANSITION HANDLER----------//
 
-  const [ mountTransition, setMountTransition ] = useState( false );
+ const [ mountTransition, setMountTransition ] = useState( false );
 
-  //----------LEARN MORE BUTTON HANDLER----------//
-  
-  const handleLearnMoreButton = () => {
-    setMountTransition( !mountTransition );
-    setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+ //----------LEARN MORE HANDLER----------//
+ 
+ const handleLearnMore = () => {
+   setMountTransition( !mountTransition );
+   setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+ };
+ 
+ //----------MOUNT ABOUT ON SCROLL----------//
+ 
+ const handleScroll = event => {
+   if ( event.deltaY > 1 ) {
+     handleLearnMore();
+   }
+ };
+ 
+ useEffect( () => {
+  window.addEventListener( 'wheel', event => { handleScroll( event ); }, false );
+  window.addEventListener( 'touchmove', event => { handleScroll( event ); }, false );
+
+  return () => {
+    window.removeEventListener( 'wheel', event => { handleScroll( event ); }, false );
+    window.addEventListener( 'touchmove', event => { handleScroll( event ); }, false );
   };
+} );
+
 
 
   //----------JSX CODE----------//
@@ -81,7 +100,7 @@ const Home = props => {
           <span className="d-block">It allow you to create</span>
           <span className="d-block">your own dream dessert.</span>
           <br />
-          
+
           <a
             className="learnMore"
             href="/about"
@@ -93,7 +112,7 @@ const Home = props => {
                   variant="outline-dark"
                   className="learnMoreButton link"
                   style={ state.style.link }
-                  onClick={ handleLearnMoreButton }
+                  onClick={ handleLearnMore }
                 >Learn more</Button>
               )
             }
@@ -103,7 +122,7 @@ const Home = props => {
                   <p
                     className="link"
                     style={ state.style.link }
-                    onClick={ handleLearnMoreButton }
+                    onClick={ handleLearnMore }
                   >Learn more</p>
                   <span className="underline" />
                 </div>  
