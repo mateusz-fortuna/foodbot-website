@@ -81,7 +81,12 @@ const Home = props => {
           <span className="d-block">It allow you to create</span>
           <span className="d-block">your own dream dessert.</span>
           <br />
-          <a className="learnMore">
+          
+          <a
+            className="learnMore"
+            href="/about"
+            onClick={ event => { event.preventDefault(); } }
+          >
             { props.clientWidth < 1200 && (
                 <Button
                   type="button"
