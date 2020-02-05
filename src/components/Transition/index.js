@@ -12,7 +12,7 @@ const delay = 100;
 const Transition = props => {
   const items = [];
     
-  for ( let i = 0; i < 4; i++ ) {
+  for ( let i = 1; i < 4; i++ ) {
     items.push (
       <CSSTransition
         in={ props.mountTransition }
@@ -24,7 +24,7 @@ const Transition = props => {
       >
         <Col
           xs="3"
-          className="transition__strip"
+          className="transition__strip transition__strip--bordered"
           style={ { transitionDelay: i * delay +'ms' } }
         />
       </CSSTransition>
@@ -33,6 +33,19 @@ const Transition = props => {
 
   return (
     <Row className="transition">
+      <CSSTransition
+        in={ props.mountTransition }
+        appear={ true }
+        unmountOnExit={ true }
+        timeout={ timeout }
+        classNames="transition__strip"
+        key="0"
+      >
+        <Col
+          xs="3"
+          className="transition__strip"
+        />
+      </CSSTransition>
       { items }
     </Row>
   );
