@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
+import Transition from '../Transition';
+
 
 const Home = props => {
 
@@ -33,10 +34,23 @@ const Home = props => {
     }
   }
 
+  //----------MOUNT TRANSITION HANDLER----------//
+
+  const [ mountTransition, setMountTransition ] = useState( false );
+
+  //----------LEARN MORE BUTTON HANDLER----------//
+  
+  const handleLearnMoreButton = () => {
+    setMountTransition( !mountTransition );
+    setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+  };
+
+
   //----------JSX CODE----------//
 
   return (
     <Row className="home">
+    { mountTransition && ( <Transition mountTransition={ mountTransition } /> ) }
 
       {/* ----------PRINTER COLUMN--------- */}
 
@@ -67,25 +81,30 @@ const Home = props => {
           <span className="d-block">It allow you to create</span>
           <span className="d-block">your own dream dessert.</span>
           <br />
-          <Link to="/about">
+          <a className="learnMore">
             { props.clientWidth < 1200 && (
                 <Button
                   type="button"
                   variant="outline-dark"
                   className="learnMoreButton link"
                   style={ state.style.link }
+                  onClick={ handleLearnMoreButton }
                 >Learn more</Button>
               )
             }
             {
               props.clientWidth >= 1200 && (
                 <div>
-                  <p className="link" style={ state.style.link }>Learn more</p>
+                  <p
+                    className="link"
+                    style={ state.style.link }
+                    onClick={ handleLearnMoreButton }
+                  >Learn more</p>
                   <span className="underline" />
                 </div>  
               )
             }
-          </Link> 
+          </a> 
         </div>
     
         <h1 className="homeTitle" style={ state.style.homeTitle }>FoodBot</h1>
