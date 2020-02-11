@@ -41,9 +41,11 @@ const Home = props => {
  //----------LEARN MORE HANDLER----------//
  
  const handleLearnMore = () => {
-   setMountTransition( !mountTransition );
-   setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
- };
+  setMountTransition( !mountTransition );
+  setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+  
+  return clearTimeout( setTimeout( () => { window.location.href = '/#/about'; }, 1300 ) );
+};
  
  //----------MOUNT ABOUT ON SCROLL----------//
  

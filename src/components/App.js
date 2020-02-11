@@ -21,11 +21,45 @@ import Blog from './Blog';
 
 const App = () => {
 
+  //----------MENU BUTTON COLOR----------//
+  useEffect( () => {
+
+    const menuButtonColorChange = () => {
+      const urlArray = document.location.href.split( '/' );
+      const urlEnd = urlArray[ urlArray.length - 1 ];
+
+      const menuLines = document.querySelectorAll( '.menuLine' );
+      const menuLabel = document.querySelector( '.menuIcon__label' );
+      
+      switch ( urlEnd ) {
+        case 'about':
+          menuLines.forEach(
+            item => item.style.backgroundColor = '#e0e0e0'
+          );
+          menuLabel.style.color = '#e0e0e0';
+          break;
+      
+        default:
+          menuLines.forEach(
+            item => item.style.backgroundColor = '#0e0e0e'
+          );
+          menuLabel.style.color = '#0e0e0e';
+      }
+    }
+
+    window.addEventListener( 'hashchange', menuButtonColorChange );
+
+    return () => {
+      window.removeEventListener( 'hashchange', menuButtonColorChange );
+    }
+  } );
+
   //----------MENU BUTTON HANDLER----------//
   const [ menuIsOpen, setMenuIsOpen ] = useState( false );
   const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
+    
   const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
-
+  
   const handleMenuButtonClick = () => {
     setMenuButtonIsClicked( !menuButtonIsClicked );
     setMenuIsOpen( true )
@@ -39,6 +73,11 @@ const App = () => {
   useEffect( () => {
     setTimeout( () => setShowIntro( false ), 2500 );
     setTimeout( () => setMountIntro( false ), 4000 );
+
+    return () => {
+      clearTimeout( setTimeout( () => setShowIntro( false ), 2500 ) );
+      clearTimeout( setTimeout( () => setMountIntro( false ), 4000 ) );
+    };
   } );
 
   //----------HOME TITILE HANDLER----------//
@@ -94,9 +133,9 @@ const App = () => {
               : null
           }
 
-          <span className="topLine" style={ state.style.menuLines } />
-          <span className="middleLine" style={ state.style.menuLines } />
-          <span className="bottomLine" style={ state.style.menuLines } />
+          <span className="menuLine topLine" style={ state.style.menuLines } />
+          <span className="menuLine middleLine" style={ state.style.menuLines } />
+          <span className="menuLine bottomLine" style={ state.style.menuLines } />
         </Button>
 
 

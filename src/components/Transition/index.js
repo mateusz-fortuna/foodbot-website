@@ -1,21 +1,33 @@
-import React from 'react';
+import React,{ useState, useEffect } from 'react';
 import './index.sass';
 
 import { CSSTransition } from 'react-transition-group';
 import { Row, Col } from 'react-bootstrap';
 
-const timeout = 1000; //single strip transition time
-const delay = 100;
-
-
 
 const Transition = props => {
+
+  //----------ANIMATION PARAMETERS----------//
+
+  const timeout = 1000; //single strip transition time
+  const delay = 100;
+
+  //----------AUTO UNMOUNT----------//
+
+  const [ autoUnmount, setAutoUnmount ] = useState( false );
+
+  useEffect( () => {
+    setTimeout( () => { setAutoUnmount( true ) }, 1300 );
+  } );
+
+  //----------ARRAY OF STRIPS----------//
+
   const items = [];
     
   for ( let i = 1; i < 4; i++ ) {
     items.push (
       <CSSTransition
-        in={ props.mountTransition }
+        in={ props.mountTransition && !autoUnmount }
         appear={ true }
         unmountOnExit={ true }
         timeout={ timeout + ( i * delay ) }
@@ -24,30 +36,34 @@ const Transition = props => {
       >
         <Col
           xs="3"
-          className="transition__strip transition__strip--bordered"
+          className="transition__strip"
           style={ { transitionDelay: i * delay +'ms' } }
         />
       </CSSTransition>
     );
   }
 
+
+  //----------JSX CODE----------//
+
+
   return (
-    <Row className="transition">
-      <CSSTransition
-        in={ props.mountTransition }
+    <CSSTransition
+        in={ props.mountTransition && !autoUnmount }
         appear={ true }
         unmountOnExit={ true }
-        timeout={ timeout }
+        timeout={ timeout + 300 }
         classNames="transition__strip"
         key="0"
-      >
+    >
+      <Row className="transition">
         <Col
           xs="3"
           className="transition__strip"
         />
-      </CSSTransition>
-      { items }
-    </Row>
+        { items }
+      </Row>
+    </CSSTransition>
   );
 };
 
