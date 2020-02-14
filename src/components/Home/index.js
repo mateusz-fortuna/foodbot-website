@@ -3,6 +3,7 @@ import { Row, Col, Button } from 'react-bootstrap';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
 import Transition from '../Transition';
+import { throttle } from '../../assets/js/throttle';
 
 
 const Home = props => {
@@ -49,19 +50,19 @@ const Home = props => {
  
  //----------MOUNT ABOUT ON SCROLL----------//
  
- const handleScroll = event => {
+ const handleWheel = event => {
    if ( event.deltaY > 1 ) {
-     handleLearnMore();
+    handleLearnMore();
    }
  };
  
  useEffect( () => {
-  window.addEventListener( 'wheel', event => { handleScroll( event ); }, false );
-  window.addEventListener( 'touchmove', event => { handleScroll( event ); }, false );
+  window.addEventListener( 'wheel', throttle( handleWheel, 1300 ), false );
+  window.addEventListener( 'touchmove', throttle( handleWheel, 1300 ), false );
 
   return () => {
-    window.removeEventListener( 'wheel', event => { handleScroll( event ); }, false );
-    window.addEventListener( 'touchmove', event => { handleScroll( event ); }, false );
+    window.removeEventListener( 'wheel', event => { throttle( handleWheel( event ), 1300 ); }, false );
+    window.addEventListener( 'touchmove', event => { throttle( handleWheel( event ), 1300 ); }, false );
   };
 } );
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.sass';
 
 import { Row, Col } from 'react-bootstrap';
@@ -9,19 +9,8 @@ import Image from '../../assets/images/printer-perspective.png';
 
 const About = props => {
 
-  //----------STRIPS RENDER----------//
 
-  const borderedStrips = [];
-
-  for ( let i = 0; i < 4; i++ ) {
-    borderedStrips.push(
-      <Col
-        xs="3"
-        className="stripContainer__strip"
-        key={ i }
-      /> 
-    );
-  }
+  
   
   //----------ANIMATION SETTINGS----------//
 
@@ -34,10 +23,21 @@ const About = props => {
   return (
     <Row className="about">
       
-      {/*----------STRIPS----------*/}
-      
-      <Row className="stripContainer">      
-        { borderedStrips }
+      {/*----------COLUMNS WITH CONTENT----------*/}
+
+      <Row className="stripContainer">
+        <Col xs="3" className="stripContainer__strip">
+
+        </Col>
+        <Col xs="3" className="stripContainer__strip">
+          
+        </Col>
+        <Col xs="3" className="stripContainer__strip">
+          
+        </Col>
+        <Col xs="3" className="stripContainer__strip">
+          
+        </Col>
       </Row>
 
       {/*----------PRINTER IMAGE----------*/}
