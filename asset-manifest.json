@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/foodbot-website/static/css/main.e5e2331e.chunk.css",
-    "main.js": "/foodbot-website/static/js/main.9b76ade9.chunk.js",
-    "main.js.map": "/foodbot-website/static/js/main.9b76ade9.chunk.js.map",
+    "main.js": "/foodbot-website/static/js/main.94e6149d.chunk.js",
+    "main.js.map": "/foodbot-website/static/js/main.94e6149d.chunk.js.map",
     "runtime-main.js": "/foodbot-website/static/js/runtime-main.ac0581cb.js",
     "runtime-main.js.map": "/foodbot-website/static/js/runtime-main.ac0581cb.js.map",
     "static/css/2.d4ac2851.chunk.css": "/foodbot-website/static/css/2.d4ac2851.chunk.css",
     "static/js/2.3459c120.chunk.js": "/foodbot-website/static/js/2.3459c120.chunk.js",
     "static/js/2.3459c120.chunk.js.map": "/foodbot-website/static/js/2.3459c120.chunk.js.map",
     "index.html": "/foodbot-website/index.html",
-    "precache-manifest.b1df7b2d3c0c8eb63dcedd07206a316c.js": "/foodbot-website/precache-manifest.b1df7b2d3c0c8eb63dcedd07206a316c.js",
+    "precache-manifest.ea3b1c66f07b07ede4aba00be7ddeee4.js": "/foodbot-website/precache-manifest.ea3b1c66f07b07ede4aba00be7ddeee4.js",
     "service-worker.js": "/foodbot-website/service-worker.js",
     "static/css/2.d4ac2851.chunk.css.map": "/foodbot-website/static/css/2.d4ac2851.chunk.css.map",
     "static/css/main.e5e2331e.chunk.css.map": "/foodbot-website/static/css/main.e5e2331e.chunk.css.map",
@@ -22,6 +22,6 @@
     "static/css/2.d4ac2851.chunk.css",
     "static/js/2.3459c120.chunk.js",
     "static/css/main.e5e2331e.chunk.css",
-    "static/js/main.9b76ade9.chunk.js"
+    "static/js/main.94e6149d.chunk.js"
   ]
 }

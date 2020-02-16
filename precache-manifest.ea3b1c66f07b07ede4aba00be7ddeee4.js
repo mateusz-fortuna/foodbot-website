@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5f981fc56ff1fcce384bd36f7f3896cd",
+    "revision": "2bbb4f7531483e95ae0306d19fba2c3d",
     "url": "/foodbot-website/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/foodbot-website/static/css/2.d4ac2851.chunk.css"
   },
   {
-    "revision": "2cd5ae221068b1eec4c9",
+    "revision": "e389056aad95b50d43c1",
     "url": "/foodbot-website/static/css/main.e5e2331e.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/foodbot-website/static/js/2.3459c120.chunk.js.LICENSE"
   },
   {
-    "revision": "2cd5ae221068b1eec4c9",
-    "url": "/foodbot-website/static/js/main.9b76ade9.chunk.js"
+    "revision": "e389056aad95b50d43c1",
+    "url": "/foodbot-website/static/js/main.94e6149d.chunk.js"
   },
   {
     "revision": "6335ddfbeebb8129cfb0",
