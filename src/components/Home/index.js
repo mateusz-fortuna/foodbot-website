@@ -40,12 +40,15 @@ const Home = props => {
  const [ mountTransition, setMountTransition ] = useState( false );
 
  //----------LEARN MORE HANDLER----------//
- 
+
+ let timeoutNextPage = null;
+ const timeoutNextPageFn = () => {
+  timeoutNextPage = setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+ };
+
  const handleLearnMore = () => {
   setMountTransition( !mountTransition );
-  setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
-  
-  return clearTimeout( setTimeout( () => { window.location.href = '/#/about'; }, 1300 ) );
+  timeoutNextPageFn();
  };
  
  //----------MOUNT ABOUT ON SCROLL----------//
@@ -54,6 +57,10 @@ const Home = props => {
    if ( event.deltaY > 1 ) {
     handleLearnMore();
    }
+ };
+
+ const wheelEvent = event => {
+  throttle( handleWheel( event ), 1300 )
  };
 
  let touchStart = 0;
@@ -72,14 +79,16 @@ const Home = props => {
  };
  
  useEffect( () => {
-  window.addEventListener( 'wheel', throttle( handleWheel, 1300 ), false );
-  window.addEventListener( 'touchstart', event => { handleTouchStart( event ) }, false );
-  window.addEventListener( 'touchend', event => { handleTouchEnd( event ) }, false );
+  window.addEventListener( 'wheel', wheelEvent, false );
+  window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
+  window.addEventListener( 'touchend', handleTouchEnd, false );
 
   return () => {
-    window.removeEventListener( 'wheel', throttle( handleWheel, 1300 ), false );
-    window.removeEventListener( 'touchstart', event => { handleTouchStart( event ) }, false );
-    window.removeEventListener( 'touchend', event => { handleTouchEnd( event ) }, false );
+    clearTimeout( timeoutNextPage );
+
+    window.removeEventListener( 'wheel', wheelEvent, false );
+    window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
+    window.removeEventListener( 'touchend', handleTouchEnd, false );
   };
 } );
 
