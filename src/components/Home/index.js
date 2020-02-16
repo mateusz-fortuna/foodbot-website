@@ -46,7 +46,7 @@ const Home = props => {
   setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
   
   return clearTimeout( setTimeout( () => { window.location.href = '/#/about'; }, 1300 ) );
-};
+ };
  
  //----------MOUNT ABOUT ON SCROLL----------//
  
@@ -55,14 +55,31 @@ const Home = props => {
     handleLearnMore();
    }
  };
+
+ let touchStart = 0;
+
+ const handleTouchStart = event => {
+  touchStart = event.touches[ 0 ].pageY;
+};
+
+ const handleTouchEnd = event => {
+   const touchEnd = event.changedTouches[ 0 ].pageY;
+   if ( touchStart < touchEnd ) {
+     handleLearnMore();
+   } else {
+    touchStart = 0;
+   }
+ };
  
  useEffect( () => {
   window.addEventListener( 'wheel', throttle( handleWheel, 1300 ), false );
-  window.addEventListener( 'touchmove', throttle( handleWheel, 1300 ), false );
+  window.addEventListener( 'touchstart', event => { handleTouchStart( event ) }, false );
+  window.addEventListener( 'touchend', event => { handleTouchEnd( event ) }, false );
 
   return () => {
-    window.removeEventListener( 'wheel', event => { throttle( handleWheel( event ), 1300 ); }, false );
-    window.addEventListener( 'touchmove', event => { throttle( handleWheel( event ), 1300 ); }, false );
+    window.removeEventListener( 'wheel', throttle( handleWheel, 1300 ), false );
+    window.removeEventListener( 'touchstart', event => { handleTouchStart( event ) }, false );
+    window.removeEventListener( 'touchend', event => { handleTouchEnd( event ) }, false );
   };
 } );
 

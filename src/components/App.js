@@ -24,28 +24,40 @@ const App = () => {
   //----------MENU BUTTON COLOR----------//
   useEffect( () => {
 
-    const menuButtonColorChange = () => {
-      const urlArray = document.location.href.split( '/' );
-      const urlEnd = urlArray[ urlArray.length - 1 ];
+    const urlArray = document.location.href.split( '/' );
+    const urlEnd = urlArray[ urlArray.length - 1 ];
 
-      const menuLines = document.querySelectorAll( '.menuLine' );
-      const menuLabel = document.querySelector( '.menuIcon__label' );
-      
+    const menuLines = document.querySelectorAll( '.menuLine' );
+    const menuLabel = document.querySelector( '.menuIcon__label' );
+
+    //----------MENU BUTTON COLOR FUNCTION----------//
+
+    const menuButtonColorChange = () => {      
       switch ( urlEnd ) {
         case 'about':
           menuLines.forEach(
             item => item.style.backgroundColor = '#e0e0e0'
           );
-          menuLabel.style.color = '#e0e0e0';
+          if ( menuLabel ) {
+            menuLabel.style.color = '#e0e0e0';
+          }
           break;
       
         default:
           menuLines.forEach(
             item => item.style.backgroundColor = '#0e0e0e'
           );
-          menuLabel.style.color = '#0e0e0e';
+          if ( menuLabel ) {
+            menuLabel.style.color = '#0e0e0e';
+          }
       }
     }
+
+    //----------SET MENU COLOR ON PAGE LOAD----------//
+
+    menuButtonColorChange();
+
+    //----------SET MENU COLOR ON HASH CHANGE----------//
 
     window.addEventListener( 'hashchange', menuButtonColorChange );
 
@@ -89,7 +101,7 @@ const App = () => {
       setWidth( window.innerWidth );
     };
     window.addEventListener( 'resize', updateWidth );
-    return () => window.removeEventListener( 'resize', updateWidth );
+    return () => { window.removeEventListener( 'resize', updateWidth ) };
   } );
 
   //----------APP STATE----------//

@@ -6,10 +6,12 @@ import { CSSTransition } from 'react-transition-group';
 
 import Image from '../../assets/images/printer-perspective.png';
 
+import { throttle } from '../../assets/js/throttle';
+
 
 const About = props => {
 
-
+  //----------SCROLL NAVIGATION----------//
   
   
   //----------ANIMATION SETTINGS----------//
