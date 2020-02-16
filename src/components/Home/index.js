@@ -64,7 +64,7 @@ const Home = props => {
 
  const handleTouchEnd = event => {
    const touchEnd = event.changedTouches[ 0 ].pageY;
-   if ( touchStart < touchEnd ) {
+   if ( touchStart > touchEnd ) {
      handleLearnMore();
    } else {
     touchStart = 0;

@@ -51,6 +51,11 @@ const App = () => {
             menuLabel.style.color = '#0e0e0e';
           }
       }
+
+      //----------PAGES TRANSITION----------//
+
+      
+
     }
 
     //----------SET MENU COLOR ON PAGE LOAD----------//
