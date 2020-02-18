@@ -5,19 +5,24 @@ import { Row } from 'react-bootstrap';
 import { throttle } from '../../assets/js/throttle';
 import Transition from '../Transition';
 
+import { Redirect } from 'react-router-dom';
+
 const Contact = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
   
   const [ mountTransition, setMountTransition ] = useState( false );
-
+  const [ changeNextUrl, setChangeNextUrl ] = useState( false );
+  const [ changePrevUrl, setChangePrevUrl ] = useState( false );
 
   let timeoutNextPage = null;
   let timeoutPrevPage = null;
   const timeoutNextPageFn = () => {
-    timeoutNextPage = setTimeout( () => { window.location.href = '/#/blog'; }, 1300 );
+    timeoutNextPage = setTimeout( () => { setChangeNextUrl( !changeNextUrl ); }, 1300 );
+    timeoutNextPage = null;
   };
   const timeoutPrevPageFn = () => {
-    timeoutPrevPage = setTimeout( () => { window.location.href = '/#/gallery'; }, 1300 );
+    timeoutPrevPage = setTimeout( () => { setChangePrevUrl( !changePrevUrl ); }, 1300 );
+    timeoutPrevPage = null;
   };
 
   const handleWheel = event => {
@@ -70,6 +75,8 @@ const Contact = () => {
   return (
     <Row className="contact">
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
+      { changeNextUrl && ( <Redirect to="/blog" /> ) }
+      { changePrevUrl && ( <Redirect to="/gallery" /> ) }
       Contact
     </Row>
   );

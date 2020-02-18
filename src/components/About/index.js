@@ -9,21 +9,27 @@ import Image from '../../assets/images/printer-perspective.png';
 
 import { throttle } from '../../assets/js/throttle';
 
+import { Redirect } from 'react-router-dom';
+
 
 const About = props => {
 
   //----------SCROLL & SWIPE NAVIGATION----------//
   
   const [ mountTransition, setMountTransition ] = useState( false );
+  const [ changeNextUrl, setChangeNextUrl ] = useState( false );
+  const [ changePrevUrl, setChangePrevUrl ] = useState( false );
 
 
   let timeoutNextPage = null;
   let timeoutPrevPage = null;
   const timeoutNextPageFn = () => {
-    timeoutNextPage = setTimeout( () => { window.location.href = '/#/gallery'; }, 1300 );
+    timeoutNextPage = setTimeout( () => { setChangeNextUrl( !changeNextUrl ); }, 1300 );
+    timeoutNextPage = null;
   };
   const timeoutPrevPageFn = () => {
-    timeoutPrevPage = setTimeout( () => { window.location.href = '/#/'; }, 1300 );
+    timeoutPrevPage = setTimeout( () => { setChangePrevUrl( !changePrevUrl ); }, 1300 );
+    timeoutPrevPage = null;
   };
 
   const handleWheel = event => {
@@ -83,6 +89,9 @@ const About = props => {
   return (
     <Row className="about">
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
+
+      { changeNextUrl && ( <Redirect to="/gallery" /> ) }
+      { changePrevUrl && ( <Redirect to="/" /> ) }
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
