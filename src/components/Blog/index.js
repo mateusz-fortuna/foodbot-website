@@ -28,9 +28,7 @@ const Blog = () => {
     }
   };
 
-  const wheelEvent = event => {
-    throttle( handleWheel( event ), 1300 )
-  };
+  const handleWheelEvent = throttle( handleWheel, 1300 );
 
   let touchStart = 0;
 
@@ -48,14 +46,14 @@ const Blog = () => {
   };
 
   useEffect( () => {
-    window.addEventListener( 'wheel', wheelEvent , false );
+    window.addEventListener( 'wheel', handleWheelEvent, false );
     window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
     window.addEventListener( 'touchend', handleTouchEnd, false );
   
     return () => {
       clearTimeout( timeoutPrevPage );
 
-      window.removeEventListener( 'wheel', wheelEvent, false );
+      window.removeEventListener( 'wheel', handleWheelEvent, false );
       window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
       window.removeEventListener( 'touchend', handleTouchEnd, false );
     };

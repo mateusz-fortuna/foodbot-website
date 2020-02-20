@@ -3,6 +3,7 @@ import { Row, Col, Button } from 'react-bootstrap';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
 import Transition from '../Transition';
+import TransitionOut from '../TransitionOut';
 import { throttle } from '../../assets/js/throttle';
 import { Redirect } from 'react-router-dom';
 
@@ -61,9 +62,7 @@ const Home = props => {
    }
  };
 
- const wheelEvent = event => {
-  throttle( handleWheel( event ), 1300 )
- };
+ const handleWheelEvent = throttle( handleWheel, 1300 );
 
  let touchStart = 0;
 
@@ -81,14 +80,14 @@ const Home = props => {
  };
  
  useEffect( () => {
-  window.addEventListener( 'wheel', wheelEvent, false );
+  window.addEventListener( 'wheel', handleWheelEvent, false );
   window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
   window.addEventListener( 'touchend', handleTouchEnd, false );
 
   return () => {
     clearTimeout( timeoutNextPage );
 
-    window.removeEventListener( 'wheel', wheelEvent, false );
+    window.removeEventListener( 'wheel', handleWheelEvent, false );
     window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
     window.removeEventListener( 'touchend', handleTouchEnd, false );
   };
@@ -100,6 +99,7 @@ const Home = props => {
 
   return (
     <Row className="home">
+    <TransitionOut />
     { mountTransition && ( <Transition mountTransition={ mountTransition } /> ) }
     { changeUrl && ( <Redirect to="/about" /> ) }
 

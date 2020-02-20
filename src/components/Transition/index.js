@@ -16,8 +16,18 @@ const Transition = props => {
 
   const [ autoUnmount, setAutoUnmount ] = useState( false );
 
+  let listenerTimeout = null;
+  const timeoutFn = () => {
+    listenerTimeout = setTimeout( () => { setAutoUnmount( true ); }, 1300 );
+    listenerTimeout = null;
+  };
+
   useEffect( () => {
-    setTimeout( () => { setAutoUnmount( true ) }, 1300 );
+    timeoutFn();
+
+    return () => {
+      clearTimeout( listenerTimeout );
+    };
   } );
 
   //----------ARRAY OF STRIPS----------//

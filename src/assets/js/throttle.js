@@ -1,8 +1,8 @@
-export const throttle = ( fn, time ) => {
-  let wait = Date.now();
+export const throttle = ( fn, wait ) => {
+  let time = Date.now();
 
   return ( ...args ) => {
-    if ( time + wait - Date.now() < 10 ) {
+    if ( ( time + wait - Date.now() ) < 0 ) {
       fn( ...args );
       time = Date.now();
     }

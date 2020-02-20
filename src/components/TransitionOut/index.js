@@ -7,10 +7,16 @@ const TransitionOut = () => {
 
   const [ mountTransition, setMountTransition ] = useState( true );
 
-  useEffect( () => {
-    let timeout = setTimeout( () => {
+  let timeout = null
+  const timeoutFn = () => {
+    timeout = setTimeout( () => {
       setMountTransition( false );
     }, 1300 );
+    timeout = null;
+  };
+
+  useEffect( () => {
+    timeoutFn();
 
     return () => {
       clearTimeout( timeout );
