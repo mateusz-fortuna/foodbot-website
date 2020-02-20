@@ -4,6 +4,7 @@ import { Row } from 'react-bootstrap';
 
 import { throttle } from '../../assets/js/throttle';
 import Transition from '../Transition';
+import TransitionOut from '../TransitionOut';
 
 const Contact = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
@@ -69,6 +70,7 @@ const Contact = () => {
 
   return (
     <Row className="contact">
+      <TransitionOut />
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
       Contact
     </Row>

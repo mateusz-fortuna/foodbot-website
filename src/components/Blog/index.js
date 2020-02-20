@@ -4,6 +4,7 @@ import { Row } from 'react-bootstrap';
 
 import { throttle } from '../../assets/js/throttle';
 import Transition from '../Transition';
+import TransitionOut from '../TransitionOut';
 
 
 const Blog = () => {
@@ -58,6 +59,7 @@ const Blog = () => {
 
   return (
     <Row className="blog">
+      <TransitionOut />
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
       Blog
     </Row>

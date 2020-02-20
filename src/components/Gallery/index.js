@@ -4,6 +4,7 @@ import { Row } from 'react-bootstrap';
 
 import Transition from '../Transition';
 import { throttle } from '../../assets/js/throttle';
+import TransitionOut from '../TransitionOut';
 
 const Gallery = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
@@ -69,6 +70,7 @@ const Gallery = () => {
 
   return (
     <Row className="gallery">
+      <TransitionOut />
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
       Gallery
     </Row>

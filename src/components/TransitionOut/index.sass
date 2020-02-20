@@ -1,0 +1,23 @@
+.transitionOut
+  position: absolute
+  top: 0
+  height: 100%
+  width: 100%
+  z-index: 1
+  margin: 0
+
+.transitionOut__strip
+  background-color: #0e0e0e
+  padding: 0
+
+.transitionOut__strip-appear, .transitionOut__strip-enter
+  height: 100%
+
+.transitionOut__strip-appear-active, .transitionOut__strip-enter-active
+  height: 0
+  transition: all 1s ease
+
+.transitionOut__strip-appear-done, .transitionOut__strip-enter-done
+  height: 0
+
+
