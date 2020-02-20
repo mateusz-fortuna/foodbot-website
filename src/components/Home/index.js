@@ -64,11 +64,12 @@ const Home = props => {
 
  const handleWheelEvent = throttle( handleWheel, 1300 );
 
+
  let touchStart = 0;
 
  const handleTouchStart = event => {
   touchStart = event.touches[ 0 ].pageY;
-};
+ };
 
  const handleTouchEnd = event => {
    const touchEnd = event.changedTouches[ 0 ].pageY;
@@ -78,18 +79,20 @@ const Home = props => {
     touchStart = 0;
    }
  };
+
+ const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
  
  useEffect( () => {
   window.addEventListener( 'wheel', handleWheelEvent, false );
   window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
-  window.addEventListener( 'touchend', handleTouchEnd, false );
+  window.addEventListener( 'touchend', handleTouchEndEvent, false );
 
   return () => {
     clearTimeout( timeoutNextPage );
 
     window.removeEventListener( 'wheel', handleWheelEvent, false );
     window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
-    window.removeEventListener( 'touchend', handleTouchEnd, false );
+    window.removeEventListener( 'touchend', handleTouchEndEvent, false );
   };
 } );
 

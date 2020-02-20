@@ -56,10 +56,12 @@ const Contact = () => {
     }
   };
 
+  const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
+
   useEffect( () => {
     window.addEventListener( 'wheel', handleWheelEvent, false );
     window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
-    window.addEventListener( 'touchend', handleTouchEnd, false );
+    window.addEventListener( 'touchend', handleTouchEndEvent, false );
   
     return () => {
       clearTimeout( timeoutNextPage );
@@ -67,7 +69,7 @@ const Contact = () => {
 
       window.removeEventListener( 'wheel', handleWheelEvent, false );
       window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
-      window.removeEventListener( 'touchend', handleTouchEnd, false );
+      window.removeEventListener( 'touchend', handleTouchEndEvent, false );
     };
   } );
 
