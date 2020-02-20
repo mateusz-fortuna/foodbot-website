@@ -4,7 +4,7 @@ import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
 import Transition from '../Transition';
 import { throttle } from '../../assets/js/throttle';
-
+import { Redirect } from 'react-router-dom';
 
 const Home = props => {
 
@@ -38,12 +38,14 @@ const Home = props => {
 //----------MOUNT TRANSITION HANDLER----------//
 
  const [ mountTransition, setMountTransition ] = useState( false );
+ const [ changeUrl, setChangeUrl ] = useState( false );
 
  //----------LEARN MORE HANDLER----------//
 
  let timeoutNextPage = null;
  const timeoutNextPageFn = () => {
-  timeoutNextPage = setTimeout( () => { window.location.href = '/#/about'; }, 1300 );
+  timeoutNextPage = setTimeout( () => { setChangeUrl( !changeUrl ); }, 1300 );
+  timeoutNextPage = null;
  };
 
  const handleLearnMore = () => {
@@ -99,6 +101,7 @@ const Home = props => {
   return (
     <Row className="home">
     { mountTransition && ( <Transition mountTransition={ mountTransition } /> ) }
+    { changeUrl && ( <Redirect to="/about" /> ) }
 
       {/* ----------PRINTER COLUMN--------- */}
 

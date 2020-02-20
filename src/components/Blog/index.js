@@ -6,15 +6,19 @@ import { throttle } from '../../assets/js/throttle';
 import Transition from '../Transition';
 import TransitionOut from '../TransitionOut';
 
+import { Redirect } from 'react-router-dom';
+
 
 const Blog = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
   
   const [ mountTransition, setMountTransition ] = useState( false );
+  const [ changeUrl, setChangeUrl ] = useState( false );
 
   let timeoutPrevPage = null;
   const timeoutPrevPageFn = () => {
-    timeoutPrevPage = setTimeout( () => { window.location.href = '/#/gallery'; }, 1300 );
+    timeoutPrevPage = setTimeout( () => { setChangeUrl( !changeUrl ); }, 1300 );
+    timeoutPrevPage = null;
   };
 
   const handleWheel = event => {
@@ -61,6 +65,8 @@ const Blog = () => {
     <Row className="blog">
       <TransitionOut />
       { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
+      { changeUrl && ( <Redirect to="/contact" /> ) }
+
       Blog
     </Row>
   );
