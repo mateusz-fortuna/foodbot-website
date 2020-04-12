@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './App.sass';
 
@@ -11,6 +11,7 @@ import {
 
 import { Container, Button } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
+import Cursor from'./Cursor';
 import Intro from './Intro';
 import Home from './Home';
 import About from './About';
@@ -72,9 +73,10 @@ const App = () => {
     
   const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
   
-  const handleMenuButtonClick = () => {
+  const handleMenuButtonClick = event => {
+    event.stopPropagation();
     setMenuButtonIsClicked( !menuButtonIsClicked );
-    setMenuIsOpen( true )
+    setMenuIsOpen( true );
   };
 
   //----------INTRO HANDLERS----------//
@@ -123,6 +125,7 @@ const App = () => {
     }
   }
 
+  const buttonRef = useRef();
 
   //----------JSX CODE----------//
 
@@ -131,12 +134,17 @@ const App = () => {
     <Router basename='/'>
       <Container fluid={ true } className="app">
 
+        {/*----------INTERACTIVE CURSOR----------*/}
+
+        <Cursor reference={ buttonRef } color={ menuLinesBackground } />
+
         {/* ----------MENU BUTTON---------- */}
 
         <Button
           className="menuIcon"
           variant="outline-dark"
           onClick={ handleMenuButtonClick }
+          ref={ buttonRef }
         >
 
           {

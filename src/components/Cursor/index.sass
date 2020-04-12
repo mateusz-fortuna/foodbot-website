@@ -1,0 +1,35 @@
+.cursorContainer--outer
+  position: fixed
+  width: 100%
+  height: 100%
+  left: 0
+  top: 0
+  z-index: 9000
+  pointer-events: none
+
+.cursorContainer--inner
+  display: flex
+  width: 100%
+  height: 100%
+  justify-content: center
+  z-index: 10000
+  pointer-events: none
+
+.cursor
+  position: fixed
+  top: 0
+  left: 0
+  pointer-events: none
+
+.cursor--small
+  width: 6px
+  height: 6px
+  left: -3px
+  top: -3px
+  border-radius: 50%
+  z-index: 11000
+  
+.cursor--canvas
+  width: 100%
+  height: 100%
+  z-index: 12000

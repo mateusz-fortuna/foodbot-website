@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.7.4",
-    "cross-env": "^6.0.3"
+    "cross-env": "^6.0.3",
+    "paper": "^0.12.4",
+    "simplex-noise": "^2.4.0"
   }
 }
