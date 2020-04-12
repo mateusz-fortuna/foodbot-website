@@ -340,7 +340,7 @@ const App = () => {
             <Home clientWidth={ width } />
           </Route>
           <Route path="/about">
-            <About />
+            <About clientWidth={ width } />
           </Route>
           <Route path="/gallery">
             <Gallery />

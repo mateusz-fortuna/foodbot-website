@@ -4,6 +4,7 @@ import './index.sass';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import Transition from '../Transition';
+import Circle from '../Circle';
 
 import Image from '../../assets/images/printer-perspective.png';
 
@@ -96,17 +97,8 @@ const About = props => {
       {/*----------COLUMNS WITH CONTENT----------*/}
 
       <Row className="stripContainer">
-        <Col xs="3" className="stripContainer__strip">
-
-        </Col>
-        <Col xs="3" className="stripContainer__strip">
-          
-        </Col>
-        <Col xs="3" className="stripContainer__strip">
-          
-        </Col>
-        <Col xs="3" className="stripContainer__strip">
-          
+        <Col className="stripContainer__strip">
+          <Circle clientWidth={ props.clientWidth } />
         </Col>
       </Row>
 

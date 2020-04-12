@@ -71,7 +71,7 @@ export class Cursor extends Component {
     paper.setup( this.canvas.current );
 
     const strokeColor = ( this.clientX > window.innerWidth / 2 )
-    ? 'rgba( 14, 14, 14, 0.5)'
+    ? 'rgba( 14, 14, 14, 0.5 )'
     : 'rgba( 224, 224, 224, 0.5 )';
     const strokeWidth = 1;
     const segments = 8;
