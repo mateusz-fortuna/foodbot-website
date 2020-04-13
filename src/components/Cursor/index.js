@@ -97,12 +97,24 @@ export class Cursor extends Component {
     );
     let bigCoordinates = [];
 
-    paper.view.onFrame = event => {
+    const smallCursorBgColor = this.smallCursor.current;
 
-      if ( this.clientX < window.innerWidth / 2 ) {
+    paper.view.onFrame = event => {
+    
+
+      // dynamic color change
+      if ( this.clientY < window.innerHeight /2 && window.innerWidth < 992 ) {
         polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+        smallCursorBgColor.style.backgroundColor = '#e0e0e0';
+      } else if ( this.clientY > window.innerHeight /2 && window.innerWidth < 992 ) {
+        polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+        smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+      } else if ( this.clientX < window.innerWidth / 2 ) {
+        polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+        smallCursorBgColor.style.backgroundColor = '#e0e0e0';
       } else {
         polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+        smallCursorBgColor.style.backgroundColor = '#0e0e0e';
       }
 
       const { isStuck } = this.state;
@@ -167,14 +179,6 @@ export class Cursor extends Component {
         } );
 
         polygon.smooth();
-
-        if ( this.clientX < window.innerWidth / 2 ) {
-          strokeColor = 'rgba( 14, 14, 14, 0.5 )';
-          polygon.strokeColor = strokeColor;
-        } else if ( this.clientX <= window.innerWidth / 2 ) {
-          strokeColor = 'rgba( 224, 224, 224, 0.5 )';
-          polygon.strokeColor = strokeColor;
-        }
       }
     };
   } 
@@ -215,9 +219,6 @@ export class Cursor extends Component {
           <div
             ref={ this.smallCursor }
             className="cursor cursor--small"
-            style={ { backgroundColor: ( this.clientX > window.innerWidth / 2 )
-              ? '#0e0e0e'
-              : '#e0e0e0' } }
           />
 
           <canvas
