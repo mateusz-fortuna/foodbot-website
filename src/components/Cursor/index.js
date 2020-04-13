@@ -72,7 +72,7 @@ export class Cursor extends Component {
     };
     paper.setup( this.canvas.current );
 
-    let strokeColor = '';
+    let strokeColor = 'rgba( 14, 14, 14, 0.5 )';
     const strokeWidth = 1;
     const segments = 8;
     const radius = 15;
@@ -98,6 +98,12 @@ export class Cursor extends Component {
     let bigCoordinates = [];
 
     paper.view.onFrame = event => {
+
+      if ( this.clientX < window.innerWidth / 2 ) {
+        polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+      } else {
+        polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+      }
 
       const { isStuck } = this.state;
       const { isNoisy } = this.state;
