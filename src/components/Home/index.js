@@ -6,6 +6,7 @@ import Transition from '../Transition';
 import TransitionOut from '../TransitionOut';
 import { throttle } from '../../assets/js/throttle';
 import { Redirect } from 'react-router-dom';
+import Cursor from '../Cursor';
 
 const Home = props => {
 
@@ -105,6 +106,10 @@ const Home = props => {
     <TransitionOut />
     { mountTransition && ( <Transition mountTransition={ mountTransition } /> ) }
     { changeUrl && ( <Redirect to="/about" /> ) }
+
+      {/*----------INTERACTIVE CURSOR----------*/}
+
+      <Cursor reference={ props.reference } type="variable" />
 
       {/* ----------PRINTER COLUMN--------- */}
 

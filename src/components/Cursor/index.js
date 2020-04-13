@@ -101,20 +101,31 @@ export class Cursor extends Component {
 
     paper.view.onFrame = event => {
     
+      const { type, color } = this.props;
 
       // dynamic color change
-      if ( this.clientY < window.innerHeight /2 && window.innerWidth < 992 ) {
+      if ( type === 'variable' ) {
+        if ( this.clientY < window.innerHeight /2 && window.innerWidth < 992 ) {
+          polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+          smallCursorBgColor.style.backgroundColor = '#e0e0e0';
+        } else if ( this.clientY > window.innerHeight /2 && window.innerWidth < 992 ) {
+          polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+          smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+        } else if ( this.clientX < window.innerWidth / 2 ) {
+          polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+          smallCursorBgColor.style.backgroundColor = '#e0e0e0';
+        } else {
+          polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+          smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+        }
+      } else if ( type === 'solid' && color === 'light' ) {
         polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
         smallCursorBgColor.style.backgroundColor = '#e0e0e0';
-      } else if ( this.clientY > window.innerHeight /2 && window.innerWidth < 992 ) {
+      } else if ( type === 'solid' && color === 'dark' ) {
         polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
         smallCursorBgColor.style.backgroundColor = '#0e0e0e';
-      } else if ( this.clientX < window.innerWidth / 2 ) {
-        polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
-        smallCursorBgColor.style.backgroundColor = '#e0e0e0';
       } else {
-        polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
-        smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+        console.error( 'Set type and color property for the interactive cursor component.' );
       }
 
       const { isStuck } = this.state;

@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import Transition from '../Transition';
 import Circle from '../Circle';
+import Cursor from '../Cursor';
 
 import Image from '../../assets/images/printer-perspective.png';
 
@@ -93,6 +94,10 @@ const About = props => {
 
       { changeNextUrl && ( <Redirect to="/gallery" /> ) }
       { changePrevUrl && ( <Redirect to="/" /> ) }
+
+      {/*----------INTERACTIVE CURSOR----------*/}
+
+      <Cursor reference={ props.reference } type="solid" color="light" />
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 

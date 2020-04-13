@@ -11,7 +11,6 @@ import {
 
 import { Container, Button } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
-import Cursor from'./Cursor';
 import Intro from './Intro';
 import Home from './Home';
 import About from './About';
@@ -125,7 +124,7 @@ const App = () => {
     }
   }
 
-  const buttonRef = useRef();
+  const menuButtonRef = useRef();
 
 
   //----------JSX CODE----------//
@@ -134,18 +133,14 @@ const App = () => {
   return (
     <Router basename='/'>
       <Container fluid={ true } className="app">
-
-        {/*----------INTERACTIVE CURSOR----------*/}
-
-        <Cursor reference={ buttonRef } color={ menuLinesBackground } />
-        
+       
         {/* ----------MENU BUTTON---------- */}
 
         <Button
           className="menuIcon"
           variant="outline-dark"
           onClick={ handleMenuButtonClick }
-          ref={ buttonRef }
+          ref={ menuButtonRef }
         >
 
           {
@@ -338,19 +333,19 @@ const App = () => {
             {
               mountIntro && ( <Intro showIntro={ showIntro } clientWidth={ width } /> )
             }
-            <Home clientWidth={ width } />
+            <Home clientWidth={ width } reference={ menuButtonRef } />
           </Route>
           <Route path="/about">
-            <About clientWidth={ width } />
+            <About clientWidth={ width } reference={ menuButtonRef } />
           </Route>
           <Route path="/gallery">
-            <Gallery />
+            <Gallery reference={ menuButtonRef } />
           </Route>
           <Route path="/contact">
-            <Contact />
+            <Contact reference={ menuButtonRef } />
           </Route>
           <Route path="/blog">
-            <Blog />
+            <Blog reference={ menuButtonRef } />
           </Route>
         </Switch>
       </Container>
