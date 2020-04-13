@@ -183,7 +183,11 @@ a
   transform: translateY( -50% )
 
 .linkWrapper
+  min-width: calc( 100% + 30px )
   overflow: hidden
+  
+  &:hover
+    overflow: visible
 
 .menuStrip a
   display: block
@@ -192,7 +196,10 @@ a
   font-family: 'Source Sans Pro', sans-serif
   color: #e0e0e0
   margin: 0
+  transition: all 0.5s
 
+.menuLink:hover
+  transform: translateX( 30px )
 
 .menuLinkHome-enter, .menuLinkHome-appear
   transform: translateY( 200px )

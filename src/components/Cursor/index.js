@@ -35,7 +35,7 @@ export class Cursor extends Component {
     this.lastY = 0;
     this.canvasCursorSpeed = 1;
 
-    const cursorHandler = event => {
+    this.cursorHandler = event => {
       this.group.position = new paper.Point(
         event.clientX,
         event.clientY
@@ -53,16 +53,16 @@ export class Cursor extends Component {
       
     };
 
-    document.addEventListener( 'mousemove', cursorHandler );
+    document.addEventListener( 'mousemove', this.cursorHandler );
 
     const render = () => {
       TweenMax.set( this.smallCursor.current, {
         x: this.clientX,
         y: this.clientY
       } );
-      requestAnimationFrame( render );
+      this.animationFrame = requestAnimationFrame( render );
     };
-    requestAnimationFrame( render );
+    this.animationFrame = requestAnimationFrame( render );
   }
 
   initCanvas() {
@@ -184,7 +184,7 @@ export class Cursor extends Component {
   } 
 
   initHovers() {
-    const handleMouseEnter = event => {
+    this.handleMouseEnter = event => {
       const navItem = event.currentTarget;
       const navItemBox = navItem.getBoundingClientRect();
       this.stuckX = Math.round( navItemBox.left + navItemBox.width / 2 );
@@ -192,14 +192,14 @@ export class Cursor extends Component {
       this.setState( { isStuck: true } );
     };
 
-    const handleMouseLeave = () => {
+    this.handleMouseLeave = () => {
       this.setState( { isStuck: false } );
     };
 
-     setTimeout( () => {
+    this.itemListenersDelay = setTimeout( () => {
       this.linkItems.forEach( item => {
-        item.current.addEventListener( 'mouseenter', handleMouseEnter );
-        item.current.addEventListener( 'mouseleave', handleMouseLeave );
+        item.current.addEventListener( 'mouseenter', this.handleMouseEnter );
+        item.current.addEventListener( 'mouseleave', this.handleMouseLeave );
       } );
      }, 1000 );
   }
@@ -210,7 +210,16 @@ export class Cursor extends Component {
     this.initHovers();
   }
 
-
+  componentWillUnmount() {
+    clearTimeout( this.itemListenersDelay );
+    clearTimeout( this.canvasCursorSpeedTimeout );
+    this.linkItems.forEach( item => {
+      item.current.removeEventListener( 'mouseenter', this.handleMouseEnter );
+      item.current.removeEventListener( 'mouseleave', this.handleMouseLeave );
+    } );
+    document.removeEventListener( 'mousemove', this.cursorHandler );
+    cancelAnimationFrame( this.animationFrame );
+  }
 
   render() {
     return (
