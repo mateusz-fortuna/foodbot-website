@@ -137,7 +137,7 @@ const App = () => {
         {/*----------INTERACTIVE CURSOR----------*/}
 
         <Cursor reference={ buttonRef } color={ menuLinesBackground } />
-
+        
         {/* ----------MENU BUTTON---------- */}
 
         <Button
