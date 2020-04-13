@@ -49,6 +49,8 @@ export class Cursor extends Component {
 
       this.clientX = event.clientX;
       this.clientY = event.clientY;
+
+      
     };
 
     document.addEventListener( 'mousemove', cursorHandler );
@@ -70,14 +72,13 @@ export class Cursor extends Component {
     };
     paper.setup( this.canvas.current );
 
-    const strokeColor = ( this.clientX > window.innerWidth / 2 )
-    ? 'rgba( 14, 14, 14, 0.5 )'
-    : 'rgba( 224, 224, 224, 0.5 )';
+    let strokeColor = '';
     const strokeWidth = 1;
     const segments = 8;
     const radius = 15;
     const noiseScale = 150; // speed
     const noiseRange = 4;
+
 
     const polygon = new paper.Path.RegularPolygon(
       new paper.Point( 0, 0 ),
@@ -160,9 +161,17 @@ export class Cursor extends Component {
         } );
 
         polygon.smooth();
+
+        if ( this.clientX < window.innerWidth / 2 ) {
+          strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+          polygon.strokeColor = strokeColor;
+        } else if ( this.clientX <= window.innerWidth / 2 ) {
+          strokeColor = 'rgba( 224, 224, 224, 0.5 )';
+          polygon.strokeColor = strokeColor;
+        }
       }
     };
-  }
+  } 
 
   initHovers() {
     const handleMouseEnter = event => {
@@ -191,6 +200,8 @@ export class Cursor extends Component {
     this.initHovers();
   }
 
+
+
   render() {
     return (
       <div className="cursorContainer--outer">
@@ -206,6 +217,7 @@ export class Cursor extends Component {
           <canvas
             ref={ this.canvas }
             className="cursor cursor--canvas"
+            data-paper-resize
           />
         </div>
       </div>
