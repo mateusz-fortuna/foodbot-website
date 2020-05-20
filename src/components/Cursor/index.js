@@ -101,9 +101,9 @@ export class Cursor extends Component {
 
     paper.view.onFrame = event => {
     
+      // dynamic color change
       const { type, color } = this.props;
 
-      // dynamic color change
       if ( type === 'variable' ) {
         if ( this.clientY < window.innerHeight /2 && window.innerWidth < 992 ) {
           polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';

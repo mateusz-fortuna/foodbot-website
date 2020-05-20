@@ -24,15 +24,15 @@ const App = () => {
   //----------MENU BUTTON COLOR----------//
   useEffect( () => {
 
-    const urlArray = document.location.href.split( '/' );
-    const urlEnd = urlArray[ urlArray.length - 1 ];
-
-    const menuLines = document.querySelectorAll( '.menuLine' );
-    const menuLabel = document.querySelector( '.menuIcon__label' );
-
     //----------MENU BUTTON COLOR FUNCTION----------//
 
-    const menuButtonColorChange = () => {      
+    const menuButtonColorChange = menuIsOpen => {    
+      const urlArray = document.location.href.split( '/' );
+      const urlEnd = urlArray[ urlArray.length - 1 ];
+
+      const menuLines = document.querySelectorAll( '.menuLine' );
+      const menuLabel = document.querySelector( '.menuIcon__label' );
+
       switch ( urlEnd ) {
         case 'about':
           menuLines.forEach(
@@ -44,11 +44,20 @@ const App = () => {
           break;
       
         default:
-          menuLines.forEach(
-            item => item.style.backgroundColor = '#0e0e0e'
-          );
-          if ( menuLabel ) {
-            menuLabel.style.color = '#0e0e0e';
+          if ( menuButtonIsClicked ) {
+            menuLines.forEach(
+              item => item.style.backgroundColor = '#e0e0e0'
+            );
+            if ( menuLabel ) {
+              menuLabel.style.color = '#e0e0e0';
+            }
+          } else {
+            menuLines.forEach(
+              item => item.style.backgroundColor = '#0e0e0e'
+            );
+            if ( menuLabel ) {
+              menuLabel.style.color = '#0e0e0e';
+            }
           }
       }
     }
