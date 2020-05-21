@@ -15,7 +15,7 @@ export class Cursor extends Component {
     this.smallCursor = React.createRef();
     this.canvas = React.createRef();
 
-    this.linkItems = [ this.props.reference ];
+    this.linkItems = this.props.reference.flat( Infinity );
 
     this.initCursor = this.initCursor.bind( this );
     this.initCanvas = this.initCanvas.bind( this );

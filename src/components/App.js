@@ -26,7 +26,7 @@ const App = () => {
 
     //----------MENU BUTTON COLOR FUNCTION----------//
 
-    const menuButtonColorChange = menuIsOpen => {    
+    const menuButtonColorChange = () => {    
       const urlArray = document.location.href.split( '/' );
       const urlEnd = urlArray[ urlArray.length - 1 ];
 
@@ -78,6 +78,8 @@ const App = () => {
   //----------MENU BUTTON HANDLER----------//
   const [ menuIsOpen, setMenuIsOpen ] = useState( false );
   const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
+  const [ animationDone, setAnimationDone ] = useState( false );
+
     
   const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
   
@@ -133,8 +135,14 @@ const App = () => {
     }
   }
 
-  const menuButtonRef = useRef();
+  const homeRef = useRef();
+  const aboutRef = useRef();
+  const galleryRef = useRef();
+  const contactRef = useRef();
+  const blogRef = useRef();
+  const menuLinksRef = [ homeRef, aboutRef, galleryRef, contactRef, blogRef ];
 
+  const menuButtonRef = useRef(); 
 
   //----------JSX CODE----------//
 
@@ -173,6 +181,9 @@ const App = () => {
               in={ menuButtonIsClicked }
               unmountOnExit={ true }
               timeout={ 1700 }
+              onExit={ () => {
+                setAnimationDone( !animationDone );
+              } }
             >
             <div className="menu">
 
@@ -198,9 +209,12 @@ const App = () => {
                 timeout={ {
                   enter: 800,
                   appear: 800,
-                  exit: 1300
+                  exit: 1300,
                 } }
                 classNames="menuStripTwo"
+                onEntered={ () => {
+                  setAnimationDone( !animationDone );
+                } }
               >
                 <div className="menuStrip menuStripTwo">
                   <div className="verticalLineMenu" />
@@ -222,6 +236,7 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkHome"
                             style={ state.style.menuLink }
+                            ref={ homeRef }
                           >Home</h1>
                         </Link>
                       </CSSTransition>
@@ -239,7 +254,8 @@ const App = () => {
                           <h1
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkAbout"
-                            style={ state.style.menuLink }  
+                            style={ state.style.menuLink }
+                            ref={ aboutRef }
                           >About</h1>
                         </Link>
                       </CSSTransition>  
@@ -258,6 +274,7 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkGallery"
                             style={ state.style.menuLink }
+                            ref={ galleryRef }
                           >Gallery</h1>
                         </Link>
                       </CSSTransition>  
@@ -276,6 +293,7 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkContact"
                             style={ state.style.menuLink }
+                            ref={ contactRef }
                           >Contact</h1>
                         </Link>
                       </CSSTransition>  
@@ -294,6 +312,7 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkBlog"
                             style={ state.style.menuLink }
+                            ref={ blogRef }
                           >Blog</h1>
                         </Link>
                       </CSSTransition> 
@@ -342,7 +361,15 @@ const App = () => {
             {
               mountIntro && ( <Intro showIntro={ showIntro } clientWidth={ width } /> )
             }
-            <Home clientWidth={ width } reference={ menuButtonRef } />
+            <Home
+              clientWidth={ width }
+              reference={
+                menuLinksRef[ 0 ].current === undefined
+                  ? [ menuButtonRef ]
+                  : [ menuButtonRef, menuLinksRef ]
+                }
+              isAnimationDone={ animationDone }
+            />
           </Route>
           <Route path="/about">
             <About clientWidth={ width } reference={ menuButtonRef } />

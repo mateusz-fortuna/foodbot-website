@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
@@ -9,6 +9,8 @@ import { Redirect } from 'react-router-dom';
 import Cursor from '../Cursor';
 
 const Home = props => {
+
+  const learnMoreRef = useRef();
 
   //----------STATE STYLES----------//
 
@@ -82,11 +84,29 @@ const Home = props => {
  };
 
  const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
+
+ const homeImageWrapperRef = useRef();
+ const homeContentRef = useRef();
+ const homeRef = useRef();
  
+
  useEffect( () => {
   window.addEventListener( 'wheel', handleWheelEvent, false );
   window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
   window.addEventListener( 'touchend', handleTouchEndEvent, false );
+
+  // Fix the cursor when menu is open
+
+  if ( props.isAnimationDone ) {
+    homeImageWrapperRef.current.style.display = 'none';
+    homeContentRef.current.style.display = 'none';
+    homeRef.current.style.zIndex = '5';
+  }
+  else {
+    homeImageWrapperRef.current.removeAttribute('style');
+    homeContentRef.current.removeAttribute('style');
+    homeRef.current.removeAttribute('style');
+  }
 
   return () => {
     clearTimeout( timeoutNextPage );
@@ -102,19 +122,23 @@ const Home = props => {
   //----------JSX CODE----------//
 
   return (
-    <Row className="home">
+    <Row className="home" ref={ homeRef }>
     <TransitionOut />
     { mountTransition && ( <Transition mountTransition={ mountTransition } /> ) }
     { changeUrl && ( <Redirect to="/about" /> ) }
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor reference={ props.reference } type="variable" />
+      <Cursor
+        reference={ props.reference.concat( [ learnMoreRef ] ) }
+        type={ props.isAnimationDone ? 'solid' : 'variable' }
+        color={ props.isAnimationDone ? 'light' : null }
+      />
 
       {/* ----------PRINTER COLUMN--------- */}
 
 
-      <Col lg="6" className="homeImageWrapper p-0">
+      <Col lg="6" className="homeImageWrapper p-0" ref={ homeImageWrapperRef }>
         <div className="homeImage" style={ state.style.homeImage }/>
       </Col>
 
@@ -122,7 +146,7 @@ const Home = props => {
       {/* ----------CONTENT COLUMN---------- */}
 
 
-      <Col lg="6" className="homeContent p-0">
+      <Col lg="6" className="homeContent p-0" ref={ homeContentRef }>
 
         {/* ----------THIN LINES---------- */}
 
@@ -145,6 +169,7 @@ const Home = props => {
             className="learnMore"
             href="/about"
             onClick={ event => { event.preventDefault(); } }
+            ref={ learnMoreRef }
           >
             { props.clientWidth < 1200 && (
                 <Button
