@@ -372,7 +372,15 @@ const App = () => {
             />
           </Route>
           <Route path="/about">
-            <About clientWidth={ width } reference={ menuButtonRef } />
+            <About
+              clientWidth={ width }
+              reference={
+                menuLinksRef[ 0 ].current === undefined
+                  ? [ menuButtonRef ]
+                  : [ menuButtonRef, menuLinksRef ]
+                }
+              isAnimationDone={ animationDone }
+            />
           </Route>
           <Route path="/gallery">
             <Gallery reference={ menuButtonRef } />
