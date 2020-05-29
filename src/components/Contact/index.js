@@ -59,6 +59,12 @@ const Contact = () => {
   const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
 
   useEffect( () => {
+    //----------PAGE TITLE----------//
+
+    document.title = 'FoodBot | Contact';
+
+    //----------EVENT LISTENERS----------//
+
     window.addEventListener( 'wheel', handleWheelEvent, false );
     window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
     window.addEventListener( 'touchend', handleTouchEndEvent, false );

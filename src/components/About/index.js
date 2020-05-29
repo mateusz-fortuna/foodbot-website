@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './index.sass';
 
 import { Row, Col } from 'react-bootstrap';
@@ -15,6 +15,8 @@ import { Redirect } from 'react-router-dom';
 
 
 const About = props => {
+
+  const circleRef = useRef();
 
   //----------SCROLL & SWIPE NAVIGATION----------//
   
@@ -67,6 +69,12 @@ const About = props => {
   const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
 
   useEffect( () => {
+    //----------PAGE TITLE----------//
+
+    document.title = 'FoodBot | About';
+
+    //----------EVENT LISTENERS----------//
+
     window.addEventListener( 'wheel', handleWheelEvent, false );
     window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
     window.addEventListener( 'touchend', handleTouchEndEvent, false );
@@ -97,13 +105,15 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor reference={ props.reference } type="solid" color="light" />
+      <Cursor reference={ props.reference.concat( [ circleRef ] ) } type="solid" color="light" />
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
       <Row className="stripContainer">
         <Col className="stripContainer__strip">
-          <Circle clientWidth={ props.clientWidth } />
+          <div ref={ circleRef } style={ { width: props.clientWidth / 40 } } > 
+            <Circle clientWidth={ props.clientWidth }/>
+          </div>
         </Col>
       </Row>
 

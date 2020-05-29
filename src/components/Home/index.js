@@ -99,6 +99,12 @@ const Home = props => {
  
 
  useEffect( () => {
+  //----------PAGE TITLE----------//
+
+  document.title = 'FoodBot | Innovative 3D printer for food.';
+
+  //----------EVENT LISTENERS----------//
+
   window.addEventListener( 'wheel', handleWheelEvent, false );
   window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
   window.addEventListener( 'touchend', handleTouchEndEvent, false );

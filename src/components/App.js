@@ -22,7 +22,11 @@ import Blog from './Blog';
 const App = () => {
 
   //----------MENU BUTTON COLOR----------//
+
   useEffect( () => {
+    //----------PAGE TITLE----------//
+
+    document.title = 'FoodBot | Innovative 3D printer for food.';
 
     //----------MENU BUTTON COLOR FUNCTION----------//
 
@@ -84,7 +88,6 @@ const App = () => {
   const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
   
   const handleMenuButtonClick = event => {
-    event.stopPropagation();
     setMenuButtonIsClicked( !menuButtonIsClicked );
     setMenuIsOpen( true );
   };
@@ -113,7 +116,13 @@ const App = () => {
       setWidth( window.innerWidth );
     };
     window.addEventListener( 'resize', updateWidth );
-    return () => { window.removeEventListener( 'resize', updateWidth ) };
+
+    document.addEventListener( 'keyup', exitMenuUsingEsc );
+
+    return () => {
+      window.removeEventListener( 'resize', updateWidth );
+      document.removeEventListener( 'keyup', exitMenuUsingEsc );
+    };
   } );
 
   //----------APP STATE----------//
@@ -135,7 +144,17 @@ const App = () => {
     }
   }
 
-  const menuButtonRef = useRef(); 
+  //----------REFERENCE FOR CURSOR----------//
+
+  const menuButtonRef = useRef();
+  
+  //----------EXIT MENU USING ESC KEY----------//
+
+  const exitMenuUsingEsc = event => {
+    if ( menuButtonIsClicked ) {
+      if ( event.key === 'Escape' ) handleMenuButtonClick();
+    }
+  };
 
   //----------JSX CODE----------//
 
