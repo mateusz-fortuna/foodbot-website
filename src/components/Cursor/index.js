@@ -216,20 +216,11 @@ export class Cursor extends Component {
      }, 1000 );
   }
 
-  static getDerivedStateFromProps( nextProps, prevState ) {
+  static getDerivedStateFromProps( nextProp ) {
     return {
-      test: nextProps
+      test: nextProp
     }
   }
-
-  /* componentDidUpdate( nextProps ) {
-    const test = this.props;
-    if ( nextProps !== test ) {
-      if ( test ) {
-        this.initHovers();
-      }
-    }
-  } */
 
   componentDidMount() {
     this.initCursor();
@@ -246,7 +237,7 @@ export class Cursor extends Component {
       return;
     } else {
       this.linkItems.forEach( item => {
-        item.current.removeEventListener( 'mouseenter', this.handleMouseEnter );
+        item.current.removeEventListener( 'mouseenter', this.handleMouseEnter,  );
         item.current.removeEventListener( 'mouseleave', this.handleMouseLeave );
       } );
     }   

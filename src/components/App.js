@@ -135,13 +135,6 @@ const App = () => {
     }
   }
 
-  const homeRef = useRef();
-  const aboutRef = useRef();
-  const galleryRef = useRef();
-  const contactRef = useRef();
-  const blogRef = useRef();
-  const menuLinksRef = [ homeRef, aboutRef, galleryRef, contactRef, blogRef ];
-
   const menuButtonRef = useRef(); 
 
   //----------JSX CODE----------//
@@ -236,7 +229,6 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkHome"
                             style={ state.style.menuLink }
-                            ref={ homeRef }
                           >Home</h1>
                         </Link>
                       </CSSTransition>
@@ -255,7 +247,6 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkAbout"
                             style={ state.style.menuLink }
-                            ref={ aboutRef }
                           >About</h1>
                         </Link>
                       </CSSTransition>  
@@ -274,7 +265,6 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkGallery"
                             style={ state.style.menuLink }
-                            ref={ galleryRef }
                           >Gallery</h1>
                         </Link>
                       </CSSTransition>  
@@ -293,7 +283,6 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkContact"
                             style={ state.style.menuLink }
-                            ref={ contactRef }
                           >Contact</h1>
                         </Link>
                       </CSSTransition>  
@@ -312,7 +301,6 @@ const App = () => {
                             onClick={ handleMenuButtonClick }
                             className="menuLink menuLinkBlog"
                             style={ state.style.menuLink }
-                            ref={ blogRef }
                           >Blog</h1>
                         </Link>
                       </CSSTransition> 
@@ -363,11 +351,7 @@ const App = () => {
             }
             <Home
               clientWidth={ width }
-              reference={
-                menuLinksRef[ 0 ].current === undefined || menuButtonIsClicked === false
-                  ? [ menuButtonRef ]
-                  : [ menuButtonRef ].concat( menuLinksRef )
-                }
+              reference={ [ menuButtonRef ] }
               isAnimationDone={ animationDone }
               menuTest={ menuButtonIsClicked }
             />
@@ -375,11 +359,7 @@ const App = () => {
           <Route path="/about">
             <About
               clientWidth={ width }
-              reference={
-                menuLinksRef[ 0 ].current === undefined || menuButtonIsClicked === false
-                  ? [ menuButtonRef ]
-                  : [ menuButtonRef ].concat( menuLinksRef )
-                }
+              reference={ [ menuButtonRef ] }
               isAnimationDone={ animationDone }
             />
           </Route>
