@@ -15,8 +15,6 @@ export class Cursor extends Component {
     this.smallCursor = React.createRef();
     this.canvas = React.createRef();
 
-    this.linkItems = this.props.reference.flat( Infinity );
-
     this.initCursor = this.initCursor.bind( this );
     this.initCanvas = this.initCanvas.bind( this );
     this.initHovers = this.initHovers.bind( this );
@@ -24,8 +22,11 @@ export class Cursor extends Component {
     this.state = {
       isStuck: false,
       isNoisy: false,
-      showCursor: false
+      showCursor: false,
+      test: [ this.props.reference ].flat( Infinity )
     }
+
+    this.linkItems = this.state.test;
   };
 
   initCursor() {
@@ -215,19 +216,40 @@ export class Cursor extends Component {
      }, 1000 );
   }
 
+  static getDerivedStateFromProps( nextProps, prevState ) {
+    return {
+      test: nextProps
+    }
+  }
+
+  /* componentDidUpdate( nextProps ) {
+    const test = this.props;
+    if ( nextProps !== test ) {
+      if ( test ) {
+        this.initHovers();
+      }
+    }
+  } */
+
   componentDidMount() {
     this.initCursor();
     this.initCanvas();
-    this.initHovers();
+    if ( this.props.reference.flat( Infinity )[ 0 ] === undefined ) {
+      return;
+    } else { this.initHovers(); this.setState( { test: this.props.reference } ) }
   }
 
   componentWillUnmount() {
     clearTimeout( this.itemListenersDelay );
     clearTimeout( this.canvasCursorSpeedTimeout );
-    this.linkItems.forEach( item => {
-      item.current.removeEventListener( 'mouseenter', this.handleMouseEnter );
-      item.current.removeEventListener( 'mouseleave', this.handleMouseLeave );
-    } );
+    if ( this.props.reference.flat( Infinity )[ 0 ] === undefined ) {
+      return;
+    } else {
+      this.linkItems.forEach( item => {
+        item.current.removeEventListener( 'mouseenter', this.handleMouseEnter );
+        item.current.removeEventListener( 'mouseleave', this.handleMouseLeave );
+      } );
+    }   
     document.removeEventListener( 'mousemove', this.cursorHandler );
     cancelAnimationFrame( this.animationFrame );
   }

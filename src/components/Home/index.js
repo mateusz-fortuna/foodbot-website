@@ -60,9 +60,13 @@ const Home = props => {
  //----------MOUNT ABOUT ON SCROLL----------//
  
  const handleWheel = event => {
-   if ( event.deltaY > 1 ) {
-    handleLearnMore();
-   }
+  if ( props.menuTest ) {
+    return;
+  } else {
+    if ( event.deltaY > 1 ) {
+      handleLearnMore();
+     }
+  }
  };
 
  const handleWheelEvent = throttle( handleWheel, 1300 );
@@ -76,10 +80,14 @@ const Home = props => {
 
  const handleTouchEnd = event => {
    const touchEnd = event.changedTouches[ 0 ].pageY;
-   if ( touchStart > touchEnd ) {
-     handleLearnMore();
+   if ( props.menuTest ) {
+    return;
    } else {
-    touchStart = 0;
+    if ( touchStart > touchEnd ) {
+      handleLearnMore();
+    } else {
+     touchStart = 0;
+    }
    }
  };
 

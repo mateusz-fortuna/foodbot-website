@@ -364,20 +364,21 @@ const App = () => {
             <Home
               clientWidth={ width }
               reference={
-                menuLinksRef[ 0 ].current === undefined
+                menuLinksRef[ 0 ].current === undefined || menuButtonIsClicked === false
                   ? [ menuButtonRef ]
-                  : [ menuButtonRef, menuLinksRef ]
+                  : [ menuButtonRef ].concat( menuLinksRef )
                 }
               isAnimationDone={ animationDone }
+              menuTest={ menuButtonIsClicked }
             />
           </Route>
           <Route path="/about">
             <About
               clientWidth={ width }
               reference={
-                menuLinksRef[ 0 ].current === undefined
+                menuLinksRef[ 0 ].current === undefined || menuButtonIsClicked === false
                   ? [ menuButtonRef ]
-                  : [ menuButtonRef, menuLinksRef ]
+                  : [ menuButtonRef ].concat( menuLinksRef )
                 }
               isAnimationDone={ animationDone }
             />
