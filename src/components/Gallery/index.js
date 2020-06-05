@@ -62,7 +62,7 @@ const Gallery = () => {
   useEffect( () => {
     //----------PAGE TITLE----------//
 
-    document.title = 'FoodBot | Gallery';
+    document.title = 'Gallery | FoodBot';
 
     //----------EVENT LISTENERS----------//
 

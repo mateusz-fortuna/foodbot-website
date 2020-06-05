@@ -61,7 +61,7 @@ const Contact = () => {
   useEffect( () => {
     //----------PAGE TITLE----------//
 
-    document.title = 'FoodBot | Contact';
+    document.title = 'Contact | FoodBot';
 
     //----------EVENT LISTENERS----------//
 

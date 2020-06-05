@@ -110,10 +110,12 @@ const App = () => {
   //----------HOME TITILE HANDLER----------//
 
   const [ width, setWidth ] = useState( window.innerWidth );
+  const [ height, setHeight ] = useState( window.innerHeight );
   
   useEffect( () => {
     const updateWidth = () => {
       setWidth( window.innerWidth );
+      setHeight( window.innerHeight );
     };
     window.addEventListener( 'resize', updateWidth );
 
@@ -378,6 +380,7 @@ const App = () => {
           <Route path="/about">
             <About
               clientWidth={ width }
+              clientHeight={ height }
               reference={ [ menuButtonRef ] }
               isAnimationDone={ animationDone }
             />

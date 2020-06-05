@@ -50,7 +50,7 @@ const Blog = () => {
   useEffect( () => {
     //----------PAGE TITLE----------//
 
-    document.title = 'FoodBot | Blog';
+    document.title = 'Blog | FoodBot';
 
     //----------EVENT LISTENERS----------//
 

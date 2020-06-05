@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import './index.sass';
 
 import { Row, Col } from 'react-bootstrap';
@@ -15,9 +15,6 @@ import { Redirect } from 'react-router-dom';
 
 
 const About = props => {
-
-  const circleRef = useRef();
-
   //----------SCROLL & SWIPE NAVIGATION----------//
   
   const [ mountTransition, setMountTransition ] = useState( false );
@@ -71,7 +68,7 @@ const About = props => {
   useEffect( () => {
     //----------PAGE TITLE----------//
 
-    document.title = 'FoodBot | About';
+    document.title = 'About | FoodBot';
 
     //----------EVENT LISTENERS----------//
 
@@ -92,9 +89,38 @@ const About = props => {
 
   const timeout = 1000;
 
+  //----------DYNAMICALLY GENERATED CONTENT----------//
+
+  const circlesName = [
+    { name: 'basis', left: 32, top: 69 },
+    { name: 'head', left: 48, top: 60 },
+    { name: 'fence', left: 38, top: 40 },
+    { name: 'logo', left: 53, top: 27 },
+    { name: 'screen', left: 80, top: 28 }
+  ];
+  let circles = [];
+  let circlesRef = useRef( circlesName.map( () => createRef() ) ); 
+
+  const circlesGenerator = () => {
+    circlesName.map( ( item, index ) => circles.push(
+        <div
+          ref={ circlesRef.current[ index ] }
+          key={ index }
+          id={ item.name }
+          className="circleWrapper"
+          style={ {
+            left: `${ circlesName[ index ].left }%`,
+            top: `${ circlesName[ index ].top }%`
+          } }
+        > 
+            <Circle/>
+        </div>
+    ) );
+  };
+
+  circlesGenerator();
 
   //----------JSX CODE----------//
-
 
   return (
     <Row className="about">
@@ -105,14 +131,33 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor reference={ props.reference.concat( [ circleRef ] ) } type="solid" color="light" />
+      <Cursor reference={ props.reference.concat( circlesRef.current ) } type="solid" color="light" />
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
       <Row className="stripContainer">
         <Col className="stripContainer__strip">
-          <div ref={ circleRef } style={ { width: props.clientWidth / 40 } } > 
-            <Circle clientWidth={ props.clientWidth }/>
+          <div
+            className="stripContainer__strip__inner"
+            style={ {
+              width: props.clientHeight,
+              height: props.clientHeight
+            } }
+          >  
+            <div
+              style={ { 
+                width: props.clientWidth * 0.9,
+                maxWidth: '857px',
+                height: props.clientHeight * 0.9,
+                maxHeight: props.clientWidth < 768 ? '550px' : 'unset',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%,-50%)',
+                position: 'absolute'
+               } }
+            >
+              { circles }
+            </div>
           </div>
         </Col>
       </Row>
@@ -126,7 +171,7 @@ const About = props => {
         classNames="printerImage"
         timeout={ timeout }
       >
-        <div className="printerImage" style={ { backgroundImage: `url( ${ Image } )` } } />
+        <div className="printerImage" style={ { backgroundImage: `url( ${ Image } )` } }/>
       </CSSTransition>
     </Row>
   );
