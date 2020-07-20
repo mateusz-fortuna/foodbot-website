@@ -103,7 +103,10 @@ const About = props => {
   let circlesRef = useRef( circlesName.map( () => createRef() ) );
 
   const [ detailsOpened, setDetailsOpened ] = useState( false );
-  const handleCircleClick = () => setDetailsOpened( true );
+  const handleCircleClick = () => { 
+    setDetailsOpened( true );
+    setExitButton( true );
+  };
 
   const circlesGenerator = () => {
     circlesName.map( ( item, index ) => circles.push(
@@ -128,7 +131,7 @@ const About = props => {
   //----------EXIT FROM DETAILS----------//
 
   const [ exitButton, setExitButton ] = useState( true );
-  const handleExit = () => setExitButton( !exitButton );
+  const handleExit = () => setExitButton( false );
   const unmountDetails = () => setDetailsOpened( false );
 
   //----------JSX CODE----------//

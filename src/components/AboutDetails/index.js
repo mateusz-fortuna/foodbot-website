@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import './index.sass';
@@ -11,6 +11,7 @@ const AboutDetails = props => {
   return (
     <CSSTransition
       in={ mount }
+      mountOnEnter
       unmountOnExit
       timeout={ animationDuration }
       onExited={ unmount }
@@ -19,6 +20,7 @@ const AboutDetails = props => {
         <CSSTransition
         in={ mount }
         appear
+        mountOnEnter
         unmountOnExit
         timeout={ animationDuration }
         classNames="aboutDetails__container"
