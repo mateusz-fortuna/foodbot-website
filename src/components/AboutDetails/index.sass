@@ -1,0 +1,54 @@
+.aboutDetails__container
+  position: absolute
+  overflow: hidden
+  left: 0
+  bottom: 0
+  height: 80%
+  background-color: #e0e0e0
+  z-index: 3
+
+//----------ANIMATION----------//
+
+.aboutDetails__container-appear
+  height: 0
+
+.aboutDetails__container-appear-active
+  height: 80%
+  transition: 1s all ease
+
+.aboutDetails__container-exit-active
+  height: 0
+  transition: 1s all ease
+
+.aboutDetails__container-exit-done
+  height: 0
+
+//----------EXIT BUTTON----------//
+  
+.exitButton
+  position: absolute
+  border: 0
+  background-color: transparent
+  cursor: none !important
+
+.exitButton::hover
+  width: 120%
+  transition: 0.3s all
+
+.crossLine
+  position: absolute
+  left: 0
+  top: 50%
+  width: 100%
+  height: 2px
+  background-color: #0e0e0e
+
+.crossLine:nth-child( 1 )
+  transform: translateY( -50% ) rotate( 45deg )
+
+.crossLine:nth-child( 2 )
+  transform: translateY( -50% ) rotate( -45deg )
+
+
+
+

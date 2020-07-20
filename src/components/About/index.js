@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Transition from '../Transition';
 import Circle from '../Circle';
 import Cursor from '../Cursor';
+import AboutDetails from '../AboutDetails/index.js';
 
 import Image from '../../assets/images/printer-perspective.png';
 
@@ -99,7 +100,10 @@ const About = props => {
     { name: 'screen', left: 80, top: 28 }
   ];
   let circles = [];
-  let circlesRef = useRef( circlesName.map( () => createRef() ) ); 
+  let circlesRef = useRef( circlesName.map( () => createRef() ) );
+
+  const [ detailsOpened, setDetailsOpened ] = useState( false );
+  const handleCircleClick = () => setDetailsOpened( true );
 
   const circlesGenerator = () => {
     circlesName.map( ( item, index ) => circles.push(
@@ -108,6 +112,7 @@ const About = props => {
           key={ index }
           id={ item.name }
           className="circleWrapper"
+          onClick={ handleCircleClick }
           style={ {
             left: `${ circlesName[ index ].left }%`,
             top: `${ circlesName[ index ].top }%`
@@ -119,6 +124,12 @@ const About = props => {
   };
 
   circlesGenerator();
+
+  //----------EXIT FROM DETAILS----------//
+
+  const [ exitButton, setExitButton ] = useState( true );
+  const handleExit = () => setExitButton( !exitButton );
+  const unmountDetails = () => setDetailsOpened( false );
 
   //----------JSX CODE----------//
 
@@ -173,6 +184,10 @@ const About = props => {
       >
         <div className="printerImage" style={ { backgroundImage: `url( ${ Image } )` } }/>
       </CSSTransition>
+
+      {/*----------DETAILS----------*/}
+
+      { detailsOpened && <AboutDetails mount={ exitButton } unmount={ unmountDetails } exit={ handleExit } /> }
     </Row>
   );
 };
