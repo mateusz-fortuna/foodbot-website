@@ -153,9 +153,7 @@ const App = () => {
   //----------EXIT MENU USING ESC KEY----------//
 
   const exitMenuUsingEsc = event => {
-    if ( menuButtonIsClicked ) {
-      if ( event.key === 'Escape' ) handleMenuButtonClick();
-    }
+    if ( menuButtonIsClicked && event.key === 'Escape' ) handleMenuButtonClick();
   };
 
   //----------JSX CODE----------//

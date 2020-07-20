@@ -76,6 +76,7 @@ const About = props => {
     window.addEventListener( 'wheel', handleWheelEvent, false );
     window.addEventListener( 'touchstart', handleTouchStart, { passive: true } );
     window.addEventListener( 'touchend', handleTouchEndEvent, false );
+    window.addEventListener( 'keyup', exitDetailsUsingEsc );
   
     return () => {
       clearTimeout( timeoutNextPage );
@@ -84,6 +85,7 @@ const About = props => {
       window.removeEventListener( 'wheel', handleWheelEvent, false );
       window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
       window.removeEventListener( 'touchend', handleTouchEndEvent, false );
+      window.removeEventListener( 'keyup', exitDetailsUsingEsc );
     };
   } );
   //----------ANIMATION SETTINGS----------//
@@ -132,7 +134,11 @@ const About = props => {
 
   const [ exitButton, setExitButton ] = useState( true );
   const handleExit = () => setExitButton( false );
+  const exitDetailsUsingEsc = event => {
+    if ( detailsOpened && event.key === 'Escape' ) handleExit();
+  };
   const unmountDetails = () => setDetailsOpened( false );
+
 
   //----------JSX CODE----------//
 
