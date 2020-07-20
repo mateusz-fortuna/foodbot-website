@@ -139,6 +139,9 @@ const About = props => {
   };
   const unmountDetails = () => setDetailsOpened( false );
 
+  //----------DETAILS CURSOR COLOR----------//
+
+  let detailsCursorColor = detailsOpened ? 'details' : 'default';
 
   //----------JSX CODE----------//
 
@@ -151,7 +154,7 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor reference={ props.reference.concat( circlesRef.current ) } type="solid" color="light" />
+      <Cursor reference={ props.reference.concat( circlesRef.current ) } type="about" color={ detailsCursorColor } />
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 

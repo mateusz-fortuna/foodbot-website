@@ -125,6 +125,19 @@ export class Cursor extends Component {
       } else if ( type === 'solid' && color === 'dark' ) {
         polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
         smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+      } else if ( type === 'about' ) {
+        if ( color === 'details' ) {
+          if ( this.clientY > window.innerHeight * 0.2 ) {
+            polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
+            smallCursorBgColor.style.backgroundColor = '#0e0e0e';
+          } else {
+            polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+            smallCursorBgColor.style.backgroundColor = '#e0e0e0';
+          }
+        } else {
+          polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
+          smallCursorBgColor.style.backgroundColor = '#e0e0e0';
+        }
       } else {
         console.error( 'Set type and color property for the interactive cursor component.' );
       }
