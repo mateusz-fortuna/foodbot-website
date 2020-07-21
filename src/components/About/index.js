@@ -143,6 +143,16 @@ const About = props => {
 
   let detailsCursorColor = detailsOpened ? 'details' : 'default';
 
+  //----------CURSOR REFs WITH EXIT BUTTON----------//
+
+  const exitButtonRef = createRef();
+
+  let aboutRefs = 
+    detailsOpened
+      ? props.reference.concat( circlesRef.current ).concat( exitButtonRef )
+      : props.reference.concat( circlesRef.current )
+  ;
+
   //----------JSX CODE----------//
 
   return (
@@ -154,7 +164,7 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor reference={ props.reference.concat( circlesRef.current ) } type="about" color={ detailsCursorColor } />
+      <Cursor reference={ aboutRefs } type="about" color={ detailsCursorColor } testRef={ exitButtonRef } />
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
@@ -199,7 +209,14 @@ const About = props => {
 
       {/*----------DETAILS----------*/}
 
-      { detailsOpened && <AboutDetails mount={ exitButton } unmount={ unmountDetails } exit={ handleExit } /> }
+      { detailsOpened &&
+        <AboutDetails
+          mount={ exitButton }
+          unmount={ unmountDetails }
+          exit={ handleExit }
+          ref={ exitButtonRef }
+        />
+      }
     </Row>
   );
 };

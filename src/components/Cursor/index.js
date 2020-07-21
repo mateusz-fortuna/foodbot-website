@@ -8,6 +8,7 @@ import SimplexNoise from 'simplex-noise';
 import { lerp } from '../../assets/js/lerp';
 import { map } from '../../assets/js/map';
 
+
 export class Cursor extends Component {
   constructor( props ) {
     super( props );
@@ -28,6 +29,10 @@ export class Cursor extends Component {
 
     this.linkItems = this.state.test;
   };
+
+
+  //----------INIT CURSOR----------//
+
 
   initCursor() {
     this.clientX = -100;
@@ -51,7 +56,7 @@ export class Cursor extends Component {
       this.clientX = event.clientX;
       this.clientY = event.clientY;
 
-      
+      this.linkItems = this.state.test;
     };
 
     document.addEventListener( 'mousemove', this.cursorHandler );
@@ -65,6 +70,10 @@ export class Cursor extends Component {
     };
     this.animationFrame = requestAnimationFrame( render );
   }
+
+
+  //----------INIT CANVAS----------//
+
 
   initCanvas() {
     const shapeBounds = {
@@ -208,6 +217,10 @@ export class Cursor extends Component {
     };
   } 
 
+
+  //----------INIT HOVERS----------//
+
+
   initHovers() {
     this.handleMouseEnter = event => {
       const navItem = event.currentTarget;
@@ -229,9 +242,20 @@ export class Cursor extends Component {
      }, 1000 );
   }
 
-  static getDerivedStateFromProps( nextProp ) {
+
+  //----------COMPONENT PHYSICS----------//
+
+
+  static getDerivedStateFromProps( nextProps ) {
     return {
-      test: nextProp
+      test: [ nextProps.reference ].flat( Infinity )
+    }
+  }
+
+  componentDidUpdate( prevProps ) {
+    if ( this.props !== prevProps ) {
+      this.linkItems = this.state.test;
+      this.initHovers();
     }
   }
 
