@@ -26,10 +26,17 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
         classNames="aboutDetails__container"
         >
           <Col className="aboutDetails__container">
-            <button onClick={ exit } ref={ ref } className="exitButton">
-              <span className="crossLine" />
-              <span className="crossLine" />
-            </button>
+            <Row className="h-100">
+              <Col xs={ 3 } className="aboutDetails--verticalLine"/>
+              <Col xs={ 3 } className="aboutDetails--verticalLine"/>
+              <Col sm={ 6 } className="aboutDetails__data">
+                <button onClick={ exit } ref={ ref } className="exitButton">
+                  <span className="crossLine" />
+                  <span className="crossLine" />
+                </button>
+              </Col>
+            </Row>
+            
           </Col>
         </CSSTransition>
       </Row>
