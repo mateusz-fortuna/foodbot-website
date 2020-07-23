@@ -256,6 +256,7 @@ export class Cursor extends Component {
     if ( this.props !== prevProps ) {
       this.linkItems = this.state.test;
       this.initHovers();
+      this.setState( { isStuck: false } );
     }
   }
 
