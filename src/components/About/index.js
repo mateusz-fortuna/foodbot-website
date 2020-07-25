@@ -105,9 +105,12 @@ const About = props => {
   let circlesRef = useRef( circlesName.map( () => createRef() ) );
 
   const [ detailsOpened, setDetailsOpened ] = useState( false );
-  const handleCircleClick = () => { 
+  const [ activeCircleName, setActiveCircleName ] = useState( '' );
+
+  const handleCircleClick = name => { 
     setDetailsOpened( true );
     setExitButton( true );
+    setActiveCircleName( name );
   };
 
   const circlesGenerator = () => {
@@ -117,7 +120,7 @@ const About = props => {
           key={ index }
           id={ item.name }
           className="circleWrapper"
-          onClick={ handleCircleClick }
+          onClick={ () => handleCircleClick( item.name ) }
           style={ {
             left: `${ circlesName[ index ].left }%`,
             top: `${ circlesName[ index ].top }%`
@@ -215,6 +218,7 @@ const About = props => {
           unmount={ unmountDetails }
           exit={ handleExit }
           ref={ exitButtonRef }
+          name={ activeCircleName }
         />
       }
     </Row>

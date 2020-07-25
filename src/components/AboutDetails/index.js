@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import './index.sass';
 
 const AboutDetails = React.forwardRef( ( props, ref ) => {
-  const { mount, unmount, exit } = props;
+  
+  const { mount, unmount, exit, name } = props;
+  const [ header, setHeader ] = useState( '' );
 
   const animationDuration = 1000;
+
+  const toCamelCase = () => {
+    let txt = name.split('');
+    txt[0] = txt[0].toUpperCase();
+    setHeader( txt.join('') );
+  };
+
+  useEffect( toCamelCase );
 
   return (
     <CSSTransition
@@ -34,6 +44,10 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                   <span className="crossLine" />
                   <span className="crossLine" />
                 </button>
+                <h1
+                  className="homeTitle"
+                  style={ { fontSize: Math.floor( 0.05 * window.innerWidth ) } }
+                > { header } </h1>
               </Col>
             </Row>
             
