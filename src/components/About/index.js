@@ -219,6 +219,7 @@ const About = props => {
           exit={ handleExit }
           ref={ exitButtonRef }
           name={ activeCircleName }
+          revRatio= { props.clientHeight / props.clientWidth }
         />
       }
     </Row>

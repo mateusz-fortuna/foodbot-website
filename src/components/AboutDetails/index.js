@@ -5,10 +5,12 @@ import './index.sass';
 
 const AboutDetails = React.forwardRef( ( props, ref ) => {
   
-  const { mount, unmount, exit, name } = props;
+  const { mount, unmount, exit, name, revRatio } = props;
   const [ header, setHeader ] = useState( '' );
+  const [ imageLoaded, setImageLoaded ] = useState( false );
 
-  const animationDuration = 1000;
+  const images = require.context( '../../assets/images', true );
+  let path = images( `./${ name }.jpg` );
 
   const toCamelCase = () => {
     let txt = name.split('');
@@ -16,7 +18,15 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     setHeader( txt.join('') );
   };
 
-  useEffect( toCamelCase );
+  useEffect( () => {
+    toCamelCase();
+
+    const image = new Image();
+    image.src = path;
+    image.onload = () => setImageLoaded( true );
+  } );
+
+  const animationDuration = 1000;
 
   return (
     <CSSTransition
@@ -28,16 +38,34 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     >
       <Row className="aboutDetails">
         <CSSTransition
-        in={ mount }
-        appear
-        mountOnEnter
-        unmountOnExit
-        timeout={ animationDuration }
-        classNames="aboutDetails__container"
+          in={ mount }
+          appear
+          mountOnEnter
+          unmountOnExit
+          timeout={ animationDuration }
+          classNames="aboutDetails__container"
         >
           <Col className="aboutDetails__container">
             <Row className="h-100">
-              <Col xs={ 3 } className="aboutDetails--verticalLine"/>
+              <Col xs={ 3 } className="aboutDetails--verticalLine">
+                <div
+                  className="aboutDetails--imageWrapper"
+                  style={ { height: ( 0.5 * window.innerWidth - 48 * 2 ) * revRatio } }
+                >
+                  { imageLoaded
+                    ? ( <CSSTransition
+                          in={ imageLoaded && mount }
+                          appear
+                          mountOnEnter
+                          unmountOnExit
+                          timeout={ animationDuration }
+                          classNames="aboutDetails--image"
+                        >
+                          <img src={ path } alt={ name } className="aboutDetails--image" />
+                        </CSSTransition> )
+                    : null}
+                </div>
+              </Col>
               <Col xs={ 3 } className="aboutDetails--verticalLine"/>
               <Col sm={ 6 } className="aboutDetails__data">
                 <button onClick={ exit } ref={ ref } className="exitButton">
@@ -50,7 +78,6 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                 > { header } </h1>
               </Col>
             </Row>
-            
           </Col>
         </CSSTransition>
       </Row>

@@ -275,7 +275,7 @@ export class Cursor extends Component {
       return;
     } else {
       this.linkItems.forEach( item => {
-        item.current.removeEventListener( 'mouseenter', this.handleMouseEnter,  );
+        item.current.removeEventListener( 'mouseenter', this.handleMouseEnter );
         item.current.removeEventListener( 'mouseleave', this.handleMouseLeave );
       } );
     }   
