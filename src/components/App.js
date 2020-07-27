@@ -5,12 +5,11 @@ import './App.sass';
 import {
   HashRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 
 import { Container, Button } from 'react-bootstrap';
-import { CSSTransition } from 'react-transition-group';
+import Menu from './Menu';
 import Intro from './Intro';
 import Home from './Home';
 import About from './About';
@@ -20,112 +19,6 @@ import Blog from './Blog';
 
 
 const App = () => {
-
-  //----------MENU BUTTON COLOR----------//
-
-  useEffect( () => {
-    //----------PAGE TITLE----------//
-
-    document.title = 'FoodBot | Innovative 3D printer for food.';
-
-    //----------MENU BUTTON COLOR FUNCTION----------//
-
-    const menuButtonColorChange = () => {    
-      const urlArray = document.location.href.split( '/' );
-      const urlEnd = urlArray[ urlArray.length - 1 ];
-
-      const menuLines = document.querySelectorAll( '.menuLine' );
-      const menuLabel = document.querySelector( '.menuIcon__label' );
-
-      switch ( urlEnd ) {
-        case 'about':
-          menuLines.forEach(
-            item => item.style.backgroundColor = '#e0e0e0'
-          );
-          if ( menuLabel ) {
-            menuLabel.style.color = '#e0e0e0';
-          }
-          break;
-      
-        default:
-          if ( menuButtonIsClicked ) {
-            menuLines.forEach(
-              item => item.style.backgroundColor = '#e0e0e0'
-            );
-            if ( menuLabel ) {
-              menuLabel.style.color = '#e0e0e0';
-            }
-          } else {
-            menuLines.forEach(
-              item => item.style.backgroundColor = '#0e0e0e'
-            );
-            if ( menuLabel ) {
-              menuLabel.style.color = '#0e0e0e';
-            }
-          }
-      }
-    }
-
-    //----------SET MENU COLOR ON PAGE LOAD----------//
-
-    menuButtonColorChange();
-
-    //----------SET MENU COLOR ON HASH CHANGE----------//
-
-    window.addEventListener( 'hashchange', menuButtonColorChange );
-
-    return () => {
-      window.removeEventListener( 'hashchange', menuButtonColorChange );
-    }
-  } );
-
-  //----------MENU BUTTON HANDLER----------//
-  const [ menuIsOpen, setMenuIsOpen ] = useState( false );
-  const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
-  const [ animationDone, setAnimationDone ] = useState( false );
-
-    
-  const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
-  
-  const handleMenuButtonClick = event => {
-    setMenuButtonIsClicked( !menuButtonIsClicked );
-    setMenuIsOpen( true );
-  };
-
-  //----------INTRO HANDLERS----------//
-
-  const [ showIntro, setShowIntro ] = useState( true );
-  const [ mountIntro, setMountIntro ] = useState( true )
-  
-  useEffect( () => {
-    setTimeout( () => setShowIntro( false ), 2500 );
-    setTimeout( () => setMountIntro( false ), 4000 );
-
-    return () => {
-      clearTimeout( setTimeout( () => setShowIntro( false ), 2500 ) );
-      clearTimeout( setTimeout( () => setMountIntro( false ), 4000 ) );
-    };
-  } );
-
-  //----------HOME TITILE HANDLER----------//
-
-  const [ width, setWidth ] = useState( window.innerWidth );
-  const [ height, setHeight ] = useState( window.innerHeight );
-  
-  useEffect( () => {
-    const updateWidth = () => {
-      setWidth( window.innerWidth );
-      setHeight( window.innerHeight );
-    };
-    window.addEventListener( 'resize', updateWidth );
-
-    document.addEventListener( 'keyup', exitMenuUsingEsc );
-
-    return () => {
-      window.removeEventListener( 'resize', updateWidth );
-      document.removeEventListener( 'keyup', exitMenuUsingEsc );
-    };
-  } );
 
   //----------APP STATE----------//
 
@@ -147,14 +40,111 @@ const App = () => {
   }
 
   //----------REFERENCE FOR CURSOR----------//
-
-  const menuButtonRef = useRef();
   
+  const menuButtonRef = useRef();
+
+
+  //----------MENU BUTTON COLOR----------//
+
+  const menuButtonColorChange = () => {    
+    const urlArray = document.location.href.split( '/' );
+    const urlEnd = urlArray[ urlArray.length - 1 ];
+
+    const menuLines = document.querySelectorAll( '.menuLine' );
+    const menuLabel = document.querySelector( '.menuIcon__label' );
+
+    switch ( urlEnd ) {
+      case 'about':
+        menuLines.forEach(
+          item => item.style.backgroundColor = '#e0e0e0'
+        );
+        if ( menuLabel ) {
+          menuLabel.style.color = '#e0e0e0';
+        }
+        break;
+    
+      default:
+        if ( menuButtonIsClicked ) {
+          menuLines.forEach(
+            item => item.style.backgroundColor = '#e0e0e0'
+          );
+          if ( menuLabel ) {
+            menuLabel.style.color = '#e0e0e0';
+          }
+        } else {
+          menuLines.forEach(
+            item => item.style.backgroundColor = '#0e0e0e'
+          );
+          if ( menuLabel ) {
+            menuLabel.style.color = '#0e0e0e';
+          }
+        }
+    }
+  }
+
+  //----------MENU BUTTON HANDLER----------//
+
+  const [ menuIsOpen, setMenuIsOpen ] = useState( false );
+  const [ menuButtonIsClicked, setMenuButtonIsClicked ] = useState( false );
+  const [ animationDone, setAnimationDone ] = useState( false );
+
+  const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
+
+  const handleMenuButtonClick = () => {
+    setMenuButtonIsClicked( !menuButtonIsClicked );
+    setMenuIsOpen( true );
+  };
+
+  //----------INTRO HANDLERS----------//
+
+  const [ showIntro, setShowIntro ] = useState( true );
+  const [ mountIntro, setMountIntro ] = useState( true );
+
+  //----------HOME TITILE HANDLER----------//
+
+  const [ width, setWidth ] = useState( window.innerWidth );
+  const [ height, setHeight ] = useState( window.innerHeight );
+
+  //----------UPDATE VIEWPORT FUNCTION----------//
+
+  const updateWidth = () => {
+    setWidth( window.innerWidth );
+    setHeight( window.innerHeight );
+  };
+
   //----------EXIT MENU USING ESC KEY----------//
 
   const exitMenuUsingEsc = event => {
     if ( menuButtonIsClicked && event.key === 'Escape' ) handleMenuButtonClick();
   };
+
+
+  useEffect( () => {
+
+    //----------PAGE TITLE----------//
+    document.title = 'FoodBot | Innovative 3D printer for food.';
+
+    //----------SET MENU COLOR ON PAGE LOAD----------//
+    menuButtonColorChange();
+
+    //----------LISTENERS----------//
+    window.addEventListener( 'hashchange', menuButtonColorChange );
+    window.addEventListener( 'resize', updateWidth );
+    document.addEventListener( 'keyup', exitMenuUsingEsc );
+
+    //----------MOUNT INTRO----------//
+    setTimeout( () => setShowIntro( false ), 2500 );
+    setTimeout( () => setMountIntro( false ), 4000 );
+
+    return () => {
+      window.removeEventListener( 'hashchange', menuButtonColorChange );
+      clearTimeout( setTimeout( () => setShowIntro( false ), 2500 ) );
+      clearTimeout( setTimeout( () => setMountIntro( false ), 4000 ) );
+      window.removeEventListener( 'resize', updateWidth );
+      document.removeEventListener( 'keyup', exitMenuUsingEsc );
+    }
+  } );
+    
 
   //----------JSX CODE----------//
 
@@ -183,185 +173,17 @@ const App = () => {
           <span className="menuLine bottomLine" style={ state.style.menuLines } />
         </Button>
 
-
-        {/* ----------MENU---------- */}
-
-
-        {
-          menuIsOpen && (
-            <CSSTransition
-              in={ menuButtonIsClicked }
-              unmountOnExit={ true }
-              timeout={ 1700 }
-              onExit={ () => {
-                setAnimationDone( !animationDone );
-              } }
-            >
-            <div className="menu">
-
-              {/* ----------MENU STRIPS---------- */}
-
-              <CSSTransition
-                in={ menuButtonIsClicked }
-                appear={ true }
-                unmountOnExit={ true }
-                timeout={ {
-                  enter: 600,
-                  appear: 600,
-                  exit: 1100
-                } }
-                classNames="menuStripOne"
-              >
-                <div className="menuStrip menuStripOne" />
-              </CSSTransition>
-              <CSSTransition
-                in={ menuButtonIsClicked }
-                appear={ true }
-                unmountOnExit={ true }
-                timeout={ {
-                  enter: 800,
-                  appear: 800,
-                  exit: 1300,
-                } }
-                classNames="menuStripTwo"
-                onEntered={ () => {
-                  setAnimationDone( !animationDone );
-                } }
-              >
-                <div className="menuStrip menuStripTwo">
-                  <div className="verticalLineMenu" />
-
-                  {/* ----------MENU LINKS---------- */}
-                  
-                  <div className="linksWrapper">
-
-                    <div className="linkWrapper homeWrapper">
-                      <CSSTransition
-                        in={ menuButtonIsClicked }
-                        appear={ true }
-                        unmountOnExit={ true }
-                        timeout={ 500 }
-                        classNames="menuLinkHome"
-                      >
-                        <Link to="/">
-                          <h1
-                            onClick={ handleMenuButtonClick }
-                            className="menuLink menuLinkHome"
-                            style={ state.style.menuLink }
-                          >Home</h1>
-                        </Link>
-                      </CSSTransition>
-                    </div>
-                    
-                    <div className="linkWrapper aboutWrapper">
-                      <CSSTransition
-                        in={ menuButtonIsClicked }
-                        appear={ true }
-                        unmountOnExit={ true }
-                        timeout={ 600 }
-                        classNames="menuLinkAbout"
-                      >
-                        <Link to="/about">
-                          <h1
-                            onClick={ handleMenuButtonClick }
-                            className="menuLink menuLinkAbout"
-                            style={ state.style.menuLink }
-                          >About</h1>
-                        </Link>
-                      </CSSTransition>  
-                    </div>
-
-                    <div className="linkWrapper galleryWrapper">
-                      <CSSTransition
-                        in={ menuButtonIsClicked }
-                        appear={ true }
-                        unmountOnExit={ true }
-                        timeout={ 700 }
-                        classNames="menuLinkGallery"
-                      >
-                        <Link to="/gallery">
-                          <h1
-                            onClick={ handleMenuButtonClick }
-                            className="menuLink menuLinkGallery"
-                            style={ state.style.menuLink }
-                          >Gallery</h1>
-                        </Link>
-                      </CSSTransition>  
-                    </div>
-
-                    <div className="linkWrapper contactWrapper">
-                      <CSSTransition
-                        in={ menuButtonIsClicked }
-                        appear={ true }
-                        unmountOnExit={ true }
-                        timeout={ 800 }
-                        classNames="menuLinkContact"
-                      >
-                        <Link to="/contact">
-                          <h1
-                            onClick={ handleMenuButtonClick }
-                            className="menuLink menuLinkContact"
-                            style={ state.style.menuLink }
-                          >Contact</h1>
-                        </Link>
-                      </CSSTransition>  
-                    </div>
-                    
-                    <div className="linkWrapper blogWrapper">
-                      <CSSTransition
-                        in={ menuButtonIsClicked }
-                        appear={ true }
-                        unmountOnExit={ true }
-                        timeout={ 900 }
-                        classNames="menuLinkBlog"
-                      >
-                        <Link to="/blog">
-                          <h1
-                            onClick={ handleMenuButtonClick }
-                            className="menuLink menuLinkBlog"
-                            style={ state.style.menuLink }
-                          >Blog</h1>
-                        </Link>
-                      </CSSTransition> 
-                    </div>
-                    
-                  </div>
-
-                </div>
-              </CSSTransition>
-              <CSSTransition
-                in={ menuButtonIsClicked }
-                appear={ true }
-                unmountOnExit={ true }
-                timeout={ {
-                  enter: 1000,
-                  appear: 1000,
-                  exit: 1500
-                } }
-                classNames="menuStripThree"
-              >
-                <div className="menuStrip menuStripThree" />
-              </CSSTransition>
-              <CSSTransition
-                in={ menuButtonIsClicked }
-                appear={ true }
-                unmountOnExit={ true }
-                timeout={ {
-                  enter: 1200,
-                  appear: 1200,
-                  exit: 1700
-                } }
-                classNames="menuStripFour"
-              >
-                <div className="menuStrip menuStripFour">
-                <div className="verticalLineMenu" />
-                </div>
-              </CSSTransition>
-              
-            </div>
-            </CSSTransition>
-          )
+        { menuIsOpen && 
+          <Menu
+            menuButtonIsClicked={ menuButtonIsClicked }
+            animationDone={ animationDone }
+            setAnimationDone={ setAnimationDone }
+            handleMenuButtonClick={ handleMenuButtonClick }
+            menuLink={ state.style.menuLink }
+          />
         }
+
+        {/*----------ROUTING----------*/}
 
         <Switch>
           <Route exact path="/">

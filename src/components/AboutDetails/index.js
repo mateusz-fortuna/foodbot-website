@@ -4,8 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import './index.sass';
 
 const AboutDetails = React.forwardRef( ( props, ref ) => {
-  
   const { mount, unmount, exit, name, revRatio } = props;
+
   const [ header, setHeader ] = useState( '' );
   const [ imageLoaded, setImageLoaded ] = useState( false );
 

@@ -153,8 +153,7 @@ const About = props => {
   let aboutRefs = 
     detailsOpened
       ? props.reference.concat( circlesRef.current ).concat( exitButtonRef )
-      : props.reference.concat( circlesRef.current )
-  ;
+      : props.reference.concat( circlesRef.current );
 
   //----------JSX CODE----------//
 

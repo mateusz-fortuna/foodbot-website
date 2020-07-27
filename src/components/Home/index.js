@@ -176,7 +176,7 @@ const Home = props => {
           <span className="d-block">FoodBot 3D printer</span>
           <span className="d-block">is an equipment which</span>
           <span className="d-block">can make food quickly.</span>
-          <span className="d-block">It allow you to create</span>
+          <span className="d-block">It allows you to create</span>
           <span className="d-block">your own dream dessert.</span>
           <br />
 
