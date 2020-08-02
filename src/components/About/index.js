@@ -168,7 +168,7 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      { ( props.clientWidth >= 768 ) && <Cursor reference={ aboutRefs } type="about" color={ detailsCursorColor } testRef={ exitButtonRef } /> }
+      { ( props.clientWidth > 768 ) && <Cursor reference={ aboutRefs } type="about" color={ detailsCursorColor } testRef={ exitButtonRef } /> }
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
