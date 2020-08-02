@@ -1,27 +1,32 @@
 {
   "files": {
-    "main.css": "/foodbot-website/static/css/main.ec0f447b.chunk.css",
-    "main.js": "/foodbot-website/static/js/main.be2d80d6.chunk.js",
-    "main.js.map": "/foodbot-website/static/js/main.be2d80d6.chunk.js.map",
+    "main.css": "/foodbot-website/static/css/main.7fb0048c.chunk.css",
+    "main.js": "/foodbot-website/static/js/main.fe49983f.chunk.js",
+    "main.js.map": "/foodbot-website/static/js/main.fe49983f.chunk.js.map",
     "runtime-main.js": "/foodbot-website/static/js/runtime-main.ac0581cb.js",
     "runtime-main.js.map": "/foodbot-website/static/js/runtime-main.ac0581cb.js.map",
-    "static/css/2.d4ac2851.chunk.css": "/foodbot-website/static/css/2.d4ac2851.chunk.css",
-    "static/js/2.fe9bf482.chunk.js": "/foodbot-website/static/js/2.fe9bf482.chunk.js",
-    "static/js/2.fe9bf482.chunk.js.map": "/foodbot-website/static/js/2.fe9bf482.chunk.js.map",
+    "static/css/2.95fe6b13.chunk.css": "/foodbot-website/static/css/2.95fe6b13.chunk.css",
+    "static/js/2.879e1b39.chunk.js": "/foodbot-website/static/js/2.879e1b39.chunk.js",
+    "static/js/2.879e1b39.chunk.js.map": "/foodbot-website/static/js/2.879e1b39.chunk.js.map",
     "index.html": "/foodbot-website/index.html",
-    "precache-manifest.c88d1247a63160b7f6b05684e9d8f1f2.js": "/foodbot-website/precache-manifest.c88d1247a63160b7f6b05684e9d8f1f2.js",
+    "precache-manifest.c75fbf252a257e7e0169a163f3c378b4.js": "/foodbot-website/precache-manifest.c75fbf252a257e7e0169a163f3c378b4.js",
     "service-worker.js": "/foodbot-website/service-worker.js",
-    "static/css/2.d4ac2851.chunk.css.map": "/foodbot-website/static/css/2.d4ac2851.chunk.css.map",
-    "static/css/main.ec0f447b.chunk.css.map": "/foodbot-website/static/css/main.ec0f447b.chunk.css.map",
-    "static/js/2.fe9bf482.chunk.js.LICENSE": "/foodbot-website/static/js/2.fe9bf482.chunk.js.LICENSE",
+    "static/css/2.95fe6b13.chunk.css.map": "/foodbot-website/static/css/2.95fe6b13.chunk.css.map",
+    "static/css/main.7fb0048c.chunk.css.map": "/foodbot-website/static/css/main.7fb0048c.chunk.css.map",
+    "static/js/2.879e1b39.chunk.js.LICENSE": "/foodbot-website/static/js/2.879e1b39.chunk.js.LICENSE",
+    "static/media/basis.jpg": "/foodbot-website/static/media/basis.79390697.jpg",
+    "static/media/fence.jpg": "/foodbot-website/static/media/fence.394256f2.jpg",
     "static/media/food-printer-w-background.jpg": "/foodbot-website/static/media/food-printer-w-background.f00a6669.jpg",
-    "static/media/printer-perspective.png": "/foodbot-website/static/media/printer-perspective.5413edfd.png"
+    "static/media/head.jpg": "/foodbot-website/static/media/head.2ce2ebf8.jpg",
+    "static/media/logo.jpg": "/foodbot-website/static/media/logo.398fbf92.jpg",
+    "static/media/printer-perspective.png": "/foodbot-website/static/media/printer-perspective.5413edfd.png",
+    "static/media/screen.jpg": "/foodbot-website/static/media/screen.ec2bfde2.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.ac0581cb.js",
-    "static/css/2.d4ac2851.chunk.css",
-    "static/js/2.fe9bf482.chunk.js",
-    "static/css/main.ec0f447b.chunk.css",
-    "static/js/main.be2d80d6.chunk.js"
+    "static/css/2.95fe6b13.chunk.css",
+    "static/js/2.879e1b39.chunk.js",
+    "static/css/main.7fb0048c.chunk.css",
+    "static/js/main.fe49983f.chunk.js"
   ]
 }
