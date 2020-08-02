@@ -27,7 +27,7 @@ const App = () => {
 
   //----------MENU BUTTON COLOR----------//
 
-  const menuButtonColorChange = () => {    
+  const menuButtonColorChange = () => {  
     const urlArray = document.location.href.split( '/' );
     const urlEnd = urlArray[ urlArray.length - 1 ];
 
@@ -43,7 +43,7 @@ const App = () => {
           menuLabel.style.color = '#e0e0e0';
         }
         break;
-    
+          
       default:
         if ( menuButtonIsClicked ) {
           menuLines.forEach(
@@ -53,11 +53,17 @@ const App = () => {
             menuLabel.style.color = '#e0e0e0';
           }
         } else {
-          menuLines.forEach(
-            item => item.style.backgroundColor = '#0e0e0e'
-          );
-          if ( menuLabel ) {
-            menuLabel.style.color = '#0e0e0e';
+          if ( width < 992 ) {
+            menuLines.forEach(
+              item => item.style.backgroundColor = '#e0e0e0'
+            );
+          } else {
+            menuLines.forEach(
+              item => item.style.backgroundColor = '#0e0e0e'
+            );
+            if ( menuLabel ) {
+              menuLabel.style.color = '#0e0e0e';
+            }
           }
         }
     }
