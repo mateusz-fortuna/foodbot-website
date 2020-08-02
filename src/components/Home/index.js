@@ -144,11 +144,11 @@ const Home = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      <Cursor
+      { ( props.clientWidth >= 992 ) && <Cursor
         reference={ props.reference.concat( [ learnMoreRef ] ) }
         type={ props.isAnimationDone ? 'solid' : 'variable' }
         color={ props.isAnimationDone ? 'light' : null }
-      />
+      /> }
 
       {/* ----------PRINTER COLUMN--------- */}
 

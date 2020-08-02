@@ -235,10 +235,12 @@ export class Cursor extends Component {
     };
 
     this.itemListenersDelay = setTimeout( () => {
+     if ( this.linkItems !== undefined || null ) {
       this.linkItems.forEach( item => {
         item.current.addEventListener( 'mouseenter', this.handleMouseEnter );
         item.current.addEventListener( 'mouseleave', this.handleMouseLeave );
       } );
+     }
      }, 1000 );
   }
 
