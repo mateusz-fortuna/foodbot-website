@@ -144,7 +144,7 @@ const Home = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      { ( props.clientWidth >= 992 ) && <Cursor
+      { ( props.clientWidth >= 768 ) && <Cursor
         reference={ props.reference.concat( [ learnMoreRef ] ) }
         type={ props.isAnimationDone ? 'solid' : 'variable' }
         color={ props.isAnimationDone ? 'light' : null }
