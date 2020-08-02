@@ -20,25 +20,6 @@ import Blog from './Blog';
 
 const App = () => {
 
-  //----------APP STATE----------//
-
-  const state = {
-    style: {
-      homeTitle: {
-        fontSize: Math.floor( 0.08 * width )
-      },
-      menuLines: {
-        backgroundColor: menuLinesBackground
-      },
-      menuLink: {
-        fontSize: ( width >= 1200 ) ? Math.floor( 0.06 * width ) : null
-      },
-      menuLabel: {
-        color: menuLinesBackground
-      }
-    }
-  }
-
   //----------REFERENCE FOR CURSOR----------//
   
   const menuButtonRef = useRef();
@@ -144,6 +125,26 @@ const App = () => {
       document.removeEventListener( 'keyup', exitMenuUsingEsc );
     }
   } );
+
+
+  //----------APP STATE----------//
+
+  const state = {
+    style: {
+      homeTitle: {
+        fontSize: Math.floor( 0.08 * width )
+      },
+      menuLines: {
+        backgroundColor: menuLinesBackground
+      },
+      menuLink: {
+        fontSize: ( width >= 1200 ) ? Math.floor( 0.06 * width ) : null
+      },
+      menuLabel: {
+        color: menuLinesBackground
+      }
+    }
+  }
     
 
   //----------JSX CODE----------//

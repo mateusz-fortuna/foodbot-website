@@ -58,6 +58,8 @@ const About = props => {
     if ( touchStart > touchEnd ) {
       setMountTransition( !mountTransition );
       timeoutNextPageFn();
+    } else if ( touchStart === touchEnd ) {
+      return;
     } else {
       setMountTransition( !mountTransition );
       timeoutPrevPageFn();
@@ -218,7 +220,8 @@ const About = props => {
           exit={ handleExit }
           ref={ exitButtonRef }
           name={ activeCircleName }
-          revRatio= { props.clientHeight / props.clientWidth }
+          clientHeight= { props.clientHeight }
+          clientWidth={ props.clientWidth }
         />
       }
     </Row>

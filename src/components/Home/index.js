@@ -114,7 +114,7 @@ const Home = props => {
   if ( props.isAnimationDone ) {
     homeImageWrapperRef.current.style.display = 'none';
     homeContentRef.current.style.display = 'none';
-    homeRef.current.style.zIndex = '5';
+    homeRef.current.style.zIndex = '50';
     homeRef.current.style.pointerEvents = 'none';
   }
   else {
