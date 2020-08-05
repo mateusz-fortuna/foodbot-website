@@ -16,20 +16,24 @@ import About from './About';
 import Gallery from './Gallery';
 import Contact from './Contact';
 import Blog from './Blog';
+import Logo from './Logo';
 
 
 const App = () => {
 
-  //----------REFERENCE FOR CURSOR----------//
+  //----------REFERENCE FOR CURSOR AND LOGO----------//
   
   const menuButtonRef = useRef();
-
+  const logoRef = useRef();
 
   //----------MENU BUTTON COLOR----------//
 
-  const menuButtonColorChange = () => {  
+  const [ urlEnd, setUrlEnd ] = useState( '' );
+
+  const menuButtonColorChange = () => { 
     const urlArray = document.location.href.split( '/' );
     const urlEnd = urlArray[ urlArray.length - 1 ];
+    setUrlEnd( urlEnd );
 
     const menuLines = document.querySelectorAll( '.menuLine' );
     const menuLabel = document.querySelector( '.menuIcon__label' );
@@ -151,7 +155,7 @@ const App = () => {
       }
     }
   }
-    
+
 
   //----------JSX CODE----------//
 
@@ -159,7 +163,9 @@ const App = () => {
   return (
     <Router basename='/'>
       <Container fluid={ true } className="app">
-       
+
+        <Logo ref={ logoRef } width={ width } urlEnd={ urlEnd }/>
+
         {/* ----------MENU BUTTON---------- */}
 
         <Button
@@ -208,18 +214,18 @@ const App = () => {
             <About
               clientWidth={ width }
               clientHeight={ height }
-              reference={ [ menuButtonRef ] }
+              reference={ [ menuButtonRef, logoRef ] }
               isAnimationDone={ animationDone }
             />
           </Route>
           <Route path="/gallery">
-            <Gallery reference={ menuButtonRef } />
+            <Gallery reference={ [ menuButtonRef ] } />
           </Route>
           <Route path="/contact">
-            <Contact reference={ menuButtonRef } />
+            <Contact reference={ [ menuButtonRef ] } />
           </Route>
           <Route path="/blog">
-            <Blog reference={ menuButtonRef } />
+            <Blog reference={ [ menuButtonRef ] } />
           </Route>
         </Switch>
       </Container>

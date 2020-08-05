@@ -157,6 +157,7 @@ const About = props => {
       ? props.reference.concat( circlesRef.current ).concat( exitButtonRef )
       : props.reference.concat( circlesRef.current );
 
+
   //----------JSX CODE----------//
 
   return (
@@ -180,7 +181,7 @@ const About = props => {
               width: props.clientHeight,
               height: props.clientHeight
             } }
-          >  
+          > 
             <div
               style={ { 
                 width: props.clientWidth * 0.9,
