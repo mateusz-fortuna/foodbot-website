@@ -68,6 +68,7 @@ const About = props => {
 
   const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
 
+
   useEffect( () => {
     //----------PAGE TITLE----------//
 
@@ -90,6 +91,8 @@ const About = props => {
       window.removeEventListener( 'keyup', exitDetailsUsingEsc );
     };
   } );
+  
+
   //----------ANIMATION SETTINGS----------//
 
   const timeout = 1000;
@@ -154,7 +157,7 @@ const About = props => {
 
   let aboutRefs = 
     detailsOpened
-      ? props.reference.concat( circlesRef.current ).concat( exitButtonRef )
+      ? props.reference.concat( [ circlesRef.current, exitButtonRef ] )
       : props.reference.concat( circlesRef.current );
 
 
@@ -162,10 +165,10 @@ const About = props => {
 
   return (
     <Row className="about">
-      { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
+      { mountTransition && <Transition mountTransition={ mountTransition }/> }
 
-      { changeNextUrl && ( <Redirect to="/gallery" /> ) }
-      { changePrevUrl && ( <Redirect to="/" /> ) }
+      { changeNextUrl && <Redirect to="/gallery" /> }
+      { changePrevUrl && <Redirect to="/" /> }
 
       {/*----------INTERACTIVE CURSOR----------*/}
 

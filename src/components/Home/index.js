@@ -132,6 +132,10 @@ const Home = props => {
   };
 } );
 
+  useEffect( () => {
+    props.setLogoIsMounted( true );
+    return () => props.setLogoIsMounted( false );
+  }, [] );
 
 
   //----------JSX CODE----------//

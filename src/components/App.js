@@ -24,7 +24,6 @@ const App = () => {
   //----------REFERENCE FOR CURSOR AND LOGO----------//
   
   const menuButtonRef = useRef();
-  const logoRef = useRef();
 
   //----------MENU BUTTON COLOR----------//
 
@@ -156,6 +155,11 @@ const App = () => {
     }
   }
 
+  //----------LOGO REF AND STATE----------//
+
+  const [ logoIsMounted, setLogoIsMounted ] = useState( false );
+  const logoRef = useRef();
+
 
   //----------JSX CODE----------//
 
@@ -164,7 +168,9 @@ const App = () => {
     <Router basename='/'>
       <Container fluid={ true } className="app">
 
-        <Logo ref={ logoRef } width={ width } urlEnd={ urlEnd }/>
+        {/*----------LOGO----------*/}
+
+        <Logo width={ width } mount={ !logoIsMounted } ref={ logoRef } urlEnd={ urlEnd } />
 
         {/* ----------MENU BUTTON---------- */}
 
@@ -208,14 +214,16 @@ const App = () => {
               reference={ [ menuButtonRef ] }
               isAnimationDone={ animationDone }
               menuTest={ menuButtonIsClicked }
+              setLogoIsMounted={ bool => setLogoIsMounted( bool ) }
             />
           </Route>
           <Route path="/about">
             <About
               clientWidth={ width }
               clientHeight={ height }
-              reference={ [ menuButtonRef, logoRef ] }
+              reference={ [ menuButtonRef ] }
               isAnimationDone={ animationDone }
+              urlEnd={ urlEnd }
             />
           </Route>
           <Route path="/gallery">
