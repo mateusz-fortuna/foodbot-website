@@ -226,6 +226,7 @@ const About = props => {
           name={ activeCircleName }
           clientHeight= { props.clientHeight }
           clientWidth={ props.clientWidth }
+          circlesQuantity={ circlesName.length }
         />
       }
     </Row>

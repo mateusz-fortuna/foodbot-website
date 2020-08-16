@@ -37,6 +37,8 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
 
   const animationDuration = 1000;
 
+  console.log( props.circlesQuantity );
+
   return (
     <CSSTransition
       in={ mount }

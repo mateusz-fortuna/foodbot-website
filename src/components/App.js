@@ -221,19 +221,19 @@ const App = () => {
             <About
               clientWidth={ width }
               clientHeight={ height }
-              reference={ [ menuButtonRef ] }
+              reference={ [ menuButtonRef, logoRef ] }
               isAnimationDone={ animationDone }
               urlEnd={ urlEnd }
             />
           </Route>
           <Route path="/gallery">
-            <Gallery reference={ [ menuButtonRef ] } />
+            <Gallery reference={ [ menuButtonRef, logoRef ] } />
           </Route>
           <Route path="/contact">
-            <Contact reference={ [ menuButtonRef ] } />
+            <Contact reference={ [ menuButtonRef, logoRef ] } />
           </Route>
           <Route path="/blog">
-            <Blog reference={ [ menuButtonRef ] } />
+            <Blog reference={ [ menuButtonRef, logoRef ] } />
           </Route>
         </Switch>
       </Container>
