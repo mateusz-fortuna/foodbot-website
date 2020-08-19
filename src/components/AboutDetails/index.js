@@ -10,21 +10,26 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     exit,
     name,
     clientWidth,
-    clientHeight
+    clientHeight,
+    activeIndex,
+    activeIndexHandler,
+    data
   } = props;
 
   let fontMultiplier = ( clientWidth < 992 ) ? 0.08 : 0.05;
 
   const [ header, setHeader ] = useState( '' );
-  const [ imageLoaded, setImageLoaded ] = useState( false );
+  
+  const animationDuration = 1000;
 
+  const [ imageLoaded, setImageLoaded ] = useState( false );
   const images = require.context( '../../assets/images', true );
   let path = images( `./${ name }.jpg` );
 
   const toCamelCase = () => {
-    let txt = name.split('');
-    txt[0] = txt[0].toUpperCase();
-    setHeader( txt.join('') );
+    let txt = name.split( '' );
+    txt[ 0 ] = txt[ 0 ].toUpperCase();
+    setHeader( txt.join( '' ) );
   };
 
   useEffect( () => {
@@ -35,9 +40,7 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     image.onload = () => setImageLoaded( true );
   } );
 
-  const animationDuration = 1000;
-
-  console.log( props.circlesQuantity );
+  console.log( data[ activeIndex ].name );
 
   return (
     <CSSTransition
@@ -81,6 +84,12 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                           </CSSTransition> )
                       : null}
                   </div>
+                  <p
+                    className="aboutDetails--text"
+                    style={ { left: ( clientWidth < 992 ) ? '24px' : '48px' } }
+                  >
+                    0{ activeIndex + 1 }/0{ data.length }
+                  </p>
                 </Col>
                 <Col xs={ 6 } className="aboutDetails--verticalLine d-inline-flex"/>
               </Col>
@@ -92,8 +101,12 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                 </button>
                 <h1
                   className="homeTitle"
-                  style={ { fontSize: Math.floor( fontMultiplier * clientWidth ) } }
+                  style={ {
+                    fontSize: Math.floor( fontMultiplier * clientWidth ),
+                    lineHeight: Math.floor( fontMultiplier * clientWidth ) +"px"
+                  } }
                 > { header } </h1>
+                
               </Col>
             </Row>
           </Col>

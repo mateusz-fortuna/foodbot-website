@@ -111,11 +111,20 @@ const About = props => {
 
   const [ detailsOpened, setDetailsOpened ] = useState( false );
   const [ activeCircleName, setActiveCircleName ] = useState( '' );
-
-  const handleCircleClick = name => { 
+  const [ activeIndex, setActiveIndex ] = useState( 0 );
+  
+  const handleCircleClick = ( name, index ) => { 
     setDetailsOpened( true );
     setExitButton( true );
     setActiveCircleName( name );
+    setActiveIndex( index );
+  };
+
+  const activeIndexHandler = index => {
+    // infinite details carousel
+    index > circlesName.length
+      ? setActiveIndex( 0 )
+      : setActiveIndex( index )
   };
 
   const circlesGenerator = () => {
@@ -125,7 +134,7 @@ const About = props => {
           key={ index }
           id={ item.name }
           className="circleWrapper"
-          onClick={ () => handleCircleClick( item.name ) }
+          onClick={ () => handleCircleClick( item.name, index ) }
           style={ {
             left: `${ circlesName[ index ].left }%`,
             top: `${ circlesName[ index ].top }%`
@@ -226,7 +235,9 @@ const About = props => {
           name={ activeCircleName }
           clientHeight= { props.clientHeight }
           clientWidth={ props.clientWidth }
-          circlesQuantity={ circlesName.length }
+          activeIndex={ activeIndex }
+          data={ circlesName }
+          activeIndexHandler={ activeIndexHandler }
         />
       }
     </Row>
