@@ -162,11 +162,14 @@ const About = props => {
 
   //----------CURSOR REFs WITH EXIT BUTTON----------//
 
+  const leftArrowRef = createRef();
+  const rightArrowRef = createRef();
   const exitButtonRef = createRef();
+  const detailsRefs = [ leftArrowRef, rightArrowRef, exitButtonRef ];
 
   let aboutRefs = 
     detailsOpened
-      ? props.reference.concat( [ circlesRef.current, exitButtonRef ] )
+      ? props.reference.concat( [ circlesRef.current, detailsRefs ] )
       : props.reference.concat( circlesRef.current );
 
 
@@ -181,7 +184,7 @@ const About = props => {
 
       {/*----------INTERACTIVE CURSOR----------*/}
 
-      { ( props.clientWidth > 768 ) && <Cursor reference={ aboutRefs } type="about" color={ detailsCursorColor } testRef={ exitButtonRef } /> }
+      { ( props.clientWidth > 768 ) && <Cursor reference={ aboutRefs } type="about" color={ detailsCursorColor } testRef={ detailsRefs } /> }
       
       {/*----------COLUMNS WITH CONTENT----------*/}
 
@@ -231,7 +234,7 @@ const About = props => {
           mount={ exitButton }
           unmount={ unmountDetails }
           exit={ handleExit }
-          ref={ exitButtonRef }
+          ref={ detailsRefs }
           name={ activeCircleName }
           clientHeight= { props.clientHeight }
           clientWidth={ props.clientWidth }

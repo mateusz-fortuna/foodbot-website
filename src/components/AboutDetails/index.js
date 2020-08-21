@@ -16,11 +16,14 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     data
   } = props;
 
+  const [ leftArrowRef, rightArrowRef, exitButtonRef ] = ref;
+ 
   let fontMultiplier = ( clientWidth < 992 ) ? 0.08 : 0.05;
 
   const [ header, setHeader ] = useState( '' );
   
   const animationDuration = 1000;
+  const homeTitleFontSize = Math.floor( fontMultiplier * clientWidth );
 
   const [ imageLoaded, setImageLoaded ] = useState( false );
   const images = require.context( '../../assets/images', true );
@@ -90,20 +93,49 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                   >
                     0{ activeIndex + 1 }/0{ data.length }
                   </p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    className="arrow leftArrow"
+                    ref={ leftArrowRef }
+                    style={ {
+                      width: 0.7 * homeTitleFontSize,
+                      height: 0.7 * homeTitleFontSize,
+                    } }
+                  >
+                    <path d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm-4.828 11.5l4.608 3.763-.679.737-6.101-5 6.112-5 .666.753-4.604 3.747h11.826v1h-11.828z"/>
+                  </svg>
                 </Col>
-                <Col xs={ 6 } className="aboutDetails--verticalLine d-inline-flex"/>
+                <Col xs={ 6 } className="aboutDetails--verticalLine d-inline-flex">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    className="arrow rightArrow"
+                    ref={ rightArrowRef }
+                    style={ {
+                      width: 0.7 * homeTitleFontSize,
+                      height: 0.7 * homeTitleFontSize
+                    } }
+                  >
+                    <path d="M12 0c-6.623 0-12 5.377-12 12s5.377 12 12 12 12-5.377 12-12-5.377-12-12-12zm0 1c-6.071 0-11 4.929-11 11s4.929 11 11 11 11-4.929 11-11-4.929-11-11-11zm4.828 11.5l-4.608 3.763.679.737 6.101-5-6.112-5-.666.753 4.604 3.747h-11.826v1h11.828z"/>
+                  </svg>
+                </Col>
               </Col>
               
               <Col lg={ 6 } className="aboutDetails__data">
-                <button onClick={ exit } ref={ ref } className="exitButton">
+                <button onClick={ exit } ref={ exitButtonRef } className="exitButton">
                   <span className="crossLine" />
                   <span className="crossLine" />
                 </button>
                 <h1
                   className="homeTitle"
                   style={ {
-                    fontSize: Math.floor( fontMultiplier * clientWidth ),
-                    lineHeight: Math.floor( fontMultiplier * clientWidth ) +"px"
+                    fontSize: homeTitleFontSize,
+                    lineHeight: homeTitleFontSize +"px"
                   } }
                 > { header } </h1>
                 
