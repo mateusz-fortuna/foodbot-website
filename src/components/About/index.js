@@ -120,13 +120,6 @@ const About = props => {
     setActiveIndex( index );
   };
 
-  const activeIndexHandler = index => {
-    // infinite details carousel
-    index > circlesName.length
-      ? setActiveIndex( 0 )
-      : setActiveIndex( index )
-  };
-
   const circlesGenerator = () => {
     circlesName.map( ( item, index ) => circles.push(
         <div
@@ -240,7 +233,7 @@ const About = props => {
           clientWidth={ props.clientWidth }
           activeIndex={ activeIndex }
           data={ circlesName }
-          activeIndexHandler={ activeIndexHandler }
+          setActiveIndex={ setActiveIndex }
         />
       }
     </Row>

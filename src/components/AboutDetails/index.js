@@ -12,7 +12,7 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     clientWidth,
     clientHeight,
     activeIndex,
-    activeIndexHandler,
+    setActiveIndex,
     data
   } = props;
 
@@ -25,12 +25,24 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
   const animationDuration = 1000;
   const homeTitleFontSize = Math.floor( fontMultiplier * clientWidth );
 
+  const incrementIndex = () => {
+    activeIndex === data.length - 1
+      ? setActiveIndex( 0 )
+      : setActiveIndex( activeIndex + 1 );
+  };
+
+  const decrementIndex = () => {
+    activeIndex === 0
+      ? setActiveIndex( data.length - 1 )
+      : setActiveIndex( activeIndex - 1 );
+  };
+
   const [ imageLoaded, setImageLoaded ] = useState( false );
   const images = require.context( '../../assets/images', true );
-  let path = images( `./${ name }.jpg` );
+  let path = images( `./${ data[ activeIndex ].name }.jpg` );
 
   const toCamelCase = () => {
-    let txt = name.split( '' );
+    let txt = data[ activeIndex ].name.split( '' );
     txt[ 0 ] = txt[ 0 ].toUpperCase();
     setHeader( txt.join( '' ) );
   };
@@ -42,8 +54,6 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     image.src = path;
     image.onload = () => setImageLoaded( true );
   } );
-
-  console.log( data[ activeIndex ].name );
 
   return (
     <CSSTransition
@@ -100,6 +110,7 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                     clipRule="evenodd"
                     className="arrow leftArrow"
                     ref={ leftArrowRef }
+                    onClick={ () => decrementIndex() }
                     style={ {
                       width: 0.7 * homeTitleFontSize,
                       height: 0.7 * homeTitleFontSize,
@@ -116,6 +127,7 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                     clipRule="evenodd"
                     className="arrow rightArrow"
                     ref={ rightArrowRef }
+                    onClick={ () => incrementIndex() }
                     style={ {
                       width: 0.7 * homeTitleFontSize,
                       height: 0.7 * homeTitleFontSize
