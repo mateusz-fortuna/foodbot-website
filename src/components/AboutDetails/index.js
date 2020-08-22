@@ -21,20 +21,35 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
   let fontMultiplier = ( clientWidth < 992 ) ? 0.08 : 0.05;
 
   const [ header, setHeader ] = useState( '' );
+  const [ animationDone, setAnimationDone ] = useState( false );
   
   const animationDuration = 1000;
   const homeTitleFontSize = Math.floor( fontMultiplier * clientWidth );
 
-  const incrementIndex = () => {
+  const incrementExecution = () => {
     activeIndex === data.length - 1
       ? setActiveIndex( 0 )
       : setActiveIndex( activeIndex + 1 );
   };
-
-  const decrementIndex = () => {
+  const decrementExecution = () => {
     activeIndex === 0
       ? setActiveIndex( data.length - 1 )
       : setActiveIndex( activeIndex - 1 );
+  };
+
+  let incrementTimeout = null;
+  let decrementTimeout = null;
+
+  const incrementIndex = () => {
+    setAnimationDone( false );
+    incrementTimeout = setTimeout( () => incrementExecution(), 500 );
+    incrementTimeout = null;
+  };
+
+  const decrementIndex = () => {
+    setAnimationDone( false );
+    decrementTimeout = setTimeout( () => decrementExecution(), 500 );
+    decrementTimeout = null;
   };
 
   const [ imageLoaded, setImageLoaded ] = useState( false );
@@ -53,7 +68,14 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
     const image = new Image();
     image.src = path;
     image.onload = () => setImageLoaded( true );
+
+    return () => {
+      clearTimeout( incrementTimeout );
+      clearTimeout( decrementTimeout );
+    };
   } );
+
+  useEffect( () => setAnimationDone( true ), [] );
 
   return (
     <CSSTransition
@@ -143,14 +165,24 @@ const AboutDetails = React.forwardRef( ( props, ref ) => {
                   <span className="crossLine" />
                   <span className="crossLine" />
                 </button>
-                <h1
-                  className="homeTitle"
-                  style={ {
-                    fontSize: homeTitleFontSize,
-                    lineHeight: homeTitleFontSize +"px"
-                  } }
-                > { header } </h1>
-                
+                <div className="linkWrapper homeTitle" style={ { height: homeTitleFontSize } }>
+                  <CSSTransition
+                    in={ mount && animationDone }
+                    timeout={ animationDuration }
+                    mountOnEnter
+                    unmountOnExit
+                    classNames="homeTitle"
+                    onExited={ () => setAnimationDone( true ) }
+                  >
+                    <h1
+                      className="homeTitle"
+                      style={ {
+                        fontSize: homeTitleFontSize,
+                        lineHeight: homeTitleFontSize +"px"
+                      } }
+                    > { header } </h1>
+                  </CSSTransition>
+                </div>
               </Col>
             </Row>
           </Col>
