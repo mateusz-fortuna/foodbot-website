@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import './index.sass';
+import Text from '../Text';
 
 const Index = props => {
   const state = {
@@ -57,7 +58,7 @@ const Index = props => {
                 classNames="introTitle"
                 appear={ true }
               >
-                <h1 className="introTitle" style={ state.style.introTitle }>FoodBot</h1>
+                <h1 className="introTitle" style={ state.style.introTitle }><Text textID="introTitle" /></h1>
               </CSSTransition>
             </div>
             <div className="introSubtitleWrapper">
@@ -67,7 +68,7 @@ const Index = props => {
                 classNames="introSubtitle"
                 appear={ true }
               >
-                <p className="introSubtitle" style={ state.style.introSubtitle }>Create your own dream dessert</p>  
+                <p className="introSubtitle" style={ state.style.introSubtitle }><Text textID="introSubtitle" /></p>  
               </CSSTransition>
             </div> 
           </div>

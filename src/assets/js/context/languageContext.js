@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import { languageOptions, dictionaryList } from '../dictionaryList';
 
 export const LanguageContext = createContext( {

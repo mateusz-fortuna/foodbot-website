@@ -1,13 +1,9 @@
 {
-  "intro": {
-    "title": "FoodBot",
-    "subtitle": "Create your own dream dessert"
-  },
-  "home": {
-    "title": "FoodBot",
-    "description": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert.",
-    "button": "Learn more"
-  },
+  "introTitle": "FoodBot",
+  "introSubtitle": "Create your own dream dessert",
+  "homeTitle": "FoodBot",
+  "homeDescription": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert.",
+  "homeButton": "Learn more",
   "about": [
     {
       "name": "basis",

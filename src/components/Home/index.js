@@ -7,6 +7,7 @@ import TransitionOut from '../TransitionOut';
 import { throttle } from '../../assets/js/throttle';
 import { Redirect } from 'react-router-dom';
 import Cursor from '../Cursor';
+import Text from '../Text';
 
 const Home = props => {
 
@@ -219,7 +220,7 @@ const Home = props => {
           </a> 
         </div>
     
-        <h1 className="homeTitle" style={ state.style.homeTitle }>FoodBot</h1>
+        <h1 className="homeTitle" style={ state.style.homeTitle }><Text textID="homeTitle" /></h1>
       </Col>
     </Row>
   );

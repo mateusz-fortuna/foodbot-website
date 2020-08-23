@@ -8,6 +8,8 @@ import {
   Route
 } from 'react-router-dom';
 
+import { LanguageProvider } from '../assets/js/context/languageContext';
+
 import { Container, Button } from 'react-bootstrap';
 import Menu from './Menu';
 import Intro from './Intro';
@@ -166,77 +168,79 @@ const App = () => {
 
   return (
     <Router basename='/'>
-      <Container fluid={ true } className="app">
+      <LanguageProvider>
+        <Container fluid={ true } className="app">
 
-        {/*----------LOGO----------*/}
+          {/*----------LOGO----------*/}
 
-        <Logo width={ width } mount={ !logoIsMounted } ref={ logoRef } urlEnd={ urlEnd } />
+          <Logo width={ width } mount={ !logoIsMounted } ref={ logoRef } urlEnd={ urlEnd } />
 
-        {/* ----------MENU BUTTON---------- */}
+          {/* ----------MENU BUTTON---------- */}
 
-        <Button
-          className="menuIcon"
-          variant="outline-dark"
-          onClick={ handleMenuButtonClick }
-          ref={ menuButtonRef }
-        >
+          <Button
+            className="menuIcon"
+            variant="outline-dark"
+            onClick={ handleMenuButtonClick }
+            ref={ menuButtonRef }
+          >
 
-          {
-            ( width >= 992 )
-              ? <p className="menuIcon__label" style={ state.style.menuLabel }>Menu</p>
-              : null
+            {
+              ( width >= 992 )
+                ? <p className="menuIcon__label" style={ state.style.menuLabel }>Menu</p>
+                : null
+            }
+
+            <span className="menuLine topLine" style={ state.style.menuLines } />
+            <span className="menuLine middleLine" style={ state.style.menuLines } />
+            <span className="menuLine bottomLine" style={ state.style.menuLines } />
+          </Button>
+
+          { menuIsOpen && 
+            <Menu
+              menuButtonIsClicked={ menuButtonIsClicked }
+              animationDone={ animationDone }
+              setAnimationDone={ setAnimationDone }
+              handleMenuButtonClick={ handleMenuButtonClick }
+              menuLink={ state.style.menuLink }
+            />
           }
 
-          <span className="menuLine topLine" style={ state.style.menuLines } />
-          <span className="menuLine middleLine" style={ state.style.menuLines } />
-          <span className="menuLine bottomLine" style={ state.style.menuLines } />
-        </Button>
+          {/*----------ROUTING----------*/}
 
-        { menuIsOpen && 
-          <Menu
-            menuButtonIsClicked={ menuButtonIsClicked }
-            animationDone={ animationDone }
-            setAnimationDone={ setAnimationDone }
-            handleMenuButtonClick={ handleMenuButtonClick }
-            menuLink={ state.style.menuLink }
-          />
-        }
-
-        {/*----------ROUTING----------*/}
-
-        <Switch>
-          <Route exact path="/">
-            {
-              mountIntro && ( <Intro showIntro={ showIntro } clientWidth={ width } /> )
-            }
-            <Home
-              clientWidth={ width }
-              reference={ [ menuButtonRef ] }
-              isAnimationDone={ animationDone }
-              menuTest={ menuButtonIsClicked }
-              setLogoIsMounted={ bool => setLogoIsMounted( bool ) }
-            />
-          </Route>
-          <Route path="/about">
-            <About
-              clientWidth={ width }
-              clientHeight={ height }
-              reference={ [ menuButtonRef, logoRef ] }
-              isAnimationDone={ animationDone }
-              urlEnd={ urlEnd }
-            />
-          </Route>
-          <Route path="/gallery">
-            <Gallery reference={ [ menuButtonRef, logoRef ] } />
-          </Route>
-          <Route path="/contact">
-            <Contact reference={ [ menuButtonRef, logoRef ] } />
-          </Route>
-          <Route path="/blog">
-            <Blog reference={ [ menuButtonRef, logoRef ] } />
-          </Route>
-        </Switch>
-      </Container>
+          <Switch>
+            <Route exact path="/">
+              {
+                mountIntro && ( <Intro showIntro={ showIntro } clientWidth={ width } /> )
+              }
+              <Home
+                clientWidth={ width }
+                reference={ [ menuButtonRef ] }
+                isAnimationDone={ animationDone }
+                menuTest={ menuButtonIsClicked }
+                setLogoIsMounted={ bool => setLogoIsMounted( bool ) }
+              />
+            </Route>
+            <Route path="/about">
+              <About
+                clientWidth={ width }
+                clientHeight={ height }
+                reference={ [ menuButtonRef, logoRef ] }
+                isAnimationDone={ animationDone }
+                urlEnd={ urlEnd }
+              />
+            </Route>
+            <Route path="/gallery">
+              <Gallery reference={ [ menuButtonRef, logoRef ] } />
+            </Route>
+            <Route path="/contact">
+              <Contact reference={ [ menuButtonRef, logoRef ] } />
+            </Route>
+            <Route path="/blog">
+              <Blog reference={ [ menuButtonRef, logoRef ] } />
+            </Route>
+          </Switch>
+          </Container>
+      </LanguageProvider>
     </Router>
   );
 }
