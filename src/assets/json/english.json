@@ -1,0 +1,55 @@
+{
+    "intro": {
+      "title": "FoodBot",
+      "subtitle": "Create your own dream dessert"
+    },
+    "menu": "Menu",
+    "home": {
+      "title": "FoodBot",
+      "description": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert.",
+      "button": "Learn more"
+    },
+    "about": [
+      {
+        "name": "basis",
+        "left": 32,
+        "top": 69,
+        "title": "Basis",
+        "description": "Different size (0.3 mm - 1.2 mm) printing heads\nprovided to allow you to choose how delicate\nthe print jobs will be.\nAnd the FoodBot 3D printer\nalways print the best."
+      },
+      {
+        "name": "head",
+        "left": 48,
+        "top": 60,
+        "title": "Head",
+        "description": "Different size (0.3 mm - 1.2 mm) printing heads\nprovided to allow you to choose how delicate\nthe print jobs will be.\nAnd the FoodBot 3D printer\nalways print the best."
+      },
+      {
+        "name": "fence",
+        "left": 38,
+        "top": 40,
+        "title": "Fence",
+        "description": "Different size (0.3 mm - 1.2 mm) printing heads\nprovided to allow you to choose how delicate\nthe print jobs will be.\nAnd the FoodBot 3D printer\nalways print the best."
+      },
+      {
+        "name": "logo",
+        "left": 53,
+        "top": 27,
+        "title": "Logo",
+        "description": "Different size (0.3 mm - 1.2 mm) printing heads\nprovided to allow you to choose how delicate\nthe print jobs will be.\nAnd the FoodBot 3D printer\nalways print the best."
+      },
+      {
+        "name": "screen",
+        "left": 80,
+        "top": 28,
+        "title": "Screen",
+        "description": "Different size (0.3 mm - 1.2 mm) printing heads\nprovided to allow you to choose how delicate\nthe print jobs will be.\nAnd the FoodBot 3D printer\nalways print the best."
+      }
+    ],
+    "gallery": {
+      "title": "Gallery"
+    },
+    "blog": {
+      "title": "Blog"
+    }
+  }

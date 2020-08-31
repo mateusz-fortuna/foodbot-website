@@ -58,7 +58,7 @@ const Index = props => {
                 classNames="introTitle"
                 appear={ true }
               >
-                <h1 className="introTitle" style={ state.style.introTitle }><Text textID="introTitle" /></h1>
+                <h1 className="introTitle" style={ state.style.introTitle }><Text category="intro" textID="title" /></h1>
               </CSSTransition>
             </div>
             <div className="introSubtitleWrapper">
@@ -68,7 +68,7 @@ const Index = props => {
                 classNames="introSubtitle"
                 appear={ true }
               >
-                <p className="introSubtitle" style={ state.style.introSubtitle }><Text textID="introSubtitle" /></p>  
+                <p className="introSubtitle" style={ state.style.introSubtitle }><Text category="intro" textID="subtitle" /></p>  
               </CSSTransition>
             </div> 
           </div>

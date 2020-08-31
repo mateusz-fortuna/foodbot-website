@@ -8,6 +8,7 @@ import { throttle } from '../../assets/js/throttle';
 import { Redirect } from 'react-router-dom';
 import Cursor from '../Cursor';
 import Text from '../Text';
+import MultiLinesText from '../MultiLinesText';
 
 const Home = props => {
 
@@ -182,11 +183,7 @@ const Home = props => {
         {/* ----------CONTENT TEXT---------- */}
 
         <div className="homeDescription" style={ state.style.homeDescription }>
-          <span className="d-block">FoodBot 3D printer</span>
-          <span className="d-block">is an equipment which</span>
-          <span className="d-block">can make food quickly.</span>
-          <span className="d-block">It allows you to create</span>
-          <span className="d-block">your own dream dessert.</span>
+          <MultiLinesText category="home" textID="description" />
           <br />
 
           <a
@@ -202,7 +199,9 @@ const Home = props => {
                   className="learnMoreButton link"
                   style={ state.style.link }
                   onClick={ handleLearnMore }
-                >Learn more</Button>
+                >
+                  <Text category="home" textID="button" />
+                </Button>
               )
             }
             {
@@ -212,7 +211,9 @@ const Home = props => {
                     className="link"
                     style={ state.style.link }
                     onClick={ handleLearnMore }
-                  >Learn more</p>
+                  >
+                    <Text category="home" textID="button" />
+                  </p>
                   <span className="underline" />
                 </div>  
               )
@@ -220,7 +221,7 @@ const Home = props => {
           </a> 
         </div>
     
-        <h1 className="homeTitle" style={ state.style.homeTitle }><Text textID="homeTitle" /></h1>
+        <h1 className="homeTitle" style={ state.style.homeTitle }><Text category="home" textID="title" /></h1>
       </Col>
     </Row>
   );

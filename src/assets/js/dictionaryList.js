@@ -1,5 +1,4 @@
-import en from '../json/en.json';
-
+import en from '../json/english.json';
 
 export const dictionaryList = { en };
 
