@@ -1,6 +1,8 @@
-## Live demo here:
+## Live demo is here:
 
 https://mateusz-fortuna.github.io/foodbot-website/#/
+
+
 
 ## Introduction
 
