@@ -70,10 +70,6 @@ const About = props => {
 
 
   useEffect( () => {
-    //----------PAGE TITLE----------//
-
-    document.title = 'About | FoodBot';
-
     //----------EVENT LISTENERS----------//
 
     window.addEventListener( 'wheel', handleWheelEvent, false );

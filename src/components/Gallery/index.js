@@ -60,10 +60,6 @@ const Gallery = () => {
   const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
 
   useEffect( () => {
-    //----------PAGE TITLE----------//
-
-    document.title = 'Gallery | FoodBot';
-
     //----------EVENT LISTENERS----------//
 
     window.addEventListener( 'wheel', handleWheelEvent, false );

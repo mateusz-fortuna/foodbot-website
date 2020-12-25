@@ -48,10 +48,6 @@ const Blog = () => {
   const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
 
   useEffect( () => {
-    //----------PAGE TITLE----------//
-
-    document.title = 'Blog | FoodBot';
-
     //----------EVENT LISTENERS----------//
 
     window.addEventListener( 'wheel', handleWheelEvent, false );

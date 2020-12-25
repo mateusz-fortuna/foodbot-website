@@ -22,7 +22,6 @@ import Logo from './Logo';
 
 
 const App = () => {
-
   //----------REFERENCE FOR CURSOR AND LOGO----------//
   
   const menuButtonRef = useRef();
@@ -92,17 +91,22 @@ const App = () => {
   const [ showIntro, setShowIntro ] = useState( true );
   const [ mountIntro, setMountIntro ] = useState( true );
 
-  //----------HOME TITILE HANDLER----------//
+  //----------UPDATE VIEWPORT FUNCTION----------//
 
   const [ width, setWidth ] = useState( window.innerWidth );
   const [ height, setHeight ] = useState( window.innerHeight );
-
-  //----------UPDATE VIEWPORT FUNCTION----------//
 
   const updateWidth = () => {
     setWidth( window.innerWidth );
     setHeight( window.innerHeight );
   };
+
+  //----------HOME TITILE HANDLER----------//
+  const capitalize = txt => txt[0].toUpperCase() + txt.slice( 1 );
+
+  urlEnd === 'home' || urlEnd === ''
+    ? document.title = 'FoodBot | Innovative 3D printer for food.'
+    : document.title = `${ capitalize( urlEnd ) } | FoodBot`
 
   //----------EXIT MENU USING ESC KEY----------//
 
@@ -112,10 +116,6 @@ const App = () => {
 
 
   useEffect( () => {
-
-    //----------PAGE TITLE----------//
-    document.title = 'FoodBot | Innovative 3D printer for food.';
-
     //----------SET MENU COLOR ON PAGE LOAD----------//
     menuButtonColorChange();
 
