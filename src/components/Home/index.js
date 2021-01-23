@@ -50,7 +50,7 @@ const Home = props => {
 
  let timeoutNextPage = null;
  const timeoutNextPageFn = () => {
-  timeoutNextPage = setTimeout( () => { setChangeUrl( !changeUrl ); }, 1300 );
+  timeoutNextPage = setTimeout( () => { setChangeUrl( !changeUrl ); }, 1000 );
   timeoutNextPage = null;
  };
 
@@ -71,7 +71,7 @@ const Home = props => {
   }
  };
 
- const handleWheelEvent = throttle( handleWheel, 1300 );
+ const handleWheelEvent = throttle( handleWheel, 1000 );
 
 
  let touchStart = 0;
@@ -93,7 +93,7 @@ const Home = props => {
    }
  };
 
- const handleTouchEndEvent = throttle( handleTouchEnd, 1300 );
+ const handleTouchEndEvent = throttle( handleTouchEnd, 1000 );
 
  const homeImageWrapperRef = useRef();
  const homeContentRef = useRef();

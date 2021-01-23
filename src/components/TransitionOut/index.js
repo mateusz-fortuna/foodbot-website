@@ -31,7 +31,7 @@ const TransitionOut = () => {
       <CSSTransition
       in={ true }
       appear={ true }
-      timeout={ 1000 + 100 * i }
+      timeout={ 200 + 100 * i }
       classNames="transitionOut__strip"
       style={ { transitionDelay: 100 * i +'ms' } }
       key={ i }
@@ -45,7 +45,7 @@ const TransitionOut = () => {
     <CSSTransition
       in={ mountTransition }
       unmountOnExit={ true }
-      timeout={ 0 }
+      timeout={ 200 + 300 }
     >
       <Row className="transitionOut">
         { stripes }

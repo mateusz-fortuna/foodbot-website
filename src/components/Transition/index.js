@@ -9,7 +9,7 @@ const Transition = props => {
 
   //----------ANIMATION PARAMETERS----------//
 
-  const timeout = 1000; //single strip transition time
+  const timeout = 200; //single strip transition time
   const delay = 100;
 
   //----------AUTO UNMOUNT----------//
