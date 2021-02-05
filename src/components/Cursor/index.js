@@ -234,8 +234,12 @@ export class Cursor extends Component {
       this.setState( { isStuck: false } );
     };
 
+    this.linkItemsContainsNull = () => {
+      return this.linkItems.some( el => el.current === null );
+    }
+
     this.itemListenersDelay = setTimeout( () => {
-     if ( this.linkItems !== undefined || null ) {
+     if ( this.linkItems !== undefined && !this.linkItemsContainsNull() ) {
       this.linkItems.forEach( item => {
         item.current.addEventListener( 'mouseenter', this.handleMouseEnter );
         item.current.addEventListener( 'mouseleave', this.handleMouseLeave );
