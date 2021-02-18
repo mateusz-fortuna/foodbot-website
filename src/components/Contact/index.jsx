@@ -8,23 +8,31 @@ import TransitionOut from '../TransitionOut';
 
 import { Redirect } from 'react-router-dom';
 
-
-const Blog = () => {
+const Contact = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
-  
-  const [ mountTransition, setMountTransition ] = useState( false );
-  const [ changeUrl, setChangeUrl ] = useState( false );
 
+  const [mountTransition, setMountTransition] = useState(false);
+  const [changeNextUrl, setChangeNextUrl] = useState(false);
+  const [changePrevUrl, setChangePrevUrl] = useState(false);
+
+  /* let timeoutNextPage = null;
   let timeoutPrevPage = null;
+  const timeoutNextPageFn = () => {
+    timeoutNextPage = setTimeout( () => { setChangeNextUrl( !changeNextUrl ); }, 1300 );
+    timeoutNextPage = null;
+  };
   const timeoutPrevPageFn = () => {
-    timeoutPrevPage = setTimeout( () => { setChangeUrl( !changeUrl ); }, 1300 );
+    timeoutPrevPage = setTimeout( () => { setChangePrevUrl( !changePrevUrl ); }, 1300 );
     timeoutPrevPage = null;
   };
 
   const handleWheel = event => {
-    if ( event.deltaY < 0 ) {
+    if ( event.deltaY > 0 ) {
       setMountTransition( !mountTransition );
-      timeoutPrevPageFn();   
+      timeoutNextPageFn();   
+    } else {
+      setMountTransition( !mountTransition );
+      timeoutPrevPageFn();
     }
   };
 
@@ -39,7 +47,10 @@ const Blog = () => {
   const handleTouchEnd = event => {
     const touchEnd = event.changedTouches[ 0 ].pageY;
     
-    if ( touchStart < touchEnd ) {
+    if ( touchStart > touchEnd ) {
+      setMountTransition( !mountTransition );
+      timeoutNextPageFn();
+    } else {
       setMountTransition( !mountTransition );
       timeoutPrevPageFn();
     }
@@ -55,23 +66,24 @@ const Blog = () => {
     window.addEventListener( 'touchend', handleTouchEndEvent, false );
   
     return () => {
+      clearTimeout( timeoutNextPage );
       clearTimeout( timeoutPrevPage );
 
       window.removeEventListener( 'wheel', handleWheelEvent, false );
       window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
       window.removeEventListener( 'touchend', handleTouchEndEvent, false );
     };
-  } );
+  } ); */
 
   return (
-    <Row className="blog">
+    <Row className="contact">
       <TransitionOut />
-      { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
-      { changeUrl && ( <Redirect to="/contact" /> ) }
-
-      Blog
+      {mountTransition && <Transition mountTransition={mountTransition} />}
+      {changeNextUrl && <Redirect to="/blog" />}
+      {changePrevUrl && <Redirect to="/gallery" />}
+      Contact
     </Row>
   );
 };
 
-export default Blog;
+export default Contact;

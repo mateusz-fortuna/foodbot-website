@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 
 import { Row } from 'react-bootstrap';
 
-import { throttle } from '../../assets/js/throttle';
 import Transition from '../Transition';
+import { throttle } from '../../assets/js/throttle';
 import TransitionOut from '../TransitionOut';
 
 import { Redirect } from 'react-router-dom';
 
-const Contact = () => {
+const Gallery = () => {
   //----------SCROLL & SWIPE NAVIGATION----------//
-  
-  const [ mountTransition, setMountTransition ] = useState( false );
-  const [ changeNextUrl, setChangeNextUrl ] = useState( false );
-  const [ changePrevUrl, setChangePrevUrl ] = useState( false );
+
+  const [mountTransition, setMountTransition] = useState(false);
+  const [changeNextUrl, setChangeNextUrl] = useState(false);
+  const [changePrevUrl, setChangePrevUrl] = useState(false);
+  /* 
 
   let timeoutNextPage = null;
   let timeoutPrevPage = null;
@@ -73,17 +74,17 @@ const Contact = () => {
       window.removeEventListener( 'touchstart', handleTouchStart, { passive: true } );
       window.removeEventListener( 'touchend', handleTouchEndEvent, false );
     };
-  } );
+  } ); */
 
   return (
-    <Row className="contact">
+    <Row className="gallery">
       <TransitionOut />
-      { mountTransition && ( <Transition mountTransition={ mountTransition }/> ) }
-      { changeNextUrl && ( <Redirect to="/blog" /> ) }
-      { changePrevUrl && ( <Redirect to="/gallery" /> ) }
-      Contact
+      {mountTransition && <Transition mountTransition={mountTransition} />}
+      {changeNextUrl && <Redirect to="/contact" />}
+      {changePrevUrl && <Redirect to="/about" />}
+      Gallery
     </Row>
   );
 };
 
-export default Contact;
+export default Gallery;
