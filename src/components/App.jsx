@@ -15,17 +15,14 @@ import Gallery from './Gallery';
 import Contact from './Contact';
 import Blog from './Blog';
 import Logo from './Logo';
-import Navigation from './Navigation 2';
+import Navigation from './Navigation';
 
 const App = () => {
-  // ----------REFERENCE FOR CURSOR AND LOGO----------//
-
   const menuButtonRef = useRef();
 
   // ----------MENU BUTTON COLOR----------//
 
   const urlEnds = ['/', 'about', 'gallery', 'contact', 'blog'];
-
   const [urlEnd, setUrlEnd] = useState('');
 
   const menuButtonColorChange = () => {
@@ -50,20 +47,18 @@ const App = () => {
           if (menuLabel) {
             menuLabel.style.color = '#e0e0e0';
           }
+        } else if (width < 992) {
+          menuLines.forEach((item) => (item.style.backgroundColor = '#e0e0e0'));
         } else {
-          if (width < 992) {
-            menuLines.forEach((item) => (item.style.backgroundColor = '#e0e0e0'));
-          } else {
-            menuLines.forEach((item) => (item.style.backgroundColor = '#0e0e0e'));
-            if (menuLabel) {
-              menuLabel.style.color = '#0e0e0e';
-            }
+          menuLines.forEach((item) => (item.style.backgroundColor = '#0e0e0e'));
+          if (menuLabel) {
+            menuLabel.style.color = '#0e0e0e';
           }
         }
     }
   };
 
-  //----------MENU BUTTON HANDLER----------//
+  // ----------MENU BUTTON HANDLER----------//
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [menuButtonIsClicked, setMenuButtonIsClicked] = useState(false);
@@ -76,12 +71,12 @@ const App = () => {
     setMenuIsOpen(true);
   };
 
-  //----------INTRO HANDLERS----------//
+  // ----------INTRO HANDLERS----------//
 
   const [showIntro, setShowIntro] = useState(true);
   const [mountIntro, setMountIntro] = useState(true);
 
-  //----------UPDATE VIEWPORT FUNCTION----------//
+  // ----------UPDATE VIEWPORT FUNCTION----------//
 
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
@@ -91,29 +86,33 @@ const App = () => {
     setHeight(window.innerHeight);
   };
 
-  //----------HOME TITILE HANDLER----------//
+  // ----------HOME TITILE HANDLER----------//
+
   const capitalize = (txt) => txt[0].toUpperCase() + txt.slice(1);
 
   urlEnd === 'home' || urlEnd === ''
     ? (document.title = 'FoodBot | Innovative 3D printer for food.')
     : (document.title = `${capitalize(urlEnd)} | FoodBot`);
 
-  //----------EXIT MENU USING ESC KEY----------//
+  // ----------EXIT MENU USING ESC KEY----------//
 
   const exitMenuUsingEsc = (event) => {
     if (menuButtonIsClicked && event.key === 'Escape') handleMenuButtonClick();
   };
 
   useEffect(() => {
-    //----------SET MENU COLOR ON PAGE LOAD----------//
+    // ----------SET MENU COLOR ON PAGE LOAD----------//
+
     menuButtonColorChange();
 
-    //----------LISTENERS----------//
+    // ----------LISTENERS----------//
+
     window.addEventListener('hashchange', menuButtonColorChange);
     window.addEventListener('resize', updateWidth);
     document.addEventListener('keyup', exitMenuUsingEsc);
 
-    //----------MOUNT INTRO----------//
+    // ----------MOUNT INTRO----------//
+
     setTimeout(() => setShowIntro(false), 2500);
     setTimeout(() => setMountIntro(false), 4000);
 
@@ -126,7 +125,7 @@ const App = () => {
     };
   });
 
-  //----------APP STATE----------//
+  // ----------APP STATE----------//
 
   const state = {
     style: {
@@ -145,20 +144,20 @@ const App = () => {
     },
   };
 
-  //----------LOGO REF AND STATE----------//
+  // ----------LOGO REF AND STATE----------//
 
   const [logoIsMounted, setLogoIsMounted] = useState(false);
   const logoRef = useRef();
 
-  //----------JSX CODE----------//
+  // ----------JSX CODE----------//
 
   return (
     <Router basename="/">
       <LanguageProvider>
-        <Container fluid={true} className="app">
+        <Container fluid className="app">
           <Navigation urlEnds={urlEnds} urlEnd={urlEnd} />
 
-          {/*----------LOGO----------*/}
+          {/* ----------LOGO----------*/}
 
           <Logo width={width} mount={!logoIsMounted} ref={logoRef} urlEnd={urlEnd} />
 
@@ -191,7 +190,7 @@ const App = () => {
             />
           )}
 
-          {/*----------ROUTING----------*/}
+          {/* ----------ROUTING----------*/}
 
           <Switch>
             <Route exact path="/">
