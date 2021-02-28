@@ -15,43 +15,37 @@ const NavigationTwo = (props: Navigation) => {
 
   const history = useHistory();
 
-  const { urlEnd, urlEnds } = props;
-
   const timeout = 600;
   let delayedUnmount: ReturnType<typeof setTimeout>;
   let delayedURLChange: ReturnType<typeof setTimeout>;
 
-  // ----------CHANGE URL ON SCROLL---------- //
+  const { urlEnd, urlEnds } = props;
 
-  const changeURLonScroll = (isScrollingUp: boolean, isScrollingDown: boolean) => {
-    const index = urlEnds.indexOf(urlEnd);
-    const isFirstPage = urlEnd === '' || urlEnd === '/';
-    const isLastPage = index + 1 === urlEnds.length;
-    const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
+  // ----------GENERATE PATCH NAME ON SCROLL---------- //
 
-    const patchName = () => {
-      if (isScrollingDown) {
-        if (isFirstPage) return urlEnds[1];
-        return urlEnds[index + 1];
-      }
-      if (isScrollingUp) return urlEnds[index - 1];
-      return '';
-    };
-
-    const pushOnlyDifferentURLs = () => {
-      if (!isArrayBoundary) return history.push(patchName());
-    };
-
-    const executeAfterAnimation = () => {
-      delayedURLChange = setTimeout(() => {
-        pushOnlyDifferentURLs();
-      }, timeout);
-    };
-
-    return executeAfterAnimation();
+  const generatePatchName = (
+    isScrollingUp: boolean,
+    isScrollingDown: boolean,
+    isFirstPage: boolean,
+    index: number
+  ) => {
+    if (isScrollingDown) {
+      if (isFirstPage) return urlEnds[1];
+      return urlEnds[index + 1];
+    }
+    if (isScrollingUp) return urlEnds[index - 1];
+    return '';
   };
 
-  // ----------HANDLE TRANSITIONS---------- //
+  // ----------SET THE PATCH AFTER ANIMATIONS---------- //
+
+  const changeURLAfterAnimations = (newURL: string) => {
+    delayedURLChange = setTimeout(() => {
+      history.push(newURL);
+    }, timeout);
+  };
+
+  // ----------TRANSITION STATE HANDLERS---------- //
 
   const mountTransition = () => {
     setIsMountedTransition(true);
@@ -63,9 +57,18 @@ const NavigationTwo = (props: Navigation) => {
   // ----------CHANGE URL WITH TRANSITIONS---------- //
 
   const changeUrlWithTransitions = (isScrollingUp: boolean, isScrollingDown: boolean) => {
-    mountTransition();
-    changeURLonScroll(isScrollingUp, isScrollingDown);
-    unmountTransition();
+    const index = urlEnds.indexOf(urlEnd);
+    const isFirstPage = urlEnd === '' || urlEnd === '/';
+    const isLastPage = index + 1 === urlEnds.length;
+    const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
+
+    if (!isArrayBoundary) {
+      mountTransition();
+      changeURLAfterAnimations(
+        generatePatchName(isScrollingUp, isScrollingDown, isFirstPage, index)
+      );
+      unmountTransition();
+    }
   };
 
   // ----------HANDLE WHEEL NAVIGATION---------- //
@@ -75,6 +78,7 @@ const NavigationTwo = (props: Navigation) => {
     const isScrollingUp = event.deltaY < 0;
     changeUrlWithTransitions(isScrollingUp, isScrollingDown);
   };
+  // Don't allow scrolling while animations are working
   const throttledWheelNavigation = throttle(handleWheelNavigation, timeout);
 
   // ----------HANDLE TOUCH NAVIGATION---------- //
@@ -89,17 +93,18 @@ const NavigationTwo = (props: Navigation) => {
     const isScrollingUp = touchStart < touchEnd - 5;
     changeUrlWithTransitions(isScrollingUp, isScrollingDown);
   };
-  const throttledTouchNavigation = throttle(handleTouchNavigation, timeout);
 
   useEffect(() => {
     window.addEventListener('wheel', throttledWheelNavigation, false);
     window.addEventListener('touchstart', setTouchStartValue);
-    window.addEventListener('touchend', throttledTouchNavigation);
+    window.addEventListener('touchend', handleTouchNavigation);
 
     return () => {
       clearTimeout(delayedUnmount);
       clearTimeout(delayedURLChange);
       window.removeEventListener('wheel', throttledWheelNavigation, false);
+      window.removeEventListener('touchstart', setTouchStartValue);
+      window.removeEventListener('touchend', handleTouchNavigation);
     };
   });
 
