@@ -23,16 +23,8 @@ const NavigationTwo = (props: Navigation) => {
 
   // ----------GENERATE PATCH NAME ON SCROLL---------- //
 
-  const generatePatchName = (
-    isScrollingUp: boolean,
-    isScrollingDown: boolean,
-    isFirstPage: boolean,
-    index: number
-  ) => {
-    if (isScrollingDown) {
-      if (isFirstPage) return urlEnds[1];
-      return urlEnds[index + 1];
-    }
+  const generatePatchName = (isScrollingUp: boolean, isScrollingDown: boolean, index: number) => {
+    if (isScrollingDown) return urlEnds[index + 1];
     if (isScrollingUp) return urlEnds[index - 1];
     return '';
   };
@@ -58,15 +50,13 @@ const NavigationTwo = (props: Navigation) => {
 
   const changeUrlWithTransitions = (isScrollingUp: boolean, isScrollingDown: boolean) => {
     const index = urlEnds.indexOf(urlEnd);
-    const isFirstPage = urlEnd === '' || urlEnd === '/';
+    const isFirstPage = urlEnd === '';
     const isLastPage = index + 1 === urlEnds.length;
     const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
 
-    if ((!isArrayBoundary && isScrollingUp) || isScrollingDown) {
+    if (!isArrayBoundary && (isScrollingUp || isScrollingDown)) {
       mountTransition();
-      changeURLAfterAnimations(
-        generatePatchName(isScrollingUp, isScrollingDown, isFirstPage, index)
-      );
+      changeURLAfterAnimations(generatePatchName(isScrollingUp, isScrollingDown, index));
       unmountTransition();
     }
   };

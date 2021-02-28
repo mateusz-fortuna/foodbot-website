@@ -22,7 +22,7 @@ const App = () => {
 
   // ----------MENU BUTTON COLOR----------//
 
-  const urlEnds = ['/', 'about', 'gallery', 'contact', 'blog'];
+  const urlEnds = ['', 'about', 'gallery', 'contact', 'blog'];
   const [urlEnd, setUrlEnd] = useState('');
 
   const menuButtonColorChange = () => {
