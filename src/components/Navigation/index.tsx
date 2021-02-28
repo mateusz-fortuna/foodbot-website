@@ -10,7 +10,9 @@ interface Navigation {
 }
 
 const NavigationTwo = (props: Navigation) => {
-  const [isMountedTransition, setIsMountedTransition] = useState(false);
+  const [isMountedTransition, setIsMountedTransition] = useState<boolean>();
+  const [touchStart, setTouchStart] = useState(0);
+
   const history = useHistory();
 
   const { urlEnd, urlEnds } = props;
@@ -21,13 +23,12 @@ const NavigationTwo = (props: Navigation) => {
 
   // ----------CHANGE URL ON SCROLL---------- //
 
-  const changeURLonScroll = (
-    isScrollingDown: boolean,
-    isScrollingUp: boolean,
-    isFirstPage: boolean,
-    index: number,
-    isArrayBoundary: boolean
-  ) => {
+  const changeURLonScroll = (isScrollingUp: boolean, isScrollingDown: boolean) => {
+    const index = urlEnds.indexOf(urlEnd);
+    const isFirstPage = urlEnd === '' || urlEnd === '/';
+    const isLastPage = index + 1 === urlEnds.length;
+    const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
+
     const patchName = () => {
       if (isScrollingDown) {
         if (isFirstPage) return urlEnds[1];
@@ -59,31 +60,46 @@ const NavigationTwo = (props: Navigation) => {
     delayedUnmount = setTimeout(() => setIsMountedTransition(false), timeout);
   };
 
-  // ----------HANDLE NAVIGATION---------- //
+  // ----------CHANGE URL WITH TRANSITIONS---------- //
 
-  const handleNavigation = (event: WheelEvent) => {
-    const isScrollingDown = event.deltaY > 0;
-    const isScrollingUp = event.deltaY < 0;
-    const index = urlEnds.indexOf(urlEnd);
-    const isFirstPage = urlEnd === '' || urlEnd === '/';
-    const isLastPage = index + 1 === urlEnds.length;
-    const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
-
-    if (!isArrayBoundary) {
-      mountTransition();
-      changeURLonScroll(isScrollingDown, isScrollingUp, isFirstPage, index, isArrayBoundary);
-      unmountTransition();
-    }
+  const changeUrlWithTransitions = (isScrollingUp: boolean, isScrollingDown: boolean) => {
+    mountTransition();
+    changeURLonScroll(isScrollingUp, isScrollingDown);
+    unmountTransition();
   };
 
-  const throttled = throttle(handleNavigation, timeout);
+  // ----------HANDLE WHEEL NAVIGATION---------- //
+
+  const handleWheelNavigation = (event: WheelEvent) => {
+    const isScrollingDown = event.deltaY > 0;
+    const isScrollingUp = event.deltaY < 0;
+    changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+  };
+  const throttledWheelNavigation = throttle(handleWheelNavigation, timeout);
+
+  // ----------HANDLE TOUCH NAVIGATION---------- //
+
+  const setTouchStartValue = (event: TouchEvent) => {
+    setTouchStart(event.changedTouches[0].clientY);
+  };
+
+  const handleTouchNavigation = (event: TouchEvent) => {
+    const touchEnd = event.changedTouches[0].clientY;
+    const isScrollingDown = touchStart > touchEnd + 5;
+    const isScrollingUp = touchStart < touchEnd - 5;
+    changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+  };
+  const throttledTouchNavigation = throttle(handleTouchNavigation, timeout);
 
   useEffect(() => {
-    window.addEventListener('wheel', throttled, false);
+    window.addEventListener('wheel', throttledWheelNavigation, false);
+    window.addEventListener('touchstart', setTouchStartValue);
+    window.addEventListener('touchend', throttledTouchNavigation);
+
     return () => {
       clearTimeout(delayedUnmount);
-      clearTimeout();
-      window.removeEventListener('wheel', throttled, false);
+      clearTimeout(delayedURLChange);
+      window.removeEventListener('wheel', throttledWheelNavigation, false);
     };
   });
 

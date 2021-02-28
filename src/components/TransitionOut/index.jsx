@@ -4,37 +4,35 @@ import { CSSTransition } from 'react-transition-group';
 import './index.sass';
 
 const TransitionOut = () => {
+  const [mountTransition, setMountTransition] = useState(true);
 
-  const [ mountTransition, setMountTransition ] = useState( true );
-
-  let timeout = null
+  let timeout = setTimeout;
   const timeoutFn = () => {
-    timeout = setTimeout( () => {
-      setMountTransition( false );
-    }, 1300 );
-    timeout = null;
+    timeout = setTimeout(() => {
+      setMountTransition(false);
+    }, 1300);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     timeoutFn();
 
     return () => {
-      clearTimeout( timeout );
+      clearTimeout(timeout);
     };
-  } );
+  });
 
   const stripes = [];
 
-  //push 4 stripes into array
-  for ( let i = 0; i < 4; i++ ) {
-    stripes.push( 
+  // push 4 stripes into array
+  for (let i = 0; i < 4; i++) {
+    stripes.push(
       <CSSTransition
-      in={ true }
-      appear={ true }
-      timeout={ 200 + 100 * i }
-      classNames="transitionOut__strip"
-      style={ { transitionDelay: 100 * i +'ms' } }
-      key={ i }
+        in
+        appear
+        timeout={200 + 100 * i}
+        classNames="transitionOut__strip"
+        style={{ transitionDelay: `${100 * i}ms` }}
+        key={i}
       >
         <Col xs="3" className="transitionOut__strip" />
       </CSSTransition>
@@ -42,14 +40,8 @@ const TransitionOut = () => {
   }
 
   return (
-    <CSSTransition
-      in={ mountTransition }
-      unmountOnExit={ true }
-      timeout={ 200 + 300 }
-    >
-      <Row className="transitionOut">
-        { stripes }
-      </Row>
+    <CSSTransition in={mountTransition} unmountOnExit timeout={200 + 300}>
+      <Row className="transitionOut">{stripes}</Row>
     </CSSTransition>
   );
 };

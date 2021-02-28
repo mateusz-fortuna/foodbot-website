@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, { useState, useRef, createRef } from 'react';
 import './index.sass';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
@@ -8,42 +8,6 @@ import AboutDetails from '../AboutDetails';
 import Image from '../../assets/images/printer-perspective.png';
 
 const About = (props) => {
-  /* let touchStart = 0;
-
-  const handleTouchStart = (event) => {
-    touchStart = event.touches[0].pageY;
-  };
-
-  const handleTouchEnd = (event) => {
-    const touchEnd = event.changedTouches[0].pageY;
-
-    if (touchStart > touchEnd) {
-      setMountTransition(!mountTransition);
-      timeoutNextPageFn();
-    } else if (touchStart === touchEnd) {
-      return null;
-    } else {
-      setMountTransition(!mountTransition);
-      timeoutPrevPageFn();
-    }
-  };
-
-  const handleTouchEndEvent = throttle(handleTouchEnd, 1300);
-
-  useEffect(() => {
-    // ----------EVENT LISTENERS----------//
-
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEndEvent, false);
-    window.addEventListener('keyup', exitDetailsUsingEsc);
-
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart, { passive: true });
-      window.removeEventListener('touchend', handleTouchEndEvent, false);
-      window.removeEventListener('keyup', exitDetailsUsingEsc);
-    };
-  }); */
-
   // ----------ANIMATION SETTINGS----------//
 
   const timeout = 1000;
