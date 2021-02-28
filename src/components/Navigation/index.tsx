@@ -62,7 +62,7 @@ const NavigationTwo = (props: Navigation) => {
     const isLastPage = index + 1 === urlEnds.length;
     const isArrayBoundary = (isScrollingDown && isLastPage) || (isScrollingUp && isFirstPage);
 
-    if (!isArrayBoundary) {
+    if ((!isArrayBoundary && isScrollingUp) || isScrollingDown) {
       mountTransition();
       changeURLAfterAnimations(
         generatePatchName(isScrollingUp, isScrollingDown, isFirstPage, index)
