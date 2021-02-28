@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/foodbot-website/static/css/main.67bbaf72.chunk.css",
-    "main.js": "/foodbot-website/static/js/main.d5d6c161.chunk.js",
-    "main.js.map": "/foodbot-website/static/js/main.d5d6c161.chunk.js.map",
+    "main.js": "/foodbot-website/static/js/main.63eba5d7.chunk.js",
+    "main.js.map": "/foodbot-website/static/js/main.63eba5d7.chunk.js.map",
     "runtime-main.js": "/foodbot-website/static/js/runtime-main.ac0581cb.js",
     "runtime-main.js.map": "/foodbot-website/static/js/runtime-main.ac0581cb.js.map",
     "static/css/2.8518a37f.chunk.css": "/foodbot-website/static/css/2.8518a37f.chunk.css",
-    "static/js/2.0b794171.chunk.js": "/foodbot-website/static/js/2.0b794171.chunk.js",
-    "static/js/2.0b794171.chunk.js.map": "/foodbot-website/static/js/2.0b794171.chunk.js.map",
+    "static/js/2.0aa6302e.chunk.js": "/foodbot-website/static/js/2.0aa6302e.chunk.js",
+    "static/js/2.0aa6302e.chunk.js.map": "/foodbot-website/static/js/2.0aa6302e.chunk.js.map",
     "index.html": "/foodbot-website/index.html",
-    "precache-manifest.c035c91edee4b13b7edd4809e7b887a9.js": "/foodbot-website/precache-manifest.c035c91edee4b13b7edd4809e7b887a9.js",
+    "precache-manifest.e5b209a0f8175b7f310bf175a967066b.js": "/foodbot-website/precache-manifest.e5b209a0f8175b7f310bf175a967066b.js",
     "service-worker.js": "/foodbot-website/service-worker.js",
     "static/css/2.8518a37f.chunk.css.map": "/foodbot-website/static/css/2.8518a37f.chunk.css.map",
     "static/css/main.67bbaf72.chunk.css.map": "/foodbot-website/static/css/main.67bbaf72.chunk.css.map",
-    "static/js/2.0b794171.chunk.js.LICENSE": "/foodbot-website/static/js/2.0b794171.chunk.js.LICENSE",
+    "static/js/2.0aa6302e.chunk.js.LICENSE": "/foodbot-website/static/js/2.0aa6302e.chunk.js.LICENSE",
     "static/media/basis.jpg": "/foodbot-website/static/media/basis.79390697.jpg",
     "static/media/chocoPrint.jpg": "/foodbot-website/static/media/chocoPrint.4dd3dfcf.jpg",
     "static/media/fence.jpg": "/foodbot-website/static/media/fence.394256f2.jpg",
@@ -26,8 +26,8 @@
   "entrypoints": [
     "static/js/runtime-main.ac0581cb.js",
     "static/css/2.8518a37f.chunk.css",
-    "static/js/2.0b794171.chunk.js",
+    "static/js/2.0aa6302e.chunk.js",
     "static/css/main.67bbaf72.chunk.css",
-    "static/js/main.d5d6c161.chunk.js"
+    "static/js/main.63eba5d7.chunk.js"
   ]
 }
