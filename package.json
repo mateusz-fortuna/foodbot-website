@@ -53,7 +53,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.5.0",
     "node-sass": "^4.14.1",
     "paper": "^0.12.8",
     "prettier": "^2.2.1",
