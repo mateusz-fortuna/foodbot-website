@@ -4,10 +4,10 @@ import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import Circle from '../Circle';
 import Cursor from '../Cursor';
-import AboutDetails from '../AboutDetails';
+import FeaturesDetails from '../FeaturesDetails';
 import Image from '../../assets/images/printer-perspective.png';
 
-const About = (props) => {
+const Features = (props) => {
   // ----------ANIMATION SETTINGS----------//
 
   const timeout = 1000;
@@ -134,7 +134,7 @@ const About = (props) => {
       {/* ----------DETAILS----------*/}
 
       {detailsOpened && (
-        <AboutDetails
+        <FeaturesDetails
           mount={exitButton}
           unmount={unmountDetails}
           exit={handleExit}
@@ -151,4 +151,4 @@ const About = (props) => {
   );
 };
 
-export default About;
+export default Features;

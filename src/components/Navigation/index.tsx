@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Transition from '../Transition';
 import { throttle } from '../../assets/js/throttle';
 import './index.sass';
 
 interface Navigation {
   urlEnd: string;
   urlEnds: Array<string>;
+  setIsMountedTransition: React.Dispatch<React.SetStateAction<boolean>>;
+  buttonNavigation?: {
+    ref: React.MutableRefObject<HTMLButtonElement | HTMLAnchorElement>;
+    redirectTo: string;
+  }[];
 }
 
-const NavigationTwo = (props: Navigation) => {
-  const [isMountedTransition, setIsMountedTransition] = useState<boolean>();
+export const Navigation = (props: Navigation) => {
   const [touchStart, setTouchStart] = useState(0);
-
   const history = useHistory();
-
   const timeout = 600;
   let delayedUnmount: ReturnType<typeof setTimeout>;
   let delayedURLChange: ReturnType<typeof setTimeout>;
 
-  const { urlEnd, urlEnds } = props;
+  const { urlEnd, urlEnds, setIsMountedTransition, buttonNavigation } = props;
 
   // ----------GENERATE PATCH NAME ON SCROLL---------- //
 
@@ -84,25 +85,51 @@ const NavigationTwo = (props: Navigation) => {
     changeUrlWithTransitions(isScrollingUp, isScrollingDown);
   };
 
+  // ----------HANDLE CLICK NAVIGATION---------- //
+
+  const handleClickNavigation = (targetPath: string) => {
+    mountTransition();
+    changeURLAfterAnimations(targetPath);
+    unmountTransition();
+  };
+
   useEffect(() => {
-    window.addEventListener('wheel', throttledWheelNavigation, false);
-    window.addEventListener('touchstart', setTouchStartValue);
-    window.addEventListener('touchend', handleTouchNavigation);
+    const passive: AddEventListenerOptions & EventListenerOptions = { passive: true };
+
+    window.addEventListener('wheel', throttledWheelNavigation, passive);
+    window.addEventListener('touchstart', setTouchStartValue, passive);
+    window.addEventListener('touchend', handleTouchNavigation, passive);
+
+    if (buttonNavigation) {
+      buttonNavigation.map((button) => {
+        const isButtonExisting = button.ref.current !== undefined && button.ref.current !== null;
+        if (isButtonExisting) {
+          button.ref.current.addEventListener('click', () =>
+            handleClickNavigation(button.redirectTo)
+          );
+        }
+      });
+    }
 
     return () => {
       clearTimeout(delayedUnmount);
       clearTimeout(delayedURLChange);
-      window.removeEventListener('wheel', throttledWheelNavigation, false);
-      window.removeEventListener('touchstart', setTouchStartValue);
-      window.removeEventListener('touchend', handleTouchNavigation);
+      window.removeEventListener('wheel', throttledWheelNavigation, passive);
+      window.removeEventListener('touchstart', setTouchStartValue, passive);
+      window.removeEventListener('touchend', handleTouchNavigation, passive);
+
+      if (buttonNavigation) {
+        buttonNavigation.map((button) => {
+          const isButtonExisting = button.ref.current !== undefined && button.ref.current !== null;
+          if (isButtonExisting) {
+            button.ref.current.removeEventListener('click', () =>
+              handleClickNavigation(button.redirectTo)
+            );
+          }
+        });
+      }
     };
   });
 
-  return (
-    <div className="navigation">
-      {isMountedTransition && <Transition mountTransition={isMountedTransition} />}
-    </div>
-  );
+  return <div className="navigation" />;
 };
-
-export default NavigationTwo;
