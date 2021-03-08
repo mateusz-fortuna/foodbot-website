@@ -102,12 +102,15 @@ export const Navigation = (props: Navigation) => {
 
     if (buttonNavigation) {
       buttonNavigation.map((button) => {
-        const isButtonExisting = button.ref.current !== undefined && button.ref.current !== null;
+        const currentButton = button.ref.current;
+        const isButtonExisting = currentButton !== undefined && currentButton !== null;
+
         if (isButtonExisting) {
-          button.ref.current.addEventListener('click', () =>
+          return currentButton.addEventListener('click', () =>
             handleClickNavigation(button.redirectTo)
           );
         }
+        return button;
       });
     }
 
@@ -120,12 +123,15 @@ export const Navigation = (props: Navigation) => {
 
       if (buttonNavigation) {
         buttonNavigation.map((button) => {
-          const isButtonExisting = button.ref.current !== undefined && button.ref.current !== null;
+          const currentButton = button.ref.current;
+          const isButtonExisting = currentButton !== undefined && currentButton !== null;
+
           if (isButtonExisting) {
-            button.ref.current.removeEventListener('click', () =>
+            return currentButton.removeEventListener('click', () =>
               handleClickNavigation(button.redirectTo)
             );
           }
+          return button;
         });
       }
     };
