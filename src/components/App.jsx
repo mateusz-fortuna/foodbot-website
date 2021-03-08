@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.sass';
 
@@ -10,20 +10,31 @@ import { LanguageProvider } from '../assets/js/context/languageContext';
 import Menu from './Menu';
 import Intro from './Intro';
 import Home from './Home';
-import About from './About';
+import Features from './Features';
 import Gallery from './Gallery';
 import Contact from './Contact';
 import Blog from './Blog';
 import Logo from './Logo';
-import Navigation from './Navigation';
+import { Navigation } from './Navigation/index.tsx';
+import Transition from './Transition/index.tsx';
 
 const App = () => {
+  const [urlEnd, setUrlEnd] = useState('');
+  const [isMountedTransition, setIsMountedTransition] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [menuButtonIsClicked, setMenuButtonIsClicked] = useState(false);
+  const [animationDone, setAnimationDone] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
+  const [mountIntro, setMountIntro] = useState(true);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
+
   const menuButtonRef = useRef();
+  const discoverFeaturesButtonRef = useRef();
+
+  const urlEnds = ['', 'features', 'gallery', 'contact', 'blog'];
 
   // ----------MENU BUTTON COLOR----------//
-
-  const urlEnds = ['', 'about', 'gallery', 'contact', 'blog'];
-  const [urlEnd, setUrlEnd] = useState('');
 
   const menuButtonColorChange = () => {
     const urlArray = document.location.href.split('/');
@@ -34,8 +45,11 @@ const App = () => {
     const menuLabel = document.querySelector('.menuIcon__label');
 
     switch (urlEnd) {
-      case 'about':
-        menuLines.forEach((item) => (item.style.backgroundColor = '#e0e0e0'));
+      case 'features':
+        menuLines.forEach((item) => {
+          const menuLine = item;
+          menuLine.style.backgroundColor = '#e0e0e0';
+        });
         if (menuLabel) {
           menuLabel.style.color = '#e0e0e0';
         }
@@ -43,14 +57,23 @@ const App = () => {
 
       default:
         if (menuButtonIsClicked) {
-          menuLines.forEach((item) => (item.style.backgroundColor = '#e0e0e0'));
+          menuLines.forEach((item) => {
+            const menuLine = item;
+            menuLine.style.backgroundColor = '#e0e0e0';
+          });
           if (menuLabel) {
             menuLabel.style.color = '#e0e0e0';
           }
         } else if (width < 992) {
-          menuLines.forEach((item) => (item.style.backgroundColor = '#e0e0e0'));
+          menuLines.forEach((item) => {
+            const menuLine = item;
+            menuLine.style.backgroundColor = '#e0e0e0';
+          });
         } else {
-          menuLines.forEach((item) => (item.style.backgroundColor = '#0e0e0e'));
+          menuLines.forEach((item) => {
+            const menuLine = item;
+            menuLine.style.backgroundColor = '#0e0e0e';
+          });
           if (menuLabel) {
             menuLabel.style.color = '#0e0e0e';
           }
@@ -60,10 +83,6 @@ const App = () => {
 
   // ----------MENU BUTTON HANDLER----------//
 
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [menuButtonIsClicked, setMenuButtonIsClicked] = useState(false);
-  const [animationDone, setAnimationDone] = useState(false);
-
   const menuLinesBackground = menuButtonIsClicked ? '#e0e0e0' : null;
 
   const handleMenuButtonClick = () => {
@@ -71,15 +90,7 @@ const App = () => {
     setMenuIsOpen(true);
   };
 
-  // ----------INTRO HANDLERS----------//
-
-  const [showIntro, setShowIntro] = useState(true);
-  const [mountIntro, setMountIntro] = useState(true);
-
   // ----------UPDATE VIEWPORT FUNCTION----------//
-
-  const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
 
   const updateWidth = () => {
     setWidth(window.innerWidth);
@@ -90,9 +101,13 @@ const App = () => {
 
   const capitalize = (txt) => txt[0].toUpperCase() + txt.slice(1);
 
-  urlEnd === 'home' || urlEnd === ''
-    ? (document.title = 'FoodBot | Innovative 3D printer for food.')
-    : (document.title = `${capitalize(urlEnd)} | FoodBot`);
+  const setDocumentTitle = () => {
+    if (urlEnd === 'home' || urlEnd === '') {
+      document.title = 'FoodBot | Innovative 3D printer for food.';
+    } else {
+      document.title = `${capitalize(urlEnd)} | FoodBot`;
+    }
+  };
 
   // ----------EXIT MENU USING ESC KEY----------//
 
@@ -104,7 +119,7 @@ const App = () => {
     // ----------SET MENU COLOR ON PAGE LOAD----------//
 
     menuButtonColorChange();
-
+    setDocumentTitle();
     // ----------LISTENERS----------//
 
     window.addEventListener('hashchange', menuButtonColorChange);
@@ -155,7 +170,15 @@ const App = () => {
     <Router basename="/">
       <LanguageProvider>
         <Container fluid className="app">
-          <Navigation urlEnds={urlEnds} urlEnd={urlEnd} />
+          {/* ----------NAVIGATION----------*/}
+
+          {isMountedTransition && <Transition mountTransition={isMountedTransition} />}
+          <Navigation
+            urlEnds={urlEnds}
+            urlEnd={urlEnd}
+            setIsMountedTransition={setIsMountedTransition}
+            buttonNavigation={[{ ref: discoverFeaturesButtonRef, redirectTo: 'features' }]}
+          />
 
           {/* ----------LOGO----------*/}
 
@@ -201,10 +224,11 @@ const App = () => {
                 isAnimationDone={animationDone}
                 menuTest={menuButtonIsClicked}
                 setLogoIsMounted={(bool) => setLogoIsMounted(bool)}
+                discoverFeaturesButtonRef={discoverFeaturesButtonRef}
               />
             </Route>
-            <Route path="/about">
-              <About
+            <Route path="/features">
+              <Features
                 clientWidth={width}
                 clientHeight={height}
                 reference={[menuButtonRef, logoRef]}

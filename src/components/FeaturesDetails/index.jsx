@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import './index.sass';
 
-const AboutDetails = React.forwardRef((props, ref) => {
+const FeaturesDetails = React.forwardRef((props, ref) => {
   const {
     mount,
     unmount,
@@ -192,4 +192,4 @@ const AboutDetails = React.forwardRef((props, ref) => {
   );
 });
 
-export default AboutDetails;
+export default FeaturesDetails;
