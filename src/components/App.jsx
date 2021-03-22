@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.sass';
 
@@ -18,6 +18,8 @@ import Logo from './Logo';
 import { Navigation } from './Navigation/index.tsx';
 import Transition from './Transition/index.tsx';
 
+import { capitalize } from '../assets/js/capitalize.ts';
+
 const App = () => {
   const [urlEnd, setUrlEnd] = useState('');
   const [isMountedTransition, setIsMountedTransition] = useState(false);
@@ -31,6 +33,7 @@ const App = () => {
 
   const menuButtonRef = useRef();
   const discoverFeaturesButtonRef = useRef();
+  const logoRef = useRef();
 
   const urlEnds = ['', 'features', 'gallery', 'contact', 'blog'];
 
@@ -38,8 +41,8 @@ const App = () => {
 
   const menuButtonColorChange = () => {
     const urlArray = document.location.href.split('/');
-    const urlEnd = urlArray[urlArray.length - 1];
-    setUrlEnd(urlEnd);
+    const path = urlArray[urlArray.length - 1];
+    setUrlEnd(path);
 
     const menuLines = document.querySelectorAll('.menuLine');
     const menuLabel = document.querySelector('.menuIcon__label');
@@ -99,8 +102,6 @@ const App = () => {
 
   // ----------HOME TITILE HANDLER----------//
 
-  const capitalize = (txt) => txt[0].toUpperCase() + txt.slice(1);
-
   const setDocumentTitle = () => {
     if (urlEnd === 'home' || urlEnd === '') {
       document.title = 'FoodBot | Innovative 3D printer for food.';
@@ -115,11 +116,17 @@ const App = () => {
     if (menuButtonIsClicked && event.key === 'Escape') handleMenuButtonClick();
   };
 
+  // ----------DON'T MOUNT LOGO ON THOSE PAGES---------- //
+
+  const includeUrlExceptions = () => urlEnd !== '';
+
   useEffect(() => {
     // ----------SET MENU COLOR ON PAGE LOAD----------//
 
     menuButtonColorChange();
     setDocumentTitle();
+    includeUrlExceptions();
+
     // ----------LISTENERS----------//
 
     window.addEventListener('hashchange', menuButtonColorChange);
@@ -159,11 +166,6 @@ const App = () => {
     },
   };
 
-  // ----------LOGO REF AND STATE----------//
-
-  const [logoIsMounted, setLogoIsMounted] = useState(false);
-  const logoRef = useRef();
-
   // ----------JSX CODE----------//
 
   return (
@@ -182,7 +184,9 @@ const App = () => {
 
           {/* ----------LOGO----------*/}
 
-          <Logo width={width} mount={!logoIsMounted} ref={logoRef} urlEnd={urlEnd} />
+          {includeUrlExceptions() && (
+            <Logo width={width} mount={!isMountedTransition} ref={logoRef} urlEnd={urlEnd} />
+          )}
 
           {/* ----------MENU BUTTON---------- */}
 
@@ -223,7 +227,6 @@ const App = () => {
                 reference={[menuButtonRef]}
                 isAnimationDone={animationDone}
                 menuTest={menuButtonIsClicked}
-                setLogoIsMounted={(bool) => setLogoIsMounted(bool)}
                 discoverFeaturesButtonRef={discoverFeaturesButtonRef}
               />
             </Route>
