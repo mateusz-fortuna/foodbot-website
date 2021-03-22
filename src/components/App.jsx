@@ -180,6 +180,7 @@ const App = () => {
             urlEnd={urlEnd}
             setIsMountedTransition={setIsMountedTransition}
             buttonNavigation={[{ ref: discoverFeaturesButtonRef, redirectTo: 'features' }]}
+            navigationExceptions={['gallery']}
           />
 
           {/* ----------LOGO----------*/}

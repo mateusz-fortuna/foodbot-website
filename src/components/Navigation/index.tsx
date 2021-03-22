@@ -11,6 +11,7 @@ interface Navigation {
     ref: React.MutableRefObject<HTMLButtonElement | HTMLAnchorElement>;
     redirectTo: string;
   }[];
+  navigationExceptions?: string[];
 }
 
 export const Navigation = (props: Navigation) => {
@@ -20,7 +21,7 @@ export const Navigation = (props: Navigation) => {
   let delayedUnmount: ReturnType<typeof setTimeout>;
   let delayedURLChange: ReturnType<typeof setTimeout>;
 
-  const { urlEnd, urlEnds, setIsMountedTransition, buttonNavigation } = props;
+  const { urlEnd, urlEnds, setIsMountedTransition, buttonNavigation, navigationExceptions } = props;
 
   // ----------GENERATE PATCH NAME ON SCROLL---------- //
 
@@ -62,12 +63,23 @@ export const Navigation = (props: Navigation) => {
     }
   };
 
+  // ----------DETECT NAVIGATION EXCEPTION---------- //
+
+  const isNavigationException = () => {
+    if (navigationExceptions) {
+      return navigationExceptions.some((value) => urlEnd === value);
+    }
+    return false;
+  };
+
   // ----------HANDLE WHEEL NAVIGATION---------- //
 
   const handleWheelNavigation = (event: WheelEvent) => {
-    const isScrollingDown = event.deltaY > 0;
-    const isScrollingUp = event.deltaY < 0;
-    changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+    if (!isNavigationException()) {
+      const isScrollingDown = event.deltaY > 0;
+      const isScrollingUp = event.deltaY < 0;
+      changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+    }
   };
   // Don't allow scrolling while animations are working
   const throttledWheelNavigation = throttle(handleWheelNavigation, timeout);
@@ -79,10 +91,12 @@ export const Navigation = (props: Navigation) => {
   };
 
   const handleTouchNavigation = (event: TouchEvent) => {
-    const touchEnd = event.changedTouches[0].clientY;
-    const isScrollingDown = touchStart > touchEnd + 5;
-    const isScrollingUp = touchStart < touchEnd - 5;
-    changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+    if (!isNavigationException()) {
+      const touchEnd = event.changedTouches[0].clientY;
+      const isScrollingDown = touchStart > touchEnd + 5;
+      const isScrollingUp = touchStart < touchEnd - 5;
+      changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+    }
   };
 
   // ----------HANDLE CLICK NAVIGATION---------- //
