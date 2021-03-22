@@ -13,13 +13,7 @@ const Home = (props) => {
   const homeContentRef = useRef();
   const homeRef = useRef();
 
-  const {
-    clientWidth,
-    setLogoIsMounted,
-    isAnimationDone,
-    reference,
-    discoverFeaturesButtonRef,
-  } = props;
+  const { clientWidth, isAnimationDone, reference, discoverFeaturesButtonRef } = props;
 
   // ----------STATE STYLES----------//
 
@@ -56,13 +50,6 @@ const Home = (props) => {
       homeRef.current.removeAttribute('style');
     }
   });
-
-  // ----------COMPONENT DID MOUNT----------//
-
-  useEffect(() => {
-    setLogoIsMounted(true);
-    return () => setLogoIsMounted(false);
-  }, [setLogoIsMounted]);
 
   // ----------JSX CODE----------//
 

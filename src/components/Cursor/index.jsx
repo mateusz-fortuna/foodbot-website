@@ -60,10 +60,12 @@ export class Cursor extends Component {
   componentWillUnmount() {
     clearTimeout(this.itemListenersDelay);
     clearTimeout(this.canvasCursorSpeedTimeout);
-    if (this.props.reference.flat(Infinity)[0] !== undefined) {
+    if (this.props.reference.flat(Infinity)[0]) {
       this.linkItems.forEach((item) => {
-        item.current.removeEventListener('mouseenter', this.handleMouseEnter);
-        item.current.removeEventListener('mouseleave', this.handleMouseLeave);
+        if (item.current) {
+          item.current.removeEventListener('mouseenter', this.handleMouseEnter);
+          item.current.removeEventListener('mouseleave', this.handleMouseLeave);
+        }
       });
     }
     document.removeEventListener('mousemove', this.cursorHandler);
@@ -254,13 +256,13 @@ export class Cursor extends Component {
       this.setState({ isStuck: false });
     };
 
-    this.linkItemsContainsNull = () => this.linkItems.some((el) => el.current === null);
-
     this.itemListenersDelay = setTimeout(() => {
-      if (this.linkItems !== undefined && !this.linkItemsContainsNull()) {
+      if (this.linkItems) {
         this.linkItems.forEach((item) => {
-          item.current.addEventListener('mouseenter', this.handleMouseEnter);
-          item.current.addEventListener('mouseleave', this.handleMouseLeave);
+          if (item.current) {
+            item.current.addEventListener('mouseenter', this.handleMouseEnter);
+            item.current.addEventListener('mouseleave', this.handleMouseLeave);
+          }
         });
       }
     }, 500);
