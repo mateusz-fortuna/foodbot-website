@@ -9,7 +9,7 @@
     "description": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert.",
     "button": "Discover features"
   },
-  "about": [
+  "features": [
     {
       "name": "basis",
       "left": 32,
@@ -47,7 +47,8 @@
     }
   ],
   "gallery": {
-    "title": "Gallery"
+    "title": "Gallery",
+    "imagesNames": ["basis", "head", "fence", "logo", "screen"]
   },
   "blog": {
     "title": "Blog"

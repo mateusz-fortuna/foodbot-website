@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.sass';
 
