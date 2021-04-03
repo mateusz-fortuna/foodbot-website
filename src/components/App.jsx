@@ -58,6 +58,16 @@ const App = () => {
         }
         break;
 
+      case 'gallery':
+        menuLines.forEach((item) => {
+          const menuLine = item;
+          menuLine.style.backgroundColor = '#0e0e0e';
+        });
+        if (menuLabel) {
+          menuLabel.style.color = '#0e0e0e';
+        }
+        break;
+
       default:
         if (menuButtonIsClicked) {
           menuLines.forEach((item) => {

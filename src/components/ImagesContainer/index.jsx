@@ -3,6 +3,8 @@ import { LanguageContext } from '../../assets/js/context/languageContext';
 import './index.sass';
 
 const ImagesContainer = React.forwardRef((props, ref) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   // Get names of all images in gallery
   const languageContext = useContext(LanguageContext);
   const { imagesNames } = languageContext.dictionary.gallery;
@@ -26,29 +28,30 @@ const ImagesContainer = React.forwardRef((props, ref) => {
         alt={name}
         key={name}
         ref={imgRef}
-        className="galleryImage thumbnail"
+        className="gallery_image thumbnail"
       />
     </div>
   ));
 
-  useEffect(() => {
-    // When the full resolution photos are loaded, replace them with the thumbnails
-    const setFullSizePhotos = () => {
-      imgRefs.forEach((node) => {
-        node.setAttribute('src', node.getAttribute('data-src'));
-        node.removeAttribute('data-src');
-        node.classList.remove('thumbnail');
-      });
-    };
+  // When the full resolution photos are loaded, replace them with the thumbnails
+  const setFullSizePhotos = (event) => {
+    const el = event.target;
+    el.setAttribute('src', el.getAttribute('data-src'));
+    el.removeAttribute('data-src');
+    el.classList.remove('thumbnail');
 
-    window.addEventListener('load', setFullSizePhotos);
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    if (!isLoaded) imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
     return () => {
-      window.removeEventListener('load', setFullSizePhotos);
+      imgRefs.forEach((el) => el.removeEventListener('load', setFullSizePhotos));
     };
   });
 
   return (
-    <div className="imagesContainer" ref={ref}>
+    <div className="gallery_imageContainer" ref={ref}>
       {images}
     </div>
   );
