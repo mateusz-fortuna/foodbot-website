@@ -6,32 +6,27 @@ import ImagesContainer from '../ImagesContainer';
 
 import './index.sass';
 
-const Gallery = () => {
+const Gallery = ({ windowWidth }) => {
   // Store reference to images container
-  const [containerNode, setContainerNode] = useState(null);
-  const containerRef = useCallback((node) => setContainerNode(node), []);
+  const containerRef = useCallback(
+    (node) => setScrollSettings((settings) => ({ ...settings, target: node })),
+    []
+  );
 
-  const [requestID, setRequestID] = useState(null);
-
-  const scrollSettings = {
-    target: containerNode,
-    ease: 0.02,
+  const [scrollSettings, setScrollSettings] = useState({
+    target: null,
+    ease: 3,
     endX: 0,
     x: 0,
-    resizeRequest: true,
-    scrollRequest: false,
+  });
+  const { target, ease, endX, x } = scrollSettings;
+
+  const handleGalleryScroll = (event) => {
+    if (target) {
+      const posX = target.getBoundingClientRect().x;
+      target.style.transform = `translate3d(${posX - event.deltaY * ease}px,0,0)`;
+    }
   };
-  const { target, ease, endX, x, resizeRequest, scrollRequest } = scrollSettings;
-
-  // Force supporting transitions by GPU
-  if (target) {
-    TweenLite.set(target, {
-      rotation: 0.01,
-      force3D: true,
-    });
-  }
-
-  const handleGalleryScroll = (event) => {};
 
   useEffect(() => {
     window.addEventListener('wheel', handleGalleryScroll, {
@@ -46,7 +41,7 @@ const Gallery = () => {
     <Row className="gallery">
       <TransitionOut />
       <Col sm={12}>
-        <ImagesContainer ref={containerRef} />
+        <ImagesContainer ref={containerRef} windowWidth={windowWidth} />
       </Col>
     </Row>
   );

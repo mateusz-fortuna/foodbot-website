@@ -3,7 +3,9 @@ import { LanguageContext } from '../../assets/js/context/languageContext';
 import './index.sass';
 
 const ImagesContainer = React.forwardRef((props, ref) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { windowWidth } = props;
+
+  const [imagesLoaded, setImagesLoaded] = useState(0);
 
   // Get names of all images in gallery
   const languageContext = useContext(LanguageContext);
@@ -22,7 +24,7 @@ const ImagesContainer = React.forwardRef((props, ref) => {
   const images = imagesNames.map((name) => (
     <div className="imageWrapper" key={`${name}Wrapper`}>
       <img
-        width={1920}
+        width={windowWidth}
         src={thumbnailsPath(`./${name}.jpg`)}
         data-src={imagesPath(`./${name}.jpg`)}
         alt={name}
@@ -40,18 +42,23 @@ const ImagesContainer = React.forwardRef((props, ref) => {
     el.removeAttribute('data-src');
     el.classList.remove('thumbnail');
 
-    setIsLoaded(true);
+    setImagesLoaded((val) => val + 1);
   };
 
   useEffect(() => {
-    if (!isLoaded) imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
+    const preventRenderOverflow = imagesLoaded !== imagesNames.length;
+    const runWithAllReferences = imgRefs.length === imagesNames.length;
+
+    if (preventRenderOverflow && runWithAllReferences) {
+      imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
+    }
     return () => {
       imgRefs.forEach((el) => el.removeEventListener('load', setFullSizePhotos));
     };
   });
 
   return (
-    <div className="gallery_imageContainer" ref={ref}>
+    <div className="gallery_slider" ref={ref}>
       {images}
     </div>
   );
