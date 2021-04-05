@@ -35,7 +35,7 @@ const ImagesContainer = React.forwardRef(({ windowWidth, windowHeight }, ref) =>
         />
       </div>
       <img
-        width={windowWidth}
+        height={windowHeight}
         src={imagesPath(`./${name}.jpg`)}
         alt={name}
         id={name}

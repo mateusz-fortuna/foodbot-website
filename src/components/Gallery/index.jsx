@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { lerp } from '../../assets/js/lerp';
 import TransitionOut from '../TransitionOut';
@@ -7,40 +7,49 @@ import ImagesContainer from '../ImagesContainer';
 import './index.sass';
 
 const Gallery = ({ windowWidth, windowHeight }) => {
-  const [scrollY, setScrollY] = useState(0);
-
-  const [scrollSettings, setScrollSettings] = useState({
-    target: null,
-    ease: 0.2,
-    endX: 0,
-    x: 0,
-  });
-  const { target, ease, endX, x } = scrollSettings;
+  const [scrollTarget, setScrollTarget] = useState(null);
+  const requestRef = useRef();
 
   // Store reference to images container
-  const containerRef = useCallback(
-    (node) => setScrollSettings((settings) => ({ ...settings, target: node })),
-    []
-  );
+  const containerRef = useCallback((node) => setScrollTarget(node), []);
 
-  const handleGalleryScroll = (event) => {
-    const { deltaY } = event;
+  // Scroll settings
+  const targetX = scrollTarget ? scrollTarget.getBoundingClientRect().x : 0;
+  const targetWidth = scrollTarget ? scrollTarget.offsetWidth - windowWidth + 2 * targetX : 0;
+  const ease = 0.08;
+  let x = 0;
+  let endX = 0;
+  let scrollY = 0;
 
-    // Simulate window.scrollY due to 'overflow: hidden'
-    setScrollY((val) => val + deltaY);
+  const animate = () => {
+    if (scrollTarget) {
+      endX = Math.max(0, endX) && Math.min(endX, targetWidth);
+      x = parseFloat(lerp(x, endX, ease).toFixed(2));
+      endX = scrollY;
 
-    if (target) {
-      const posX = target.getBoundingClientRect().x;
-      target.style.transform = `translate3d(${posX - deltaY * ease}px,0,0)`;
+      scrollTarget.style.transform = `translate3d(${-x}px,0,0)`;
+
+      requestRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  // Simulate window.scrollY due to 'overflow: hidden'
+  const handleScroll = (event) => {
+    if (scrollTarget) {
+      const { deltaY } = event;
+      scrollY = Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, targetWidth);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('wheel', handleGalleryScroll, {
+    animate();
+
+    window.addEventListener('wheel', handleScroll, {
       passive: true,
     });
     return () => {
-      window.removeEventListener('wheel', handleGalleryScroll, { passive: true });
+      cancelAnimationFrame(requestRef.current);
+      window.removeEventListener('wheel', handleScroll, { passive: true });
     };
   });
 
