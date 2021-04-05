@@ -6,7 +6,7 @@ import ImagesContainer from '../ImagesContainer';
 
 import './index.sass';
 
-const Gallery = ({ windowWidth }) => {
+const Gallery = ({ windowWidth, windowHeight }) => {
   const [scrollY, setScrollY] = useState(0);
 
   const [scrollSettings, setScrollSettings] = useState({
@@ -48,7 +48,7 @@ const Gallery = ({ windowWidth }) => {
     <Row className="gallery">
       <TransitionOut />
       <Col sm={12}>
-        <ImagesContainer ref={containerRef} windowWidth={windowWidth} />
+        <ImagesContainer ref={containerRef} windowWidth={windowWidth} windowHeight={windowHeight} />
       </Col>
     </Row>
   );

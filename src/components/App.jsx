@@ -251,7 +251,11 @@ const App = () => {
               />
             </Route>
             <Route path="/gallery">
-              <Gallery reference={[menuButtonRef, logoRef]} windowWidth={width} />
+              <Gallery
+                reference={[menuButtonRef, logoRef]}
+                windowWidth={width}
+                windowHeight={height}
+              />
             </Route>
             <Route path="/contact">
               <Contact reference={[menuButtonRef, logoRef]} />

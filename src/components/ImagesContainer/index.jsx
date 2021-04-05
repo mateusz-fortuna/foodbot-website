@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { LanguageContext } from '../../assets/js/context/languageContext';
+import Spinner from '../Spinner';
 import './index.sass';
 
-const ImagesContainer = React.forwardRef(({ windowWidth }, ref) => {
+const ImagesContainer = React.forwardRef(({ windowWidth, windowHeight }, ref) => {
   // Get names of all images in gallery
   const languageContext = useContext(LanguageContext);
   const { imagesNames } = languageContext.dictionary.gallery;
@@ -15,27 +16,47 @@ const ImagesContainer = React.forwardRef(({ windowWidth }, ref) => {
   const [imgRefs, setImgRefs] = useState([]);
   const imgRef = useCallback((imgNode) => setImgRefs((refs) => [...refs, imgNode]), []);
 
+  const [thumbnailsRefs, setThumbnailsRefs] = useState([]);
+  const thumbnailRef = useCallback((node) => setThumbnailsRefs((refs) => [...refs, node]), []);
+
   // Generate the images with their wrapper dynamically
   // Load the thumbnails by default
   const images = imagesNames.map((name) => (
     <div className="imageWrapper" key={`${name}Wrapper`}>
+      <div className="thumbnailWrapper" id={`${name}ThumbnailWrapper`} ref={thumbnailRef}>
+        <Spinner />
+        <div
+          className="thumbnail"
+          style={{
+            width: windowWidth,
+            height: windowHeight,
+            backgroundImage: `url(${thumbnailsPath(`./${name}.jpg`)})`,
+          }}
+        />
+      </div>
       <img
         width={windowWidth}
-        src={thumbnailsPath(`./${name}.jpg`)}
-        data-src={imagesPath(`./${name}.jpg`)}
+        src={imagesPath(`./${name}.jpg`)}
         alt={name}
+        id={name}
         key={name}
         ref={imgRef}
-        className="gallery_image thumbnail"
+        className="gallery_image"
       />
     </div>
   ));
 
   // When the full resolution photos are loaded, replace them with the thumbnails
   const setFullSizePhotos = (event) => {
-    const el = event.target;
-    el.setAttribute('src', el.getAttribute('data-src'));
-    el.classList.remove('thumbnail');
+    const img = event.target;
+    const imgID = img.getAttribute('id');
+
+    const thumbnailIndex = thumbnailsRefs.findIndex(
+      (thumbnail) => thumbnail.getAttribute('id') === `${imgID}ThumbnailWrapper`
+    );
+    const thumbnail = thumbnailsRefs[thumbnailIndex];
+
+    thumbnail.parentNode.removeChild(thumbnail);
   };
 
   useEffect(() => {
