@@ -1,3 +1,3 @@
-export const lerp = ( a, b, n ) => {
-  return ( 1 - n ) * a + n * b;
+export const lerp = (start, end, t) => {
+  return start * (1 - t) + end * t;
 };

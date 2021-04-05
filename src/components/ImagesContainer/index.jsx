@@ -2,11 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { LanguageContext } from '../../assets/js/context/languageContext';
 import './index.sass';
 
-const ImagesContainer = React.forwardRef((props, ref) => {
-  const { windowWidth } = props;
-
-  const [imagesLoaded, setImagesLoaded] = useState(0);
-
+const ImagesContainer = React.forwardRef(({ windowWidth }, ref) => {
   // Get names of all images in gallery
   const languageContext = useContext(LanguageContext);
   const { imagesNames } = languageContext.dictionary.gallery;
@@ -17,7 +13,7 @@ const ImagesContainer = React.forwardRef((props, ref) => {
 
   // Store references to <img> elements
   const [imgRefs, setImgRefs] = useState([]);
-  const imgRef = useCallback((imgNode) => setImgRefs((oldArray) => [...oldArray, imgNode]), []);
+  const imgRef = useCallback((imgNode) => setImgRefs((refs) => [...refs, imgNode]), []);
 
   // Generate the images with their wrapper dynamically
   // Load the thumbnails by default
@@ -39,19 +35,13 @@ const ImagesContainer = React.forwardRef((props, ref) => {
   const setFullSizePhotos = (event) => {
     const el = event.target;
     el.setAttribute('src', el.getAttribute('data-src'));
-    el.removeAttribute('data-src');
     el.classList.remove('thumbnail');
-
-    setImagesLoaded((val) => val + 1);
   };
 
   useEffect(() => {
-    const preventRenderOverflow = imagesLoaded !== imagesNames.length;
-    const runWithAllReferences = imgRefs.length === imagesNames.length;
+    const referencesLoaded = imgRefs.length === imagesNames.length;
 
-    if (preventRenderOverflow && runWithAllReferences) {
-      imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
-    }
+    if (referencesLoaded) imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
     return () => {
       imgRefs.forEach((el) => el.removeEventListener('load', setFullSizePhotos));
     };
