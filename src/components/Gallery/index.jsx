@@ -8,24 +8,29 @@ import './index.sass';
 
 const Gallery = ({ windowWidth, windowHeight }) => {
   const [scrollTarget, setScrollTarget] = useState(null);
+  const [targetX, setTargetX] = useState(0);
   const requestRef = useRef();
 
   // Store reference to images container
-  const containerRef = useCallback((node) => setScrollTarget(node), []);
+  const containerRef = useCallback((node) => {
+    setScrollTarget(node);
+    setTargetX(node.getBoundingClientRect().x);
+  }, []);
 
   // Scroll settings
-  const targetX = scrollTarget ? scrollTarget.getBoundingClientRect().x : 0;
   const targetWidth = scrollTarget ? scrollTarget.offsetWidth - windowWidth + 2 * targetX : 0;
   const ease = 0.08;
-  let x = 0;
-  let endX = 0;
-  let scrollY = 0;
+  const [x, setX] = useState(0);
+  const [endX, setEndX] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
 
   const animate = () => {
     if (scrollTarget) {
-      endX = Math.max(0, endX) && Math.min(endX, targetWidth);
-      x = parseFloat(lerp(x, endX, ease).toFixed(2));
-      endX = scrollY;
+      // Set value between 0 and scrollTarget width
+      setEndX((val) => Math.max(0, val) && Math.min(val, targetWidth));
+
+      setX((val) => parseFloat(lerp(val, endX, ease).toFixed(2)));
+      setEndX(scrollY);
 
       scrollTarget.style.transform = `translate3d(${-x}px,0,0)`;
 
@@ -37,16 +42,15 @@ const Gallery = ({ windowWidth, windowHeight }) => {
   const handleScroll = (event) => {
     if (scrollTarget) {
       const { deltaY } = event;
-      scrollY = Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, targetWidth);
+      setScrollY((val) => Math.max(0, val + deltaY) && Math.min(val + deltaY, targetWidth));
     }
   };
 
   useEffect(() => {
-    animate();
+    requestRef.current = requestAnimationFrame(animate);
 
-    window.addEventListener('wheel', handleScroll, {
-      passive: true,
-    });
+    window.addEventListener('wheel', handleScroll, { passive: true });
+
     return () => {
       cancelAnimationFrame(requestRef.current);
       window.removeEventListener('wheel', handleScroll, { passive: true });

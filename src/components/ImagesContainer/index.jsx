@@ -7,6 +7,7 @@ const ImagesContainer = React.forwardRef(({ windowWidth, windowHeight }, ref) =>
   // Get names of all images in gallery
   const languageContext = useContext(LanguageContext);
   const { imagesNames } = languageContext.dictionary.gallery;
+  const [thumbnailsNames, setThumbnailsNames] = useState(imagesNames);
 
   // Set paths to those images
   const imagesPath = require.context('../../assets/images/gallery', true);
@@ -16,24 +17,25 @@ const ImagesContainer = React.forwardRef(({ windowWidth, windowHeight }, ref) =>
   const [imgRefs, setImgRefs] = useState([]);
   const imgRef = useCallback((imgNode) => setImgRefs((refs) => [...refs, imgNode]), []);
 
-  const [thumbnailsRefs, setThumbnailsRefs] = useState([]);
-  const thumbnailRef = useCallback((node) => setThumbnailsRefs((refs) => [...refs, node]), []);
+  // Generate the images and the thumbnails dynamically
 
-  // Generate the images with their wrapper dynamically
-  // Load the thumbnails by default
-  const images = imagesNames.map((name) => (
+  const thumbnails = thumbnailsNames.map((name) => (
+    <div className="thumbnailWrapper" id={`${name}ThumbnailWrapper`}>
+      <Spinner />
+      <div
+        className="thumbnail"
+        style={{
+          width: windowWidth,
+          height: windowHeight,
+          backgroundImage: `url(${thumbnailsPath(`./${name}.jpg`)})`,
+        }}
+      />
+    </div>
+  ));
+
+  const images = imagesNames.map((name, index) => (
     <div className="imageWrapper" key={`${name}Wrapper`}>
-      <div className="thumbnailWrapper" id={`${name}ThumbnailWrapper`} ref={thumbnailRef}>
-        <Spinner />
-        <div
-          className="thumbnail"
-          style={{
-            width: windowWidth,
-            height: windowHeight,
-            backgroundImage: `url(${thumbnailsPath(`./${name}.jpg`)})`,
-          }}
-        />
-      </div>
+      {thumbnails[index]}
       <img
         height={windowHeight}
         src={imagesPath(`./${name}.jpg`)}
@@ -46,26 +48,21 @@ const ImagesContainer = React.forwardRef(({ windowWidth, windowHeight }, ref) =>
     </div>
   ));
 
-  // When the full resolution photos are loaded, replace them with the thumbnails
+  // When the full resolution photo is loaded, unmount the thumbnail
   const setFullSizePhotos = (event) => {
     const img = event.target;
     const imgID = img.getAttribute('id');
+    const index = thumbnailsNames.indexOf(imgID);
 
-    const thumbnailIndex = thumbnailsRefs.findIndex(
-      (thumbnail) => thumbnail.getAttribute('id') === `${imgID}ThumbnailWrapper`
-    );
-    const thumbnail = thumbnailsRefs[thumbnailIndex];
+    setThumbnailsNames((arr) => arr.splice(index, 1));
 
-    thumbnail.parentNode.removeChild(thumbnail);
+    img.removeEventListener('load', setFullSizePhotos);
   };
 
   useEffect(() => {
     const referencesLoaded = imgRefs.length === imagesNames.length;
 
     if (referencesLoaded) imgRefs.forEach((el) => el.addEventListener('load', setFullSizePhotos));
-    return () => {
-      imgRefs.forEach((el) => el.removeEventListener('load', setFullSizePhotos));
-    };
   });
 
   return (
