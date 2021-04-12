@@ -5,8 +5,9 @@ import TransitionOut from '../TransitionOut';
 import ImagesContainer from '../ImagesContainer';
 
 import './index.sass';
+import Cursor from '../Cursor';
 
-const Gallery = ({ windowWidth, windowHeight }) => {
+const Gallery = ({ windowWidth, windowHeight, reference }) => {
   const [scrollTarget, setScrollTarget] = useState(null);
 
   // Store requestAnimationFrame()
@@ -79,6 +80,7 @@ const Gallery = ({ windowWidth, windowHeight }) => {
   return (
     <Row className="gallery">
       <TransitionOut />
+      <Cursor reference={reference} type="solid" color="dark" />
       <Col sm={12}>
         <ImagesContainer
           ref={containerRef}
