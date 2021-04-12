@@ -34,7 +34,6 @@ export const NavigationButton: React.FC<Props> = (props) => {
 
   useEffect(() => {
     // get references array from the button component and then map it to give each element click listener
-
     return () => {
       clearTimeout(delayedUrlChange);
       clearTimeout(delayedUnmountTransition);

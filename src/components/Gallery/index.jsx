@@ -8,31 +8,51 @@ import './index.sass';
 
 const Gallery = ({ windowWidth, windowHeight }) => {
   const [scrollTarget, setScrollTarget] = useState(null);
-  const [targetX, setTargetX] = useState(0);
+
+  // Store requestAnimationFrame()
   const requestRef = useRef();
 
-  // Store reference to images container
+  // Store reference to images container and the images
   const containerRef = useCallback((node) => {
-    setScrollTarget(node);
-    setTargetX(node.getBoundingClientRect().x);
+    if (node) setScrollTarget(node);
   }, []);
 
+  const [imgRefs, setImgRefs] = useState([]);
+
+  const isReferencesReady = scrollTarget && imgRefs;
+
   // Scroll settings
-  const targetWidth = scrollTarget ? scrollTarget.offsetWidth - windowWidth + 2 * targetX : 0;
-  const ease = 0.08;
+  const ease = 0.06;
+  const targetWidth = scrollTarget ? scrollTarget.offsetWidth - windowWidth : 0;
+  const imgWidth = scrollTarget && imgRefs ? scrollTarget.offsetWidth / imgRefs.length : 0;
   const [x, setX] = useState(0);
   const [endX, setEndX] = useState(0);
   const [scrollY, setScrollY] = useState(0);
+  const [intersectionRatioValue, setIntersectionRatioValue] = useState(0);
+
+  const setTransform = (node, transform) => {
+    const el = node;
+    if (el) el.style.transform = transform;
+  };
+
+  const animateImages = () => {
+    const ratio = x / imgWidth;
+
+    imgRefs.forEach((img, index) => {
+      setIntersectionRatioValue(ratio - index * 0.7);
+      setTransform(img, `translate3d(${intersectionRatioValue * 70}px, 0,0)`);
+    });
+  };
 
   const animate = () => {
-    if (scrollTarget) {
-      // Set value between 0 and scrollTarget width
+    if (isReferencesReady) {
+      // SetEndX => endX with scrolling boundaries
       setEndX((val) => Math.max(0, val) && Math.min(val, targetWidth));
-
       setX((val) => parseFloat(lerp(val, endX, ease).toFixed(2)));
       setEndX(scrollY);
+      setTransform(scrollTarget, `translate3d(${-x}px,0,0)`);
 
-      scrollTarget.style.transform = `translate3d(${-x}px,0,0)`;
+      animateImages();
 
       requestRef.current = requestAnimationFrame(animate);
     }
@@ -40,7 +60,7 @@ const Gallery = ({ windowWidth, windowHeight }) => {
 
   // Simulate window.scrollY due to 'overflow: hidden'
   const handleScroll = (event) => {
-    if (scrollTarget) {
+    if (isReferencesReady) {
       const { deltaY } = event;
       setScrollY((val) => Math.max(0, val + deltaY) && Math.min(val + deltaY, targetWidth));
     }
@@ -48,7 +68,6 @@ const Gallery = ({ windowWidth, windowHeight }) => {
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
-
     window.addEventListener('wheel', handleScroll, { passive: true });
 
     return () => {
@@ -61,7 +80,12 @@ const Gallery = ({ windowWidth, windowHeight }) => {
     <Row className="gallery">
       <TransitionOut />
       <Col sm={12}>
-        <ImagesContainer ref={containerRef} windowWidth={windowWidth} windowHeight={windowHeight} />
+        <ImagesContainer
+          ref={containerRef}
+          imgRefs={imgRefs}
+          setImgRefs={setImgRefs}
+          windowHeight={windowHeight}
+        />
       </Col>
     </Row>
   );

@@ -48,6 +48,7 @@
   ],
   "gallery": {
     "title": "Gallery",
+    "imageRatio": "16:9",
     "imagesNames": ["basis", "head", "fence", "logo", "screen"]
   },
   "blog": {
