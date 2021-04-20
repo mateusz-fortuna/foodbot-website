@@ -87,10 +87,14 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HANDLERS---------- //
 
   handleScroll: HandleScroll = ({ deltaY }) => {
-    this.setState(({ scrollY, sliderWidth }) => ({
-      scrollY: +(Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, sliderWidth)).toFixed(
-        2
-      ),
+    const { scrollY, sliderWidth } = this.state;
+
+    // Scrolling between 0 and the slider width
+    const scrollingWithBoundaries =
+      Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, sliderWidth);
+
+    this.setState(() => ({
+      scrollY: +scrollingWithBoundaries.toFixed(2),
     }));
   };
 
