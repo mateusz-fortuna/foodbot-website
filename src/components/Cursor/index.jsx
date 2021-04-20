@@ -5,7 +5,7 @@ import TweenMax from 'gsap';
 import paper from 'paper';
 import SimplexNoise from 'simplex-noise';
 
-import { lerp } from '../../assets/js/lerp';
+import { lerp } from '../../assets/js/lerp.ts';
 import { map } from '../../assets/js/map';
 
 export class Cursor extends Component {
