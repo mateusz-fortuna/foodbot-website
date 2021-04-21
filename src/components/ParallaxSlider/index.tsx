@@ -14,7 +14,8 @@ import {
 
 class ParallaxSlider extends Component<Props, State> {
   private sliderRef: React.RefObject<HTMLDivElement>;
-  private imageRefs: Array<HTMLImageElement | null>;
+  private imageRefs: (HTMLImageElement | null)[];
+  private wrapperRefs: (HTMLDivElement | null)[];
   private requestID: number;
 
   constructor(props: Props) {
@@ -23,6 +24,7 @@ class ParallaxSlider extends Component<Props, State> {
 
     this.sliderRef = createRef();
     this.imageRefs = [];
+    this.wrapperRefs = [];
 
     const slider = this.sliderRef.current;
     const imagesQuantity = this.imageRefs.length;
@@ -87,11 +89,11 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HANDLERS---------- //
 
   handleScroll: HandleScroll = ({ deltaY }) => {
-    const { scrollY, sliderWidth } = this.state;
+    const { scrollY, sliderWidth, windowWidth } = this.state;
 
     // Scrolling between 0 and the slider width
     const scrollingWithBoundaries =
-      Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, sliderWidth);
+      Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, sliderWidth - windowWidth + 30);
 
     this.setState(() => ({
       scrollY: +scrollingWithBoundaries.toFixed(2),
@@ -174,11 +176,11 @@ class ParallaxSlider extends Component<Props, State> {
           <div
             className="imageWrapper"
             key={`Wrapper${index + 1}`}
-            style={{ width: `${typeof imgWidth === 'number' ? `${imgWidth - 200}px` : 'auto'}` }}
+            ref={(ref) => (this.wrapperRefs[index] = ref)}
           >
             {insertThumbnail(index)}
             <img
-              width={'initial'}
+              height={0.7 * windowHeight}
               src={path}
               alt={`${index + 1}`}
               id={`image${index + 1}`}
@@ -200,13 +202,22 @@ class ParallaxSlider extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { windowHeight, windowWidth, imgRatio } = this.state;
-    const imgWidth = 0.7 * windowHeight * imgRatio;
+    const { windowHeight, windowWidth, imgRatio, imgWidth } = this.state;
 
-    if (prevState.imgRatio !== this.state.imgRatio) {
+    if (prevState.imgRatio !== imgRatio) {
+      const width = 0.7 * windowHeight * imgRatio;
+
+      // Set image width based on its ratio
       this.setState({
-        imgWidth: +imgWidth.toFixed(2),
-        sliderWidth: +(imgWidth * this.imageRefs.length - windowWidth).toFixed(2),
+        imgWidth: +width.toFixed(2),
+        sliderWidth: +(width * this.imageRefs.length - windowWidth).toFixed(2),
+      });
+
+      // Set proper width of the wrappers
+      [...this.wrapperRefs].forEach((el) => {
+        if (el && typeof imgWidth === 'number') {
+          el.style.width = `${width - 200}px`;
+        }
       });
     }
   }
