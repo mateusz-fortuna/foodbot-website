@@ -9,11 +9,11 @@ export interface State {
   images: JSX.Element[];
   imgWidth: number | 'auto';
   imgRatio: number;
-  scrollY: number;
   ease: number;
   sliderWidth: number;
+  sliderMargin: number;
   x: number;
-  endX: number;
+  scrollY: number;
   windowWidth: number;
   windowHeight: number;
 }

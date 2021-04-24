@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react';
 import { lerp } from '../../assets/js/lerp';
 import Spinner from './Spinner';
+import './index.sass';
 import {
   Props,
   State,
@@ -16,18 +17,16 @@ class ParallaxSlider extends Component<Props, State> {
   private sliderRef: React.RefObject<HTMLDivElement>;
   private imageRefs: (HTMLImageElement | null)[];
   private wrapperRefs: (HTMLDivElement | null)[];
+  private imagesQuantity: number;
   private requestID: number;
 
   constructor(props: Props) {
     super(props);
-    const { speed } = props;
+    const { speed, imagesURLs } = props;
 
     this.sliderRef = createRef();
     this.imageRefs = [];
     this.wrapperRefs = [];
-
-    const slider = this.sliderRef.current;
-    const imagesQuantity = this.imageRefs.length;
 
     this.state = {
       thumbnails: [],
@@ -36,13 +35,14 @@ class ParallaxSlider extends Component<Props, State> {
       imgRatio: 0,
       imgWidth: 0,
       sliderWidth: 0,
+      sliderMargin: 0,
       x: 0,
-      endX: 0,
       scrollY: 0,
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     };
 
+    this.imagesQuantity = imagesURLs.length;
     this.requestID = 0;
 
     this.handleScroll = this.handleScroll.bind(this);
@@ -74,9 +74,8 @@ class ParallaxSlider extends Component<Props, State> {
     const slider = this.sliderRef.current;
 
     if (slider) {
-      this.setState(({ x, endX, ease, scrollY }) => ({
-        x: +lerp(x, endX, ease).toFixed(2),
-        endX: scrollY,
+      this.setState(({ x, scrollY, ease }) => ({
+        x: +lerp(x, scrollY, ease).toFixed(2),
       }));
 
       this.setTransform(slider, `translate3d(${-this.state.x}px,0,0)`);
@@ -89,11 +88,12 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HANDLERS---------- //
 
   handleScroll: HandleScroll = ({ deltaY }) => {
-    const { scrollY, sliderWidth, windowWidth } = this.state;
+    const { scrollY, sliderWidth, windowWidth, sliderMargin } = this.state;
 
     // Scrolling between 0 and the slider width
     const scrollingWithBoundaries =
-      Math.max(0, scrollY + deltaY) && Math.min(scrollY + deltaY, sliderWidth - windowWidth + 30);
+      Math.max(0, scrollY + deltaY) &&
+      Math.min(scrollY + deltaY, sliderWidth - windowWidth + 2 * sliderMargin);
 
     this.setState(() => ({
       scrollY: +scrollingWithBoundaries.toFixed(2),
@@ -131,8 +131,6 @@ class ParallaxSlider extends Component<Props, State> {
     this.setState(({ thumbnails }) => ({ thumbnails: thumbnails.splice(thumbnailIndex, 1) }));
     img.removeEventListener('load', this.setFullSizePhoto);
   };
-
-  // ----------JSX TEMPLATES---------- //
 
   // ----------COMPONENT LIFE CYCLE---------- //
 
@@ -202,23 +200,34 @@ class ParallaxSlider extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { windowHeight, windowWidth, imgRatio, imgWidth } = this.state;
+    const { windowHeight, imgRatio, imgWidth } = this.state;
 
     if (prevState.imgRatio !== imgRatio) {
-      const width = 0.7 * windowHeight * imgRatio;
-
       // Set image width based on its ratio
-      this.setState({
-        imgWidth: +width.toFixed(2),
-        sliderWidth: +(width * this.imageRefs.length - windowWidth).toFixed(2),
-      });
+      // And set proper width of the wrappers
 
-      // Set proper width of the wrappers
+      const imageWidth = 0.7 * windowHeight * imgRatio;
+
+      this.setState({ imgWidth: +imageWidth.toFixed(2) });
+
       [...this.wrapperRefs].forEach((el) => {
         if (el && typeof imgWidth === 'number') {
-          el.style.width = `${width - 200}px`;
+          el.style.width = `${imageWidth - 200}px`;
         }
       });
+
+      // Store the slider margin in the state
+      // And then set its width based on this margin
+
+      const slider = this.sliderRef.current;
+
+      if (slider) {
+        this.setState({ sliderMargin: slider.getBoundingClientRect().x });
+
+        this.setState(({ sliderMargin }) => ({
+          sliderWidth: slider.clientWidth + sliderMargin * this.imagesQuantity,
+        }));
+      }
     }
   }
 
@@ -234,7 +243,11 @@ class ParallaxSlider extends Component<Props, State> {
     const { sliderWidth, images } = this.state;
 
     return (
-      <div className="gallery_slider" ref={this.sliderRef} style={{ width: sliderWidth }}>
+      <div
+        className="gallery_slider"
+        ref={this.sliderRef}
+        style={{ width: sliderWidth === 0 ? 'auto' : sliderWidth }}
+      >
         {images}
       </div>
     );
