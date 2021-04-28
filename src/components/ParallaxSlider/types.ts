@@ -5,10 +5,10 @@ export interface Props {
 }
 
 export interface State {
-  thumbnails: JSX.Element[];
-  images: JSX.Element[];
-  imgWidth: number | 'auto';
+  isThumbnailMounted: boolean[];
   imgRatio: number;
+  imgWidth: number;
+  imgHeight: number;
   ease: number;
   sliderWidth: number;
   sliderMargin: number;
