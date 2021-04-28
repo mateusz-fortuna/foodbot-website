@@ -80,13 +80,6 @@ class ParallaxSlider extends Component<Props, State> {
     }));
   };
 
-  updateViewportSize = () => {
-    this.setState({
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
-    });
-  };
-
   setFullSizePhoto: SetFullSizePhoto = ({ target }) => {
     // Get the target image id and use it as an index
     const img = target as HTMLDivElement;
@@ -104,6 +97,13 @@ class ParallaxSlider extends Component<Props, State> {
     }
 
     img.removeEventListener('load', this.setFullSizePhoto);
+  };
+
+  updateViewportSize = () => {
+    this.setState({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+    });
   };
 
   // ----------COMPONENT LIFE CYCLE---------- //
@@ -124,11 +124,13 @@ class ParallaxSlider extends Component<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { windowHeight, imgHeight, imgRatio } = this.state;
 
+    // Conditions
     const windowHeightChanged = prevState.windowHeight !== windowHeight;
     const imgRatioChanged = prevState.imgRatio !== imgRatio;
     const referencesLoaded = this.imageRefs.length === this.props.imagesURLs.length;
 
     if (windowHeightChanged) {
+      // Update the height of the images
       this.setState(({ windowHeight }) => ({ imgHeight: 0.7 * windowHeight }));
     }
 
