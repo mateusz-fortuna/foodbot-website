@@ -7,7 +7,7 @@ import {
   State,
   SetTransform,
   HandleScroll,
-  InsertThumbnail,
+  GenerateThumbnails,
   SetFullSizePhoto,
   EqualNumberIDs,
   SetImageRatio,
@@ -113,62 +113,45 @@ class ParallaxSlider extends Component<Props, State> {
   };
 
   setFullSizePhoto: SetFullSizePhoto = ({ target }) => {
-    const { thumbnails } = this.state;
+    // Get the target image id and use it as an index to remove
+    const img = target as HTMLDivElement;
+    const imgID = img.getAttribute('id')?.match(/\d+/);
 
-    const img = target as HTMLElement;
-    const imgID = img.getAttribute('id');
-    const imgNumberID = imgID?.slice(imgID.length - 1);
-
-    const equalNumberIDs: EqualNumberIDs = (el) => {
-      const thumbnailID = el.getAttribute('id');
-      const thumbnailNumberID = thumbnailID.slice(thumbnailID.length - 1);
-
-      return imgNumberID === thumbnailNumberID;
-    };
-
-    const thumbnailIndex = thumbnails.findIndex(equalNumberIDs);
-
-    this.setState(({ thumbnails }) => ({ thumbnails: thumbnails.splice(thumbnailIndex, 1) }));
-    img.removeEventListener('load', this.setFullSizePhoto);
+    if (imgID) {
+      // Remove the thumbnail from the array and its event
+      this.setState(({ thumbnails }) => ({ thumbnails: thumbnails.splice(+imgID - 1, 1) }));
+      img.removeEventListener('load', this.setFullSizePhoto);
+    }
   };
 
-  // ----------COMPONENT LIFE CYCLE---------- //
+  // ----------JSX TEMPLATE---------- //
 
-  componentDidMount() {
-    const { imagesURLs, thumbnailsURLs } = this.props;
-    const { imgWidth, windowHeight } = this.state;
+  // A function which generates the thumbnails and pass them to the state
 
-    // Generate the thumbnails and pass them to the state
-
-    thumbnailsURLs?.map((path, index) => {
-      this.setState(({ thumbnails }) => ({
+  generateThumbnails: GenerateThumbnails = (urlArray) =>
+    urlArray?.map((path, index) => {
+      this.setState(({ thumbnails, windowHeight }) => ({
         thumbnails: [
           ...thumbnails,
-          <div className="thumbnailWrapper" id={`ThumbnailWrapper${index + 1}`}>
+          <div className="thumbnailWrapper" id={`thumbnailWrapper${index + 1}`}>
             <Spinner />
-            <div
+            <img
+              src={path}
+              height={0.7 * windowHeight}
               className="thumbnail"
-              style={{
-                width: imgWidth,
-                height: 0.7 * windowHeight,
-                backgroundImage: `url(${path})`,
-              }}
+              alt={`thumbnail${index + 1}`}
             />
           </div>,
         ],
       }));
     });
 
-    const insertThumbnail: InsertThumbnail = (index) => {
-      const { thumbnails } = this.state;
-      if (thumbnails.length !== 0) return thumbnails[index];
-    };
+  // A function which generates the images with their wrappers and thumbnails
+  // And pass them to the state
 
-    // Generate the images with their wrappers and thumbnails
-    // And pass them to the state
-
-    imagesURLs.map((path, index) => {
-      return this.setState(({ images }) => ({
+  generateImages = (urlArray: string[]) =>
+    urlArray.map((path, index) => {
+      return this.setState(({ images, thumbnails, windowHeight }) => ({
         images: [
           ...images,
           <div
@@ -176,7 +159,7 @@ class ParallaxSlider extends Component<Props, State> {
             key={`Wrapper${index + 1}`}
             ref={(ref) => (this.wrapperRefs[index] = ref)}
           >
-            {insertThumbnail(index)}
+            {thumbnails[index]}
             <img
               height={0.7 * windowHeight}
               src={path}
@@ -192,15 +175,24 @@ class ParallaxSlider extends Component<Props, State> {
       }));
     });
 
+  // ----------COMPONENT LIFE CYCLE---------- //
+
+  componentDidMount() {
+    // Generate JSX
+    const { thumbnailsURLs, imagesURLs } = this.props;
+
+    if (thumbnailsURLs) this.generateThumbnails(thumbnailsURLs);
+    this.generateImages(imagesURLs);
+
     // Event listeners
     this.requestID = requestAnimationFrame(this.animateSlider);
     window.addEventListener('wheel', this.handleScroll);
     window.addEventListener('resize', this.updateViewportSize);
-    [...this.imageRefs].forEach((el) => el?.addEventListener('load', this.setFullSizePhoto));
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { windowHeight, imgRatio, imgWidth } = this.state;
+    const { thumbnailsURLs, imagesURLs } = this.props;
 
     if (prevState.imgRatio !== imgRatio) {
       // Set image width based on its ratio
@@ -228,6 +220,10 @@ class ParallaxSlider extends Component<Props, State> {
           sliderWidth: slider.clientWidth + sliderMargin * this.imagesQuantity,
         }));
       }
+    }
+
+    if (this.state.images.length === this.props.imagesURLs.length) {
+      [...this.imageRefs].forEach((el) => el?.addEventListener('load', this.setFullSizePhoto));
     }
   }
 

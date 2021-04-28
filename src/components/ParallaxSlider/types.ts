@@ -20,7 +20,7 @@ export interface State {
 
 export type SetTransform = (el: HTMLElement, value: string) => void;
 export type HandleScroll = (event: WheelEvent) => void;
-export type InsertThumbnail = (index: number) => JSX.Element | undefined;
 export type SetFullSizePhoto = (event: Event) => void;
 export type EqualNumberIDs = (el: any) => void;
 export type SetImageRatio = React.ReactEventHandler<HTMLImageElement>;
+export type GenerateThumbnails = (path: string[]) => void;
