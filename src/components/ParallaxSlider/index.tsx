@@ -1,8 +1,16 @@
 import React, { Component, createRef } from 'react';
 import Thumbnail from './Thumbnail';
 import { lerp } from '../../assets/js/lerp';
-import { Props, State, SetTransform, HandleScroll, SetFullSizePhoto, SetImageRatio } from './types';
+import {
+  Props,
+  State,
+  SetTransform,
+  HandleScroll,
+  SetFullSizePhoto,
+  HandleImageLoad,
+} from './types';
 import './index.sass';
+import SliderImage from './SliderImage';
 
 class ParallaxSlider extends Component<Props, State> {
   private sliderRef: React.RefObject<HTMLDivElement> = createRef();
@@ -32,11 +40,6 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HELPERS---------- //
 
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
-
-  setImageRatio: SetImageRatio = ({ target }) => {
-    const img = target as HTMLImageElement;
-    this.setState({ imgRatio: +(img.width / img.height).toFixed(2) });
-  };
 
   // ----------ANIMATIONS---------- //
 
@@ -99,6 +102,16 @@ class ParallaxSlider extends Component<Props, State> {
     img.removeEventListener('load', this.setFullSizePhoto);
   };
 
+  setImageRatio: HandleImageLoad = ({ target }) => {
+    const img = target as HTMLImageElement;
+    this.setState({ imgRatio: +(img.width / img.height).toFixed(2) });
+  };
+
+  setImageWidth: HandleImageLoad = ({ target }) => {
+    const img = target as HTMLImageElement;
+    this.setState({ imgWidth: img.width });
+  };
+
   updateViewportSize = () => {
     this.setState({
       windowWidth: window.innerWidth,
@@ -143,8 +156,8 @@ class ParallaxSlider extends Component<Props, State> {
       const slider = this.sliderRef.current;
       if (slider) {
         this.setState({ sliderMargin: slider.getBoundingClientRect().x });
-        this.setState(({ sliderMargin }) => ({
-          sliderWidth: slider.clientWidth + sliderMargin * this.imagesQuantity,
+        this.setState(({ sliderMargin, imgWidth }) => ({
+          sliderWidth: (imgWidth - 200 + sliderMargin) * this.imagesQuantity,
         }));
       }
     }
@@ -170,31 +183,25 @@ class ParallaxSlider extends Component<Props, State> {
     return (
       <div className="gallery_slider" ref={this.sliderRef} style={{ width: sliderWidth }}>
         {imagesURLs.map((path, index) => (
-          <div
-            className="imageWrapper"
-            key={`Wrapper${index + 1}`}
-            style={{ width: imgWidth - 200 }}
+          <SliderImage
+            path={path}
+            index={index}
+            imgWidth={imgWidth}
+            imgHeight={imgHeight}
+            imageRefs={this.imageRefs}
+            setImageRatio={this.setImageRatio}
+            key={`SliderImage${index + 1}`}
           >
             {isThumbnailMounted[index] && (
               <Thumbnail
                 index={index}
                 path={path}
                 imgHeight={imgHeight}
-                onLoadHandler={this.setImageRatio}
+                setImageRatio={this.setImageRatio}
+                setImageWidth={this.setImageWidth}
               />
             )}
-
-            <img
-              height={imgHeight}
-              src={path}
-              alt={`${index + 1}`}
-              id={`image${index + 1}`}
-              key={`image${index + 1}`}
-              ref={(el) => (this.imageRefs[index] = el)}
-              className="gallery_image"
-              onLoad={this.setImageRatio}
-            />
-          </div>
+          </SliderImage>
         ))}
       </div>
     );

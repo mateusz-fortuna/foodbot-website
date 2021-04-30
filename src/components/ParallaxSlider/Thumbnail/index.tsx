@@ -1,25 +1,30 @@
 import React from 'react';
 import Spinner from './Spinner';
-import { SetImageRatio } from '../types';
+import { ThumbnailProps, HandleImageLoad } from '../types';
 
-interface Props {
-  index: number;
-  path: string;
-  imgHeight: number;
-  onLoadHandler: SetImageRatio;
-}
+const Thumbnail: React.FC<ThumbnailProps> = ({
+  index,
+  path,
+  imgHeight,
+  setImageRatio,
+  setImageWidth,
+}) => {
+  const handleThumbnailLoad: HandleImageLoad = (event) => {
+    setImageRatio(event);
+    setImageWidth(event);
+  };
 
-const Thumbnail: React.FC<Props> = ({ index, path, imgHeight, onLoadHandler }) => (
-  <div className="thumbnailWrapper" id={`thumbnailWrapper${index + 1}`}>
-    <Spinner />
-    <img
-      src={path}
-      height={imgHeight}
-      className="thumbnail"
-      alt={`thumbnail${index + 1}`}
-      onLoad={onLoadHandler}
-    />
-  </div>
-);
-
+  return (
+    <div className="thumbnailWrapper" id={`thumbnailWrapper${index + 1}`}>
+      <Spinner />
+      <img
+        src={path}
+        height={imgHeight}
+        className="thumbnail"
+        alt={`thumbnail${index + 1}`}
+        onLoad={handleThumbnailLoad}
+      />
+    </div>
+  );
+};
 export default Thumbnail;
