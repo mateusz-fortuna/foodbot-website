@@ -8,8 +8,10 @@ const SliderImage: FC<SliderImageProps> = ({
   imgHeight,
   imageRefs,
   setImageRatio,
+  children,
 }) => (
   <div className="imageWrapper" style={{ width: imgWidth - 200 }}>
+    {children}
     <img
       height={imgHeight}
       src={path}

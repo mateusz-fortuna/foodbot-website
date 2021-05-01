@@ -84,8 +84,8 @@ class ParallaxSlider extends Component<Props, State> {
   };
 
   setFullSizePhoto: SetFullSizePhoto = ({ target }) => {
-    // Get the target image id and use it as an index
-    const img = target as HTMLDivElement;
+    // Get the target image id (number only) and use it as an index
+    const img = target as HTMLImageElement;
     const id = img.getAttribute('id')?.match(/\d+/);
 
     // Remove the thumbnail by falsy rendering condition
@@ -178,7 +178,7 @@ class ParallaxSlider extends Component<Props, State> {
 
   render() {
     const { sliderWidth, isThumbnailMounted, imgWidth, imgHeight } = this.state;
-    const { imagesURLs } = this.props;
+    const { imagesURLs, thumbnailsURLs } = this.props;
 
     return (
       <div className="gallery_slider" ref={this.sliderRef} style={{ width: sliderWidth }}>
@@ -192,10 +192,10 @@ class ParallaxSlider extends Component<Props, State> {
             setImageRatio={this.setImageRatio}
             key={`SliderImage${index + 1}`}
           >
-            {isThumbnailMounted[index] && (
+            {thumbnailsURLs && isThumbnailMounted[index] && (
               <Thumbnail
                 index={index}
-                path={path}
+                path={thumbnailsURLs[index]}
                 imgHeight={imgHeight}
                 setImageRatio={this.setImageRatio}
                 setImageWidth={this.setImageWidth}
