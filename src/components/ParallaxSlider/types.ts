@@ -15,13 +15,15 @@ export interface State {
   sliderWidth: number;
   sliderMargin: number;
   x: number;
-  scrollY: number;
+  pixelsScrolled: number;
+  touchStart: number;
   windowWidth: number;
   windowHeight: number;
 }
 
 export type SetTransform = (el: HTMLElement, value: string) => void;
 export type HandleScroll = (event: WheelEvent) => void;
+export type HandleTouch = (event: TouchEvent) => void;
 export type SetFullSizePhoto = (event: Event) => void;
 export type EqualNumberIDs = (el: any) => void;
 export type HandleImageLoad = React.ReactEventHandler<HTMLImageElement>;

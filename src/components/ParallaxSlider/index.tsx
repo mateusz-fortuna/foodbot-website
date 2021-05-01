@@ -6,6 +6,7 @@ import {
   State,
   SetTransform,
   HandleScroll,
+  HandleTouch,
   SetFullSizePhoto,
   HandleImageLoad,
 } from './types';
@@ -31,7 +32,8 @@ class ParallaxSlider extends Component<Props, State> {
       sliderMargin: 0,
       ease: speed ? speed : 0.05,
       x: 0,
-      scrollY: 0,
+      pixelsScrolled: 0,
+      touchStart: 0,
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     };
@@ -41,7 +43,17 @@ class ParallaxSlider extends Component<Props, State> {
 
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
 
-  resetSliderPosition = () => this.setState({ scrollY: 0 });
+  scrollingWithBoundaries = (scrollPosition: number) => {
+    // Scrolling between 0 and the slider width
+    const { sliderWidth, sliderMargin, windowWidth } = this.state;
+
+    return +(
+      Math.max(0, scrollPosition) &&
+      Math.min(scrollPosition, sliderWidth + 2 * sliderMargin - windowWidth)
+    ).toFixed(2);
+  };
+
+  resetSliderPosition = () => this.setState({ pixelsScrolled: 0 });
 
   // ----------ANIMATIONS---------- //
 
@@ -59,8 +71,8 @@ class ParallaxSlider extends Component<Props, State> {
     const slider = this.sliderRef.current;
 
     if (slider) {
-      this.setState(({ x, scrollY, ease }) => ({
-        x: +lerp(x, scrollY, ease).toFixed(2),
+      this.setState(({ x, pixelsScrolled, ease }) => ({
+        x: +lerp(x, pixelsScrolled, ease).toFixed(2),
       }));
 
       this.setTransform(slider, `translate3d(${-this.state.x}px,0,0)`);
@@ -73,15 +85,22 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HANDLERS---------- //
 
   handleScroll: HandleScroll = ({ deltaY }) => {
-    const { scrollY, sliderWidth, windowWidth, sliderMargin } = this.state;
-
-    // Scrolling between 0 and the slider width
-    const scrollingWithBoundaries =
-      Math.max(0, scrollY + deltaY) &&
-      Math.min(scrollY + deltaY, sliderWidth - windowWidth + 2 * sliderMargin);
+    const { pixelsScrolled } = this.state;
 
     this.setState(() => ({
-      scrollY: +scrollingWithBoundaries.toFixed(2),
+      pixelsScrolled: this.scrollingWithBoundaries(pixelsScrolled + deltaY),
+    }));
+  };
+
+  handleTouchStart: HandleTouch = ({ changedTouches }) => {
+    const start = changedTouches[0].pageX;
+    this.setState({ touchStart: +start.toFixed(2) });
+  };
+
+  handleSwipe: HandleTouch = ({ changedTouches }) => {
+    const touchEnd = changedTouches[0].pageX;
+    this.setState(({ pixelsScrolled, touchStart }) => ({
+      pixelsScrolled: this.scrollingWithBoundaries(pixelsScrolled - (touchEnd - touchStart)),
     }));
   };
 
@@ -136,6 +155,8 @@ class ParallaxSlider extends Component<Props, State> {
 
     this.requestID = requestAnimationFrame(this.animateSlider);
     window.addEventListener('wheel', this.handleScroll);
+    window.addEventListener('touchstart', this.handleTouchStart);
+    window.addEventListener('touchend', this.handleSwipe);
     window.addEventListener('resize', this.updateViewportSize);
   }
 
@@ -179,6 +200,8 @@ class ParallaxSlider extends Component<Props, State> {
   componentWillUnmount() {
     cancelAnimationFrame(this.requestID);
     window.removeEventListener('wheel', this.handleScroll);
+    window.removeEventListener('touchstart', this.handleTouchStart);
+    window.removeEventListener('touchend', this.handleSwipe);
     window.removeEventListener('resize', this.updateViewportSize);
   }
 
