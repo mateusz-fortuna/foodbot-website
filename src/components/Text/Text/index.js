@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { LanguageContext } from '../../assets/js/context/languageContext';
+import { LanguageContext } from '../../../assets/js/context/languageContext';
 
 const Text = ({ category, textID }) => {
   const languageContext = useContext(LanguageContext);

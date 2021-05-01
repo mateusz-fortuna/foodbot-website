@@ -2,75 +2,63 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import './index.sass';
-import Text from '../Text';
+import Text from '../Text/Text';
 
-const Index = props => {
+const Index = (props) => {
   const state = {
     style: {
       introTitle: {
-        fontSize: Math.floor( 0.08 * props.clientWidth )
+        fontSize: Math.floor(0.08 * props.clientWidth),
       },
       introSubtitle: {
-        fontSize: Math.floor( 0.03 * props.clientWidth )
-      }
-    }
-  }
+        fontSize: Math.floor(0.03 * props.clientWidth),
+      },
+    },
+  };
 
   return (
     <Row className="h-100">
       <Col className="h-100 p-0">
         <div className="intro d-flex justify-content-center align-items-center">
           <div className="stripContainer">
-            <CSSTransition
-              in={ props.showIntro }
-              timeout={ 1000 }
-              classNames="stripOne"
-            >
+            <CSSTransition in={props.showIntro} timeout={1000} classNames="stripOne">
               <div className="strip stripOne" />
             </CSSTransition>
-            <CSSTransition
-              in={ props.showIntro }
-              timeout={ 1200 }
-              classNames="stripTwo"
-            >
+            <CSSTransition in={props.showIntro} timeout={1200} classNames="stripTwo">
               <div className="strip stripTwo" />
             </CSSTransition>
-            <CSSTransition
-              in={ props.showIntro }
-              timeout={ 1300 }
-              classNames="stripThree"
-            >
+            <CSSTransition in={props.showIntro} timeout={1300} classNames="stripThree">
               <div className="strip stripThree" />
             </CSSTransition>
-            <CSSTransition
-              in={ props.showIntro }
-              timeout={ 1400 }
-              classNames="stripFour"
-            >
+            <CSSTransition in={props.showIntro} timeout={1400} classNames="stripFour">
               <div className="strip stripFour" />
             </CSSTransition>
           </div>
           <div className="introTextWrapper text-center">
             <div className="introTitleWrapper">
               <CSSTransition
-                in={ props.showIntro }
-                timeout={ 1000 }
+                in={props.showIntro}
+                timeout={1000}
                 classNames="introTitle"
-                appear={ true }
+                appear={true}
               >
-                <h1 className="introTitle" style={ state.style.introTitle }><Text category="intro" textID="title" /></h1>
+                <h1 className="introTitle" style={state.style.introTitle}>
+                  <Text category="intro" textID="title" />
+                </h1>
               </CSSTransition>
             </div>
             <div className="introSubtitleWrapper">
-            <CSSTransition
-                in={ props.showIntro }
-                timeout={ 2000 }
+              <CSSTransition
+                in={props.showIntro}
+                timeout={2000}
                 classNames="introSubtitle"
-                appear={ true }
+                appear={true}
               >
-                <p className="introSubtitle" style={ state.style.introSubtitle }><Text category="intro" textID="subtitle" /></p>  
+                <p className="introSubtitle" style={state.style.introSubtitle}>
+                  <Text category="intro" textID="subtitle" />
+                </p>
               </CSSTransition>
-            </div> 
+            </div>
           </div>
         </div>
       </Col>

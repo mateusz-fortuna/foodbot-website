@@ -15,8 +15,8 @@ import Gallery from './Gallery';
 import Contact from './Contact';
 import Blog from './Blog';
 import Logo from './Logo';
-import { Navigation } from './Navigation/index.tsx';
-import Transition from './Transition/index.tsx';
+import { Navigation } from './Navigation/Navigation/index.tsx';
+import Transition from './Transitions/TransitionIn/index.tsx';
 
 import { capitalize } from '../assets/js/capitalize.ts';
 

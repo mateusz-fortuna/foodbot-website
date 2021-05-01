@@ -44,9 +44,8 @@ class ParallaxSlider extends Component<Props, State> {
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
 
   scrollingWithBoundaries = (scrollPosition: number) => {
-    // Scrolling between 0 and the slider width
     const { sliderWidth, sliderMargin, windowWidth } = this.state;
-
+    // Scrolling between 0 and the slider width
     return +(
       Math.max(0, scrollPosition) &&
       Math.min(scrollPosition, sliderWidth + 2 * sliderMargin - windowWidth)
@@ -85,9 +84,7 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------HANDLERS---------- //
 
   handleScroll: HandleScroll = ({ deltaY }) => {
-    const { pixelsScrolled } = this.state;
-
-    this.setState(() => ({
+    this.setState(({ pixelsScrolled }) => ({
       pixelsScrolled: this.scrollingWithBoundaries(pixelsScrolled + deltaY),
     }));
   };
@@ -104,9 +101,20 @@ class ParallaxSlider extends Component<Props, State> {
     }));
   };
 
-  setFullSizePhoto: SetFullSizePhoto = ({ target }) => {
-    // Get the target image id (number only) and use it as an index
+  setImageRatio: HandleImageLoad = ({ target }) => {
     const img = target as HTMLImageElement;
+    this.setState({ imgRatio: +(img.width / img.height).toFixed(2) });
+  };
+
+  setImageWidth: HandleImageLoad = ({ target }) => {
+    const img = target as HTMLImageElement;
+    this.setState({ imgWidth: img.width });
+  };
+
+  setFullSizePhoto: SetFullSizePhoto = ({ target }) => {
+    const img = target as HTMLImageElement;
+
+    // Get only number from the target image id to use it as an index
     const id = img.getAttribute('id')?.match(/\d+/);
 
     // Remove the thumbnail by falsy rendering condition
@@ -121,16 +129,6 @@ class ParallaxSlider extends Component<Props, State> {
     }
 
     img.removeEventListener('load', this.setFullSizePhoto);
-  };
-
-  setImageRatio: HandleImageLoad = ({ target }) => {
-    const img = target as HTMLImageElement;
-    this.setState({ imgRatio: +(img.width / img.height).toFixed(2) });
-  };
-
-  setImageWidth: HandleImageLoad = ({ target }) => {
-    const img = target as HTMLImageElement;
-    this.setState({ imgWidth: img.width });
   };
 
   updateViewportSize = () => {

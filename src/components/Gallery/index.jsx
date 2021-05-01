@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Cursor from '../Cursor';
-import TransitionOut from '../TransitionOut';
+import TransitionOut from '../Transitions/TransitionOut';
 import ParallaxSlider from '../ParallaxSlider/index.tsx';
 import { LanguageContext } from '../../assets/js/context/languageContext';
 import './index.sass';

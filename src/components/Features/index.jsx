@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import Circle from '../Circle';
 import Cursor from '../Cursor';
-import FeaturesDetails from '../FeaturesDetails';
+import FeaturesDetails from './FeaturesDetails';
 import Image from '../../assets/images/printer-perspective.png';
 
 const Features = (props) => {

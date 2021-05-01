@@ -49,7 +49,7 @@ const FeaturesDetails = React.forwardRef((props, ref) => {
   };
 
   const [imageLoaded, setImageLoaded] = useState(false);
-  const images = require.context('../../assets/images', true);
+  const images = require.context('../../../assets/images', true);
   const path = images(`./${data[activeIndex].name}.jpg`);
 
   const toCamelCase = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Transition from '../Transition';
+import Transition from '../../Transitions/TransitionIn';
 
 interface Props {
   targetPath: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import Text from '../Text';
+import Text from '../../Text/Text';
 
 const DiscoverFeaturesButton = (props) => {
   const { clientWidth, style } = props;

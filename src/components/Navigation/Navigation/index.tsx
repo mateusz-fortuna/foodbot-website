@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { throttle } from '../../assets/js/throttle';
+import { throttle } from '../../../assets/js/throttle';
 import './index.sass';
 
 interface Navigation {

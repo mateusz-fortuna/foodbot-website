@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './index.sass';
 import PrinterImage from '../../assets/images/food-printer-w-background.jpg';
-import TransitionOut from '../TransitionOut';
+import TransitionOut from '../Transitions/TransitionOut';
 import Cursor from '../Cursor';
-import Text from '../Text';
-import MultiLinesText from '../MultiLinesText';
-import DiscoverFeaturesButton from '../DiscoverFeaturesButton';
+import Text from '../Text/Text';
+import MultiLinesText from '../Text/MultiLinesText';
+import DiscoverFeaturesButton from './DiscoverFeaturesButton';
 
 const Home = (props) => {
   const homeImageWrapperRef = useRef();
