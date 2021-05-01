@@ -41,6 +41,8 @@ class ParallaxSlider extends Component<Props, State> {
 
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
 
+  resetSliderPosition = () => this.setState({ scrollY: 0 });
+
   // ----------ANIMATIONS---------- //
 
   animateImages = () => {
@@ -129,18 +131,23 @@ class ParallaxSlider extends Component<Props, State> {
       }))
     );
 
+    const slider = this.sliderRef.current;
+    if (slider) this.setState({ sliderMargin: slider.getBoundingClientRect().x });
+
     this.requestID = requestAnimationFrame(this.animateSlider);
     window.addEventListener('wheel', this.handleScroll);
     window.addEventListener('resize', this.updateViewportSize);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { windowHeight, imgHeight, imgRatio } = this.state;
+    const { windowHeight, imgHeight, imgRatio, isThumbnailMounted } = this.state;
 
     // Conditions
     const windowHeightChanged = prevState.windowHeight !== windowHeight;
     const imgRatioChanged = prevState.imgRatio !== imgRatio;
     const referencesLoaded = this.imageRefs.length === this.props.imagesURLs.length;
+    const thumbnailsChanged = prevState.isThumbnailMounted !== isThumbnailMounted;
+    const thumbnailsUnmounted = isThumbnailMounted.every((val) => val === false);
 
     if (windowHeightChanged) {
       // Update the height of the images
@@ -155,7 +162,6 @@ class ParallaxSlider extends Component<Props, State> {
       // Set the slider width based on its margin
       const slider = this.sliderRef.current;
       if (slider) {
-        this.setState({ sliderMargin: slider.getBoundingClientRect().x });
         this.setState(({ sliderMargin, imgWidth }) => ({
           sliderWidth: (imgWidth - 200 + sliderMargin) * this.imagesQuantity,
         }));
@@ -166,6 +172,8 @@ class ParallaxSlider extends Component<Props, State> {
     if (referencesLoaded) {
       [...this.imageRefs].forEach((el) => el?.addEventListener('load', this.setFullSizePhoto));
     }
+
+    if (thumbnailsChanged && thumbnailsUnmounted) this.resetSliderPosition();
   }
 
   componentWillUnmount() {
