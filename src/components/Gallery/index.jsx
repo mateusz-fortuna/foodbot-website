@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Cursor from '../Cursor';
 import TransitionOut from '../Transitions/TransitionOut';
+import { NavigationButton } from '../Navigation/NavigationButton/index.tsx';
 import ParallaxSlider from '../ParallaxSlider/index.tsx';
 import { LanguageContext } from '../../assets/js/context/languageContext';
 import './index.sass';
 
-const Gallery = ({ reference }) => {
+const Gallery = ({ reference, navigationButtons }) => {
+  const { featuresNavButton, contactNavButton } = navigationButtons;
+
   // Get number of the images
   const languageContext = useContext(LanguageContext);
   const { imagesQuantity } = languageContext.dictionary.gallery;
@@ -31,7 +34,21 @@ const Gallery = ({ reference }) => {
       <TransitionOut />
       <Cursor reference={reference} type="solid" color="dark" />
       <Col sm={12}>
+        <NavigationButton
+          className="gallery__navButton gallery__navButton--features"
+          reference={featuresNavButton}
+          target="features"
+        >
+          Back to Features
+        </NavigationButton>
         <ParallaxSlider imagesURLs={imagesURLs} thumbnailsURLs={thumbnailsURLs} />
+        <NavigationButton
+          className="gallery__navButton gallery__navButton--contact"
+          reference={contactNavButton}
+          target="contact"
+        >
+          Go to Contact
+        </NavigationButton>
       </Col>
     </Row>
   );

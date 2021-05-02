@@ -3,14 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { throttle } from '../../../assets/js/throttle';
 import './index.sass';
 
+type NavigationButtonElement = HTMLButtonElement | HTMLParagraphElement;
+
 interface Navigation {
   urlEnd: string;
   urlEnds: Array<string>;
   setIsMountedTransition: React.Dispatch<React.SetStateAction<boolean>>;
-  buttonNavigation?: {
-    ref: React.MutableRefObject<HTMLButtonElement | HTMLAnchorElement>;
-    redirectTo: string;
-  }[];
+  buttonNavigation?: React.MutableRefObject<NavigationButtonElement>[];
   navigationExceptions?: string[];
 }
 
@@ -101,10 +100,15 @@ export const Navigation = (props: Navigation) => {
 
   // ----------HANDLE CLICK NAVIGATION---------- //
 
-  const handleClickNavigation = (targetPath: string) => {
-    mountTransition();
-    changeURLAfterAnimations(targetPath);
-    unmountTransition();
+  const handleClickNavigation: EventListener = ({ target }) => {
+    const button = target as NavigationButtonElement;
+    const redirectTo = button.dataset.target;
+
+    if (redirectTo) {
+      mountTransition();
+      changeURLAfterAnimations(redirectTo);
+      unmountTransition();
+    }
   };
 
   useEffect(() => {
@@ -116,13 +120,10 @@ export const Navigation = (props: Navigation) => {
 
     if (buttonNavigation) {
       buttonNavigation.map((button) => {
-        const currentButton = button.ref.current;
-        const isButtonExisting = currentButton !== undefined && currentButton !== null;
+        const currentButton = button.current;
 
-        if (isButtonExisting) {
-          return currentButton.addEventListener('click', () =>
-            handleClickNavigation(button.redirectTo)
-          );
+        if (currentButton) {
+          return currentButton.addEventListener('click', handleClickNavigation);
         }
         return button;
       });
@@ -137,15 +138,10 @@ export const Navigation = (props: Navigation) => {
 
       if (buttonNavigation) {
         buttonNavigation.map((button) => {
-          const currentButton = button.ref.current;
-          const isButtonExisting = currentButton !== undefined && currentButton !== null;
-
-          if (isButtonExisting) {
-            return currentButton.removeEventListener('click', () =>
-              handleClickNavigation(button.redirectTo)
-            );
+          const currentButton = button.current;
+          if (currentButton) {
+            return currentButton.removeEventListener('click', handleClickNavigation);
           }
-          return button;
         });
       }
     };

@@ -95,9 +95,13 @@ const Home = (props) => {
             onClick={(event) => {
               event.preventDefault();
             }}
-            ref={discoverFeaturesButtonRef}
           >
-            <DiscoverFeaturesButton clientWidth={clientWidth} style={state.style.link} />
+            <DiscoverFeaturesButton
+              reference={discoverFeaturesButtonRef}
+              target="features"
+              clientWidth={clientWidth}
+              style={state.style.link}
+            />
           </a>
         </div>
 

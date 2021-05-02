@@ -33,6 +33,8 @@ const App = () => {
 
   const menuButtonRef = useRef();
   const discoverFeaturesButtonRef = useRef();
+  const featuresNavButton = useRef();
+  const contactNavButton = useRef();
   const logoRef = useRef();
 
   const urlEnds = ['', 'features', 'gallery', 'contact', 'blog'];
@@ -189,7 +191,7 @@ const App = () => {
             urlEnds={urlEnds}
             urlEnd={urlEnd}
             setIsMountedTransition={setIsMountedTransition}
-            buttonNavigation={[{ ref: discoverFeaturesButtonRef, redirectTo: 'features' }]}
+            buttonNavigation={[discoverFeaturesButtonRef, featuresNavButton, contactNavButton]}
             navigationExceptions={['gallery']}
           />
 
@@ -252,9 +254,8 @@ const App = () => {
             </Route>
             <Route path="/gallery">
               <Gallery
-                reference={[menuButtonRef, logoRef]}
-                windowWidth={width}
-                windowHeight={height}
+                reference={[menuButtonRef, logoRef, featuresNavButton, contactNavButton]}
+                navigationButtons={{ featuresNavButton, contactNavButton }}
               />
             </Route>
             <Route path="/contact">

@@ -25,7 +25,6 @@ export class Cursor extends Component {
     this.state = {
       isStuck: false,
       isNoisy: false,
-      showCursor: false,
       test: [this.props.reference].flat(Infinity),
     };
 
@@ -86,9 +85,6 @@ export class Cursor extends Component {
       this.canvasCursorSpeedTimeout = setTimeout(() => {
         this.canvasCursorSpeed = 0.2;
       }, 100);
-      this.setState({
-        showCursor: true,
-      });
 
       this.clientX = event.clientX;
       this.clientY = event.clientY;
@@ -174,8 +170,6 @@ export class Cursor extends Component {
           polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
           smallCursorBgColor.style.backgroundColor = '#e0e0e0';
         }
-      } else {
-        console.error('Set type and color property for the interactive cursor component.');
       }
 
       const { isStuck } = this.state;

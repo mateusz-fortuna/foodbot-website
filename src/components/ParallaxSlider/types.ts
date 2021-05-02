@@ -1,5 +1,7 @@
 // ----------PARALLAX SLIDER---------- //
 
+import React from 'react';
+
 export interface Props {
   imagesURLs: string[];
   thumbnailsURLs?: string[];
