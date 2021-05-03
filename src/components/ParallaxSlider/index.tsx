@@ -1,5 +1,8 @@
 import React, { Component, createRef } from 'react';
 import Thumbnail from './Thumbnail';
+import SliderImage from './SliderImage';
+import NavigationButton from '../Navigation/NavigationButton';
+import Arrow from '../Navigation/NavigationButton/Arrow';
 import { lerp } from '../../assets/js/lerp';
 import {
   Props,
@@ -11,7 +14,6 @@ import {
   HandleImageLoad,
 } from './types';
 import './index.sass';
-import SliderImage from './SliderImage';
 
 class ParallaxSlider extends Component<Props, State> {
   private sliderRef: React.RefObject<HTMLDivElement> = createRef();
@@ -30,6 +32,7 @@ class ParallaxSlider extends Component<Props, State> {
       imgHeight: 0.7 * window.innerHeight,
       sliderWidth: 0,
       sliderMargin: 0,
+      buttonsWidth: 0,
       ease: speed ? speed : 0.05,
       x: 0,
       pixelsScrolled: 0,
@@ -44,7 +47,7 @@ class ParallaxSlider extends Component<Props, State> {
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
 
   scrollingWithBoundaries = (scrollPosition: number) => {
-    const { sliderWidth, sliderMargin, windowWidth } = this.state;
+    const { sliderWidth, sliderMargin, windowWidth, buttonsWidth } = this.state;
     // Scrolling between 0 and the slider width
     return +(
       Math.max(0, scrollPosition) &&
@@ -54,6 +57,19 @@ class ParallaxSlider extends Component<Props, State> {
 
   resetSliderPosition = () => this.setState({ pixelsScrolled: 0 });
 
+  getNavButtonsWidth = () => {
+    const { navigationButtons } = this.props;
+
+    if (navigationButtons) {
+      const { featuresNavButton, contactNavButton } = navigationButtons;
+      const featuresButton = featuresNavButton.current;
+      const contactButton = contactNavButton.current;
+
+      return featuresButton.offsetWidth + contactButton.offsetWidth;
+    }
+    return 0;
+  };
+
   // ----------ANIMATIONS---------- //
 
   animateImages = () => {
@@ -62,7 +78,8 @@ class ParallaxSlider extends Component<Props, State> {
 
     [...this.imageRefs].forEach((img, index) => {
       const intersectionRatioValue = +(ratio - index * 0.07).toFixed(2);
-      if (img) this.setTransform(img, `translate3d(${intersectionRatioValue * 70}px, 0,0)`);
+      if (img)
+        this.setTransform(img, `translate3d(${Math.min(intersectionRatioValue * 70, 199)}px, 0,0)`);
     });
   };
 
@@ -160,6 +177,7 @@ class ParallaxSlider extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { windowHeight, imgHeight, imgRatio, isThumbnailMounted } = this.state;
+    const { navigationButtons } = this.props;
 
     // Conditions
     const windowHeightChanged = prevState.windowHeight !== windowHeight;
@@ -167,6 +185,7 @@ class ParallaxSlider extends Component<Props, State> {
     const referencesLoaded = this.imageRefs.length === this.props.imagesURLs.length;
     const thumbnailsChanged = prevState.isThumbnailMounted !== isThumbnailMounted;
     const thumbnailsUnmounted = isThumbnailMounted.every((val) => val === false);
+    const buttonsWidthChanged = prevProps.navigationButtons !== navigationButtons;
 
     if (windowHeightChanged) {
       // Update the height of the images
@@ -181,8 +200,8 @@ class ParallaxSlider extends Component<Props, State> {
       // Set the slider width based on its margin
       const slider = this.sliderRef.current;
       if (slider) {
-        this.setState(({ sliderMargin, imgWidth }) => ({
-          sliderWidth: (imgWidth - 200 + sliderMargin) * this.imagesQuantity,
+        this.setState(({ sliderMargin, imgWidth, buttonsWidth }) => ({
+          sliderWidth: (imgWidth - 200 + 4 * sliderMargin) * this.imagesQuantity + buttonsWidth,
         }));
       }
     }
@@ -193,6 +212,8 @@ class ParallaxSlider extends Component<Props, State> {
     }
 
     if (thumbnailsChanged && thumbnailsUnmounted) this.resetSliderPosition();
+
+    if (buttonsWidthChanged) this.setState({ buttonsWidth: this.getNavButtonsWidth() });
   }
 
   componentWillUnmount() {
@@ -207,10 +228,20 @@ class ParallaxSlider extends Component<Props, State> {
 
   render() {
     const { sliderWidth, isThumbnailMounted, imgWidth, imgHeight } = this.state;
-    const { imagesURLs, thumbnailsURLs } = this.props;
+    const { imagesURLs, thumbnailsURLs, navigationButtons } = this.props;
 
     return (
       <div className="gallery_slider" ref={this.sliderRef} style={{ width: sliderWidth }}>
+        {navigationButtons ? (
+          <NavigationButton
+            reference={navigationButtons.featuresNavButton}
+            target="features"
+            text="Back to Features"
+            className="gallery__navButton gallery__navButton--features"
+          >
+            <Arrow direction="up" className="gallery__navButton--svg" size={64} />
+          </NavigationButton>
+        ) : null}
         {imagesURLs.map((path, index) => (
           <SliderImage
             path={path}
@@ -232,6 +263,16 @@ class ParallaxSlider extends Component<Props, State> {
             )}
           </SliderImage>
         ))}
+        {navigationButtons ? (
+          <NavigationButton
+            reference={navigationButtons.contactNavButton}
+            target="contact"
+            text="Go to Contact"
+            className="gallery__navButton gallery__navButton--contact"
+          >
+            <Arrow direction="down" className="gallery__navButton--svg" size={64} />
+          </NavigationButton>
+        ) : null}
       </div>
     );
   }

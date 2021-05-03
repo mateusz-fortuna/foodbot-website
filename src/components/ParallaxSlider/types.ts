@@ -2,10 +2,16 @@
 
 import React from 'react';
 
+type ButtonRef = React.MutableRefObject<HTMLButtonElement>;
+
 export interface Props {
   imagesURLs: string[];
   thumbnailsURLs?: string[];
   speed?: number;
+  navigationButtons?: {
+    featuresNavButton: ButtonRef;
+    contactNavButton: ButtonRef;
+  };
 }
 
 export interface State {
@@ -16,6 +22,7 @@ export interface State {
   ease: number;
   sliderWidth: number;
   sliderMargin: number;
+  buttonsWidth: number;
   x: number;
   pixelsScrolled: number;
   touchStart: number;

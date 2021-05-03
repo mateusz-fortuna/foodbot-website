@@ -12,7 +12,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const handleThumbnailLoad: HandleImageLoad = (event) => {
     setImageRatio(event);
     setImageWidth(event);
-    console.log('done');
   };
 
   return (
