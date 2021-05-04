@@ -20,6 +20,7 @@ class ParallaxSlider extends Component<Props, State> {
   private imageRefs: (HTMLImageElement | null)[] = [];
   private imagesQuantity: number = this.props.imagesURLs.length;
   private requestID: number = 0;
+  private passive: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
   constructor(props: Props) {
     super(props);
@@ -169,9 +170,9 @@ class ParallaxSlider extends Component<Props, State> {
     if (slider) this.setState({ sliderMargin: slider.getBoundingClientRect().x });
 
     this.requestID = requestAnimationFrame(this.animateSlider);
-    window.addEventListener('wheel', this.handleScroll);
-    window.addEventListener('touchstart', this.handleTouchStart);
-    window.addEventListener('touchend', this.handleSwipe);
+    window.addEventListener('wheel', this.handleScroll, this.passive);
+    window.addEventListener('touchstart', this.handleTouchStart, this.passive);
+    window.addEventListener('touchend', this.handleSwipe, this.passive);
     window.addEventListener('resize', this.updateViewportSize);
   }
 
@@ -218,9 +219,9 @@ class ParallaxSlider extends Component<Props, State> {
 
   componentWillUnmount() {
     cancelAnimationFrame(this.requestID);
-    window.removeEventListener('wheel', this.handleScroll);
-    window.removeEventListener('touchstart', this.handleTouchStart);
-    window.removeEventListener('touchend', this.handleSwipe);
+    window.removeEventListener('wheel', this.handleScroll, this.passive);
+    window.removeEventListener('touchstart', this.handleTouchStart, this.passive);
+    window.removeEventListener('touchend', this.handleSwipe, this.passive);
     window.removeEventListener('resize', this.updateViewportSize);
   }
 
