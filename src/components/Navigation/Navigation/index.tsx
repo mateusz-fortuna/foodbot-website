@@ -100,8 +100,8 @@ export const Navigation = (props: Navigation) => {
 
   // ----------HANDLE CLICK NAVIGATION---------- //
 
-  const handleClickNavigation: EventListener = ({ target }) => {
-    const button = target as NavigationButtonElement;
+  const handleClickNavigation: EventListener = ({ currentTarget }) => {
+    const button = currentTarget as NavigationButtonElement;
     const redirectTo = button.dataset.target;
 
     if (redirectTo) {
@@ -121,11 +121,7 @@ export const Navigation = (props: Navigation) => {
     if (buttonNavigation) {
       buttonNavigation.map((button) => {
         const currentButton = button.current;
-
-        if (currentButton) {
-          return currentButton.addEventListener('click', handleClickNavigation);
-        }
-        return button;
+        return currentButton?.addEventListener('click', handleClickNavigation);
       });
     }
 
@@ -139,9 +135,7 @@ export const Navigation = (props: Navigation) => {
       if (buttonNavigation) {
         buttonNavigation.map((button) => {
           const currentButton = button.current;
-          if (currentButton) {
-            return currentButton.removeEventListener('click', handleClickNavigation);
-          }
+          return currentButton?.removeEventListener('click', handleClickNavigation);
         });
       }
     };

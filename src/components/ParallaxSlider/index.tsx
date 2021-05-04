@@ -47,7 +47,7 @@ class ParallaxSlider extends Component<Props, State> {
   setTransform: SetTransform = (el, value) => (el.style.transform = value);
 
   scrollingWithBoundaries = (scrollPosition: number) => {
-    const { sliderWidth, sliderMargin, windowWidth, buttonsWidth } = this.state;
+    const { sliderWidth, sliderMargin, windowWidth } = this.state;
     // Scrolling between 0 and the slider width
     return +(
       Math.max(0, scrollPosition) &&
