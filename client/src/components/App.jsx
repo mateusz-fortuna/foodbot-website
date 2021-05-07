@@ -49,49 +49,39 @@ const App = () => {
     const menuLines = document.querySelectorAll('.menuLine');
     const menuLabel = document.querySelector('.menuIcon__label');
 
+    const setColor = (menuLines, menuLabel, color) => {
+      if (menuLines && menuLabel) {
+        menuLines.forEach((item) => {
+          const menuLine = item;
+          menuLine.style.backgroundColor = color;
+        });
+        menuLabel.style.color = color;
+      }
+    };
+    const lightColor = '#e0e0e0';
+    const darkColor = '#0e0e0e';
+
     switch (urlEnd) {
       case 'features':
-        menuLines.forEach((item) => {
-          const menuLine = item;
-          menuLine.style.backgroundColor = '#e0e0e0';
-        });
-        if (menuLabel) {
-          menuLabel.style.color = '#e0e0e0';
-        }
+        setColor(menuLines, menuLabel, lightColor);
         break;
-
+      case 'contact':
+        setColor(menuLines, menuLabel, lightColor);
+        break;
       case 'gallery':
-        menuLines.forEach((item) => {
-          const menuLine = item;
-          menuLine.style.backgroundColor = '#0e0e0e';
-        });
-        if (menuLabel) {
-          menuLabel.style.color = '#0e0e0e';
-        }
+        setColor(menuLines, menuLabel, darkColor);
+        break;
+      case 'blog':
+        setColor(menuLines, menuLabel, darkColor);
         break;
 
       default:
         if (menuButtonIsClicked) {
-          menuLines.forEach((item) => {
-            const menuLine = item;
-            menuLine.style.backgroundColor = '#e0e0e0';
-          });
-          if (menuLabel) {
-            menuLabel.style.color = '#e0e0e0';
-          }
+          setColor(menuLines, menuLabel, lightColor);
         } else if (width < 992) {
-          menuLines.forEach((item) => {
-            const menuLine = item;
-            menuLine.style.backgroundColor = '#e0e0e0';
-          });
+          setColor(menuLines, menuLabel, lightColor);
         } else {
-          menuLines.forEach((item) => {
-            const menuLine = item;
-            menuLine.style.backgroundColor = '#0e0e0e';
-          });
-          if (menuLabel) {
-            menuLabel.style.color = '#0e0e0e';
-          }
+          setColor(menuLines, menuLabel, darkColor);
         }
     }
   };
