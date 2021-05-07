@@ -9,6 +9,7 @@ const Contact = ({ reference }) => {
 
   const [inputs, setInputs] = useState([]);
   const [form, setForm] = useState(null);
+  const inputRef = useCallback((node) => setInputs((inputs) => [...inputs, node]), []);
   const formRef = useCallback((node) => setForm(node), []);
 
   // ----------THE CURSOR BEHAVIOR ON FORM---------- //
@@ -67,7 +68,7 @@ const Contact = ({ reference }) => {
               type="email"
               className="form-control"
               placeholder="Enter your email"
-              ref={(ref) => inputs.push(ref)}
+              ref={inputRef}
             />
           </div>
         </form>
