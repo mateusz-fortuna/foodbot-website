@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Serve the static files from the React app
-app.use(express.static(join(__dirname + "client/build")));
+app.use(express.static(join(__dirname + "/client/build")));
 
 // An API endpoint
 app.get("/api", (req, res) => {

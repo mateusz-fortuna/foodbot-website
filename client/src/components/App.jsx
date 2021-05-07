@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.sass';
 
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Container, Button } from 'react-bootstrap';
 import { LanguageProvider } from '../assets/js/context/languageContext';
