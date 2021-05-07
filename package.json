@@ -22,7 +22,8 @@
   "homepage": "https://github.com/mateusz-fortuna/foodbot-website#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mkdirp": "^1.0.4"
+    "mkdirp": "^1.0.4",
+    "node-sass": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
