@@ -1,5 +1,5 @@
 {
-  "homepage": "http://mateusz-fortuna.github.io/foodbot-website",
+  "homepage": ".",
   "name": "foodbot-website",
   "version": "0.1.0",
   "private": true,
@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
+    "caniuse-lite": "^1.0.30001223",
     "emailjs-com": "^2.6.4",
     "gh-pages": "^2.2.0",
     "gsap": "^3.0.5",
