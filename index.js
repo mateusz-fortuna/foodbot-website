@@ -1,16 +1,23 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import emailjs from "emailjs-com";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+dotenv.config();
 
 const app = express();
 
-// CORS settings
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Init email.js
+const userID = process.env.USER_ID;
+emailjs.init(userID);
+
+// CORS settings
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // Serve the static files from the React app
 app.use(express.static(join(__dirname + "/client/build")));
@@ -21,12 +28,7 @@ const formData = [];
 app.use(express.json());
 
 app.post("/contact/submit", (req, res) => {
-  const data = {
-    name: req.body.name,
-    email: req.body.email,
-    feedback: req.body.feedback,
-  };
-  formData.push(data);
+  formData.push(req.body);
   console.log(formData);
 });
 
@@ -36,5 +38,4 @@ app.get("*", (req, res) => {
 });
 
 const port = process.env.PORT || 3001;
-
 app.listen(port);

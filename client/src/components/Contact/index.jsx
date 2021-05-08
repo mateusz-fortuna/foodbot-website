@@ -90,7 +90,11 @@ const Contact = ({ reference, setPreventNavigation }) => {
     <Row className="contact align-items-center">
       <TransitionOut />
       {renderCursor && (
-        <Cursor reference={[reference, submitButton]} type="solid" color={cursorColor} />
+        <Cursor
+          reference={reference.concat({ current: submitButton })}
+          type="solid"
+          color={cursorColor}
+        />
       )}
 
       <Col md={2} />
