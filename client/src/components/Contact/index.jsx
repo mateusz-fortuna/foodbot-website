@@ -1,16 +1,42 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { debounce } from 'lodash';
 import Cursor from '../Cursor';
 import TransitionOut from '../Transitions/TransitionOut';
 import './index.sass';
 
-const Contact = ({ reference }) => {
+const Contact = ({ reference, setPreventNavigation }) => {
+  // ----------STATE---------- //
+
+  const [formData, setFormData] = useState({});
+
+  // ----------HANDLERS---------- //
+
+  const handleInputChange = (event) => {
+    event.preventDefault();
+
+    const { target } = event;
+    const name = target.name;
+    const value = target.value;
+
+    setFormData((formData) => ({ ...formData, [name]: value }));
+
+    // Prevent scroll navigation when the input contains a text
+
+    if (target.value) return setPreventNavigation(true);
+    return setPreventNavigation(false);
+  };
+  const debouncedInputChange = debounce(handleInputChange, 300);
+
   // ----------REFERENCES---------- //
 
   const [inputs, setInputs] = useState([]);
   const [form, setForm] = useState(null);
+  const [submitButton, setSubmitButton] = useState(null);
+
   const inputRef = useCallback((node) => setInputs((inputs) => [...inputs, node]), []);
   const formRef = useCallback((node) => setForm(node), []);
+  const submitButtonRef = useCallback((node) => setSubmitButton(node), []);
 
   // ----------THE CURSOR BEHAVIOR ON FORM---------- //
 
@@ -55,22 +81,52 @@ const Contact = ({ reference }) => {
   return (
     <Row className="contact align-items-center">
       <TransitionOut />
-      {renderCursor && <Cursor reference={reference} type="solid" color={cursorColor} />}
+      {renderCursor && (
+        <Cursor reference={[reference, submitButton]} type="solid" color={cursorColor} />
+      )}
 
       <Col md={2} />
       <Col md={6}>
         <h1 className="contact__description">Do you have any questions? Contact us!</h1>
 
-        <form className="contact__form" ref={formRef}>
+        <form className="contact__form" ref={formRef} method="POST">
+          <div className="contact__form_group form-group">
+            <label htmlFor="inputName">Name</label>
+            <input
+              type="text"
+              name="name"
+              required
+              className="form-control"
+              placeholder="Enter your name"
+              ref={inputRef}
+              onChange={debouncedInputChange}
+            />
+          </div>
           <div className="contact__form_group form-group">
             <label htmlFor="inputEmail">Email address</label>
             <input
               type="email"
+              name="email"
+              required
               className="form-control"
               placeholder="Enter your email"
               ref={inputRef}
+              onChange={debouncedInputChange}
             />
           </div>
+          <div className="contact__form_group form-group">
+            <label htmlFor="inputMessage">Message</label>
+            <textarea
+              name="feedback"
+              required
+              rows="7"
+              className="form-control"
+              placeholder="What would you like to chat about?"
+              ref={inputRef}
+              onChange={debouncedInputChange}
+            />
+          </div>
+          <input type="submit" value="Submit" ref={submitButtonRef} />
         </form>
       </Col>
     </Row>

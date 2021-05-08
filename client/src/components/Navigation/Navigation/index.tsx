@@ -5,7 +5,7 @@ import './index.sass';
 
 type NavigationButtonElement = HTMLButtonElement | HTMLParagraphElement;
 
-interface Navigation {
+interface Props {
   urlEnd: string;
   urlEnds: Array<string>;
   setIsMountedTransition: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +13,7 @@ interface Navigation {
   navigationExceptions?: string[];
 }
 
-export const Navigation = (props: Navigation) => {
+export const Navigation = (props: Props) => {
   const [touchStart, setTouchStart] = useState(0);
   const history = useHistory();
   const timeout = 600;

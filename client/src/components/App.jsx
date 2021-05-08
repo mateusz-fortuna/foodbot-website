@@ -122,6 +122,10 @@ const App = () => {
 
   const includeUrlExceptions = () => urlEnd !== '';
 
+  // ----------DON'T EXECUTE SCROLL NAVIGATION WHEN INPUTS ARE FOCUSED---------- //
+
+  const [preventNavigation, setPreventNavigation] = useState(false);
+
   useEffect(() => {
     // ----------SET MENU COLOR ON PAGE LOAD----------//
 
@@ -177,13 +181,15 @@ const App = () => {
           {/* ----------NAVIGATION----------*/}
 
           {isMountedTransition && <Transition mountTransition={isMountedTransition} />}
-          <Navigation
-            urlEnds={urlEnds}
-            urlEnd={urlEnd}
-            setIsMountedTransition={setIsMountedTransition}
-            buttonNavigation={[discoverFeaturesButtonRef, featuresNavButton, contactNavButton]}
-            navigationExceptions={['gallery']}
-          />
+          {!preventNavigation && (
+            <Navigation
+              urlEnds={urlEnds}
+              urlEnd={urlEnd}
+              setIsMountedTransition={setIsMountedTransition}
+              buttonNavigation={[discoverFeaturesButtonRef, featuresNavButton, contactNavButton]}
+              navigationExceptions={['gallery']}
+            />
+          )}
 
           {/* ----------LOGO----------*/}
 
@@ -249,7 +255,10 @@ const App = () => {
               />
             </Route>
             <Route path="/contact">
-              <Contact reference={[menuButtonRef, logoRef]} />
+              <Contact
+                reference={[menuButtonRef, logoRef]}
+                setPreventNavigation={setPreventNavigation}
+              />
             </Route>
             <Route path="/blog">
               <Blog reference={[menuButtonRef, logoRef]} />
