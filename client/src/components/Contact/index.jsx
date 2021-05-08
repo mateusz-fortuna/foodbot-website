@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 import { debounce } from 'lodash';
 import Cursor from '../Cursor';
@@ -11,6 +12,11 @@ const Contact = ({ reference, setPreventNavigation }) => {
   const [formData, setFormData] = useState({});
 
   // ----------HANDLERS---------- //
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    axios.post('http://localhost:3001/contact/submit', formData).catch((err) => console.error(err));
+  };
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -50,6 +56,7 @@ const Contact = ({ reference, setPreventNavigation }) => {
 
   useEffect(() => {
     if (form) {
+      form.addEventListener('submit', handleFormSubmit);
       form.addEventListener('mouseenter', setDarkCursor);
       form.addEventListener('mouseleave', setLightCursor);
     }
@@ -64,6 +71,7 @@ const Contact = ({ reference, setPreventNavigation }) => {
 
     return () => {
       if (form) {
+        form.removeEventListener('submit', handleFormSubmit);
         form.removeEventListener('mouseenter', setDarkCursor);
         form.removeEventListener('mouseleave', setLightCursor);
       }
@@ -89,7 +97,7 @@ const Contact = ({ reference, setPreventNavigation }) => {
       <Col md={6}>
         <h1 className="contact__description">Do you have any questions? Contact us!</h1>
 
-        <form className="contact__form" ref={formRef} method="POST">
+        <form className="contact__form" ref={formRef}>
           <div className="contact__form_group form-group">
             <label htmlFor="inputName">Name</label>
             <input
