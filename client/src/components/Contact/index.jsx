@@ -5,6 +5,7 @@ import { debounce } from 'lodash';
 import Cursor from '../Cursor';
 import TransitionOut from '../Transitions/TransitionOut';
 import './index.sass';
+import ContactForm from './Form';
 
 const Contact = ({ reference, setPreventNavigation }) => {
   // ----------STATE---------- //
@@ -28,7 +29,6 @@ const Contact = ({ reference, setPreventNavigation }) => {
     setFormData((formData) => ({ ...formData, [name]: value }));
 
     // Prevent scroll navigation when the input contains a text
-
     if (target.value) return setPreventNavigation(true);
     return setPreventNavigation(false);
   };
@@ -39,6 +39,7 @@ const Contact = ({ reference, setPreventNavigation }) => {
   const [inputs, setInputs] = useState([]);
   const [form, setForm] = useState(null);
   const [submitButton, setSubmitButton] = useState(null);
+  const cursorReferences = reference.concat({ current: submitButton });
 
   const inputRef = useCallback((node) => setInputs((inputs) => [...inputs, node]), []);
   const formRef = useCallback((node) => setForm(node), []);
@@ -54,20 +55,19 @@ const Contact = ({ reference, setPreventNavigation }) => {
   const setDarkCursor = () => setCursorColor('dark');
   const setLightCursor = () => setCursorColor('light');
 
+  // ----------EVENT LISTENERS---------- //
+
   useEffect(() => {
     if (form) {
       form.addEventListener('submit', handleFormSubmit);
       form.addEventListener('mouseenter', setDarkCursor);
       form.addEventListener('mouseleave', setLightCursor);
     }
-    if (inputs.length) {
+    inputs.length &&
       inputs.forEach((input) => {
-        if (input) {
-          input.addEventListener('focusin', hideCursor);
-          ['focusout', 'mouseleave'].forEach((evt) => input.addEventListener(evt, showCursor));
-        }
+        input.addEventListener('focusin', hideCursor);
+        ['focusout', 'mouseleave'].forEach((evt) => input.addEventListener(evt, showCursor));
       });
-    }
 
     return () => {
       if (form) {
@@ -75,71 +75,28 @@ const Contact = ({ reference, setPreventNavigation }) => {
         form.removeEventListener('mouseenter', setDarkCursor);
         form.removeEventListener('mouseleave', setLightCursor);
       }
-      if (inputs.length) {
+      inputs.length &&
         inputs.forEach((input) => {
-          if (input) {
-            input.removeEventListener('focusin', hideCursor);
-            ['focusout', 'mouseleave'].forEach((evt) => input.removeEventListener(evt, showCursor));
-          }
+          input.removeEventListener('focusin', hideCursor);
+          ['focusout', 'mouseleave'].forEach((evt) => input.removeEventListener(evt, showCursor));
         });
-      }
     };
   });
 
   return (
     <Row className="contact align-items-center">
       <TransitionOut />
-      {renderCursor && (
-        <Cursor
-          reference={reference.concat({ current: submitButton })}
-          type="solid"
-          color={cursorColor}
-        />
-      )}
+      {renderCursor && <Cursor reference={cursorReferences} type="solid" color={cursorColor} />}
 
       <Col md={2} />
       <Col md={6}>
         <h1 className="contact__description">Do you have any questions? Contact us!</h1>
-
-        <form className="contact__form" ref={formRef}>
-          <div className="contact__form_group form-group">
-            <label htmlFor="inputName">Name</label>
-            <input
-              type="text"
-              name="name"
-              required
-              className="form-control"
-              placeholder="Enter your name"
-              ref={inputRef}
-              onChange={debouncedInputChange}
-            />
-          </div>
-          <div className="contact__form_group form-group">
-            <label htmlFor="inputEmail">Email address</label>
-            <input
-              type="email"
-              name="email"
-              required
-              className="form-control"
-              placeholder="Enter your email"
-              ref={inputRef}
-              onChange={debouncedInputChange}
-            />
-          </div>
-          <div className="contact__form_group form-group">
-            <label htmlFor="inputMessage">Message</label>
-            <textarea
-              name="feedback"
-              required
-              rows="7"
-              className="form-control"
-              placeholder="What would you like to chat about?"
-              ref={inputRef}
-              onChange={debouncedInputChange}
-            />
-          </div>
-          <input type="submit" value="Submit" ref={submitButtonRef} />
-        </form>
+        <ContactForm
+          formRef={formRef}
+          inputRef={inputRef}
+          submitButtonRef={submitButtonRef}
+          inputChangeHandler={debouncedInputChange}
+        />
       </Col>
     </Row>
   );
