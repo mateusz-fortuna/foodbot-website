@@ -1,7 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import axios from 'axios';
 import { debounce } from 'lodash';
+import ReCAPTCHA from 'react-google-recaptcha';
+import dotenv from 'dotenv';
+import axios from 'axios';
 import './index.sass';
+
+dotenv.config();
 
 const ContactForm = ({
   setRenderCursor,
@@ -11,6 +15,7 @@ const ContactForm = ({
 }) => {
   // ----------STATE---------- //
 
+  const captchaSiteKey = '6LerWc0aAAAAAHshuCVA20zxcp1UbBPCDFGXL1Dg';
   const [formData, setFormData] = useState({});
   const [inputs, setInputs] = useState([]);
   const [form, setForm] = useState(null);
@@ -48,7 +53,13 @@ const ContactForm = ({
     return debounce(handleInputChange, 300);
   };
 
-  const handleFormSubmit = (event) => {
+  const captchaAuthorization = async (authCode) => {
+    return axios
+      .post('http://localhost:3001/contact/authorization', { authCode })
+      .catch((err) => console.error(err));
+  };
+
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     return axios
       .post('http://localhost:3001/contact/submit', formData)
@@ -125,6 +136,7 @@ const ContactForm = ({
           onChange={handleInputChange}
         />
       </div>
+      <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />
       <input type="submit" value="Submit" ref={submitButtonRef} />
     </form>
   );
