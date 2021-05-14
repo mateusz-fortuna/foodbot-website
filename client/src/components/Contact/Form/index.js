@@ -17,13 +17,17 @@ const ContactForm = ({
 
   const captchaSiteKey = '6LerWc0aAAAAAHshuCVA20zxcp1UbBPCDFGXL1Dg';
   const [formData, setFormData] = useState({});
-  const [inputs, setInputs] = useState([]);
   const [form, setForm] = useState(null);
+  const [nameInput, setNameInput] = useState(null);
+  const [emailInput, setEmailInput] = useState(null);
+  const [feedbackInput, setFeedbackInput] = useState(null);
 
   // ----------REFERENCES---------- //
 
-  const inputRef = useCallback((node) => setInputs((inputs) => [...inputs, node]), []);
   const formRef = useCallback((node) => setForm(node), []);
+  const nameRef = useCallback((node) => setNameInput(node), []);
+  const emailRef = useCallback((node) => setEmailInput(node), []);
+  const feedbackRef = useCallback((node) => setFeedbackInput(node), []);
 
   // ----------HELPERS---------- //
 
@@ -74,12 +78,15 @@ const ContactForm = ({
       form.addEventListener('mouseenter', setDarkCursor);
       form.addEventListener('mouseleave', setLightCursor);
     }
-    if (inputs.length) {
-      inputs.forEach((input) => {
+
+    const inputFields = [nameInput, emailInput, feedbackInput];
+
+    inputFields.forEach((input) => {
+      if (input) {
         input.addEventListener('focusin', hideCursor);
         ['focusout', 'mouseleave'].forEach((evt) => input.addEventListener(evt, showCursor));
-      });
-    }
+      }
+    });
 
     return () => {
       if (form) {
@@ -87,12 +94,12 @@ const ContactForm = ({
         form.removeEventListener('mouseenter', setDarkCursor);
         form.removeEventListener('mouseleave', setLightCursor);
       }
-      if (inputs.length) {
-        inputs.forEach((input) => {
+      inputFields.forEach((input) => {
+        if (input) {
           input.removeEventListener('focusin', hideCursor);
           ['focusout', 'mouseleave'].forEach((evt) => input.removeEventListener(evt, showCursor));
-        });
-      }
+        }
+      });
     };
   });
 
@@ -105,22 +112,21 @@ const ContactForm = ({
         <input
           type="text"
           name="name"
-          required
           className="form-control"
-          placeholder="Enter your name"
-          ref={inputRef}
+          placeholder="Your Name"
+          ref={nameRef}
           onChange={handleInputChange}
         />
+        <div className="invalid-feedback">Input valid text</div>
       </div>
       <div className="contact__form_group form-group">
         <label htmlFor="inputEmail">Email address</label>
         <input
           type="email"
           name="email"
-          required
           className="form-control"
-          placeholder="Enter your email"
-          ref={inputRef}
+          placeholder="your.email@sample.com"
+          ref={emailRef}
           onChange={handleInputChange}
         />
       </div>
@@ -128,11 +134,10 @@ const ContactForm = ({
         <label htmlFor="inputMessage">Message</label>
         <textarea
           name="feedback"
-          required
-          rows="7"
+          rows="4"
           className="form-control"
           placeholder="What would you like to chat about?"
-          ref={inputRef}
+          ref={feedbackRef}
           onChange={handleInputChange}
         />
       </div>
