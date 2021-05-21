@@ -1,9 +1,3 @@
-## Live demo is here:
-
-https://mateusz-fortuna.github.io/foodbot-website/#/
-
-
-
 ## Introduction
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
