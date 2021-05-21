@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { debounce } from 'lodash';
+import XRegExp from 'xregexp';
 import ReCAPTCHA from 'react-google-recaptcha';
 import dotenv from 'dotenv';
 import axios from 'axios';
@@ -16,7 +17,13 @@ const ContactForm = ({
   // ----------STATE---------- //
 
   const captchaSiteKey = '6LerWc0aAAAAAHshuCVA20zxcp1UbBPCDFGXL1Dg';
+  const namePattern = XRegExp('[\\p{L}]+');
+  const emailPattern = XRegExp(
+    '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$'
+  );
+  const feedbackPattern = XRegExp('[p{L}ds]+');
   const [formData, setFormData] = useState({});
+
   const [form, setForm] = useState(null);
   const [nameInput, setNameInput] = useState(null);
   const [emailInput, setEmailInput] = useState(null);
@@ -37,25 +44,19 @@ const ContactForm = ({
     return setPreventNavigation(false);
   };
 
+  const showValidationStatus = (element, status) => {
+    if (status) return element.classList.remove('is-invalid');
+    return element.classList.add('is-invalid');
+  };
+
+  const setData = (key, value) => setFormData((formData) => ({ ...formData, [key]: value }));
+
   // ----------HANDLERS---------- //
 
   const showCursor = () => setRenderCursor(true);
   const hideCursor = () => setRenderCursor(false);
   const setDarkCursor = () => setCursorColor('dark');
   const setLightCursor = () => setCursorColor('light');
-
-  const handleInputChange = (event) => {
-    const { target } = event;
-
-    event.preventDefault();
-    preventNavigation(target.value);
-
-    const name = target.name;
-    const value = target.value;
-    setFormData((formData) => ({ ...formData, [name]: value }));
-
-    return debounce(handleInputChange, 300);
-  };
 
   const captchaAuthorization = async (authCode) => {
     return axios
@@ -70,17 +71,32 @@ const ContactForm = ({
       .catch((err) => console.error(err));
   };
 
+  const handleInputChange = (event, element, pattern) => {
+    event.preventDefault();
+
+    const { target } = event;
+    const name = target.name;
+    const value = target.value;
+
+    preventNavigation(value);
+    setData(name, value);
+
+    const isValid = pattern.test(value);
+    showValidationStatus(element, isValid);
+
+    return debounce(handleInputChange, 300);
+  };
+
   // ----------EVENT LISTENERS---------- //
 
   useEffect(() => {
+    const inputFields = [nameInput, emailInput, feedbackInput];
+
     if (form) {
       form.addEventListener('submit', handleFormSubmit);
       form.addEventListener('mouseenter', setDarkCursor);
       form.addEventListener('mouseleave', setLightCursor);
     }
-
-    const inputFields = [nameInput, emailInput, feedbackInput];
-
     inputFields.forEach((input) => {
       if (input) {
         input.addEventListener('focusin', hideCursor);
@@ -115,9 +131,9 @@ const ContactForm = ({
           className="form-control"
           placeholder="Your Name"
           ref={nameRef}
-          onChange={handleInputChange}
+          onChange={(event) => handleInputChange(event, nameInput, namePattern)}
         />
-        <div className="invalid-feedback">Input valid text</div>
+        <div className="invalid-feedback">Input valid text.</div>
       </div>
       <div className="contact__form_group form-group">
         <label htmlFor="inputEmail">Email address</label>
@@ -127,7 +143,7 @@ const ContactForm = ({
           className="form-control"
           placeholder="your.email@sample.com"
           ref={emailRef}
-          onChange={handleInputChange}
+          onChange={(event) => handleInputChange(event, emailInput, emailPattern)}
         />
       </div>
       <div className="contact__form_group form-group">
@@ -138,11 +154,16 @@ const ContactForm = ({
           className="form-control"
           placeholder="What would you like to chat about?"
           ref={feedbackRef}
-          onChange={handleInputChange}
+          onChange={(event) => handleInputChange(event, feedbackInput, feedbackPattern)}
         />
       </div>
       <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />
-      <input type="submit" value="Submit" ref={submitButtonRef} />
+      <input
+        className="contact__form_button contact__form_button--submit"
+        type="submit"
+        value="Submit"
+        ref={submitButtonRef}
+      />
     </form>
   );
 };
