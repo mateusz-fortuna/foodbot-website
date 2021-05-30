@@ -17,12 +17,8 @@ const Logo = ({ mount, urlEnd, width, innerRef }) => {
   };
 
   const setColorDependingOnURL = () => {
-    switch (urlEnd) {
-      case 'features':
-        return '#e0e0e0';
-      default:
-        return '#0e0e0e';
-    }
+    if (urlEnd === 'features' || urlEnd === 'contact') return '#e0e0e0';
+    return '#0e0e0e';
   };
 
   useEffect(() => {
