@@ -6,7 +6,19 @@ import './index.sass';
 const Blog = () => (
   <Row className="blog">
     <TransitionOut />
-    Blog
+    <p
+      style={{
+        fontSize: '3em',
+        width: '100%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        textAlign: 'center',
+      }}
+    >
+      The blog content is in progress.
+    </p>
   </Row>
 );
 
