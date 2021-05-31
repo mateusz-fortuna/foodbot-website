@@ -10,12 +10,8 @@ const app = express();
 app.use(express.json());
 
 dotenv.config();
-const {
-  EMAIL_JS_USER,
-  EMAIL_JS_SERVICE,
-  EMAIL_JS_TEMPLATE,
-  EMAIL_JS_TOKEN,
-} = process.env;
+const { EMAIL_JS_USER, EMAIL_JS_SERVICE, EMAIL_JS_TEMPLATE, EMAIL_JS_TOKEN } =
+  process.env;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,7 +26,7 @@ app.post("/contact/authorization", (req) => {
 });
 
 // Get a data from the contact form and send the email
-app.post("/contact/submit", (req) => {
+app.post("/contact/submit", (req, response) => {
   if (authCode) {
     const data = {
       user_id: EMAIL_JS_USER,
@@ -45,7 +41,7 @@ app.post("/contact/submit", (req) => {
 
     return axios
       .post("https://api.emailjs.com/api/v1.0/email/send", data)
-      .then(console.log("Email sent successfully"))
+      .then(response.send("Email sent successfully"))
       .catch((err) => console.error("Failed to sent email: ", err));
   }
 

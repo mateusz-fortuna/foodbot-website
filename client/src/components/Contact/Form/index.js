@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { debounce } from 'lodash';
+import { debounce, delay } from 'lodash';
 import XRegExp from 'xregexp';
 import ReCAPTCHA from 'react-google-recaptcha';
 import dotenv from 'dotenv';
@@ -13,6 +13,7 @@ const ContactForm = ({
   setCursorColor,
   setPreventNavigation,
   submitButtonRef,
+  submitButton,
 }) => {
   // ----------STATE---------- //
 
@@ -22,12 +23,16 @@ const ContactForm = ({
     '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$'
   );
   const feedbackPattern = XRegExp('[p{L}ds]+');
-  const [formData, setFormData] = useState({});
 
   const [form, setForm] = useState(null);
   const [nameInput, setNameInput] = useState(null);
   const [emailInput, setEmailInput] = useState(null);
   const [feedbackInput, setFeedbackInput] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [sentStatus, setSentStatus] = useState(null);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isCaptchaVisible, setIsCapthaVisible] = useState(true);
+  const [submitButtonMessage, setSubmitButtonMessage] = useState('Submit');
 
   // ----------REFERENCES---------- //
 
@@ -51,12 +56,27 @@ const ContactForm = ({
 
   const setData = (key, value) => setFormData((formData) => ({ ...formData, [key]: value }));
 
+  const disableInputs = useCallback(() => {
+    const formInputs = [nameInput, emailInput, feedbackInput, submitButton];
+    formInputs.forEach((el) => (el.disabled = true));
+  }, [nameInput, emailInput, feedbackInput, submitButton]);
+
+  const handleSubmitButtonMessage = useCallback(() => {
+    if (sentStatus && sentStatus.status === 200)
+      setSubmitButtonMessage('Message sent successfully!');
+    if (isFormSubmitted && !sentStatus) {
+      delay(() => {
+        setSubmitButtonMessage('Failed to send the message. Try again.');
+      }, 1000);
+    }
+  }, [isFormSubmitted, sentStatus]);
+
   // ----------HANDLERS---------- //
 
-  const showCursor = () => setRenderCursor(true);
-  const hideCursor = () => setRenderCursor(false);
-  const setDarkCursor = () => setCursorColor('dark');
-  const setLightCursor = () => setCursorColor('light');
+  const showCursor = useCallback(() => setRenderCursor(true), [setRenderCursor]);
+  const hideCursor = useCallback(() => setRenderCursor(false), [setRenderCursor]);
+  const setDarkCursor = useCallback(() => setCursorColor('dark'), [setCursorColor]);
+  const setLightCursor = useCallback(() => setCursorColor('light'), [setCursorColor]);
 
   const captchaAuthorization = async (authCode) => {
     return axios
@@ -64,21 +84,26 @@ const ContactForm = ({
       .catch((err) => console.error(err));
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    return axios
-      .post('http://localhost:3001/contact/submit', formData)
-      .catch((err) => console.error(err));
-  };
+  const handleFormSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      return axios
+        .post('http://localhost:3001/contact/submit', formData)
+        .then(setIsFormSubmitted(true))
+        .then((res) => setSentStatus(res))
+        .catch((err) => console.error(err));
+    },
+    [formData]
+  );
 
   const handleInputChange = (event, element, pattern) => {
-    event.preventDefault();
-
     const { target } = event;
     const name = target.name;
     const value = target.value;
 
+    event.preventDefault();
     preventNavigation(value);
+
     setData(name, value);
 
     const isValid = pattern.test(value);
@@ -87,9 +112,18 @@ const ContactForm = ({
     return debounce(handleInputChange, 300);
   };
 
-  // ----------EVENT LISTENERS---------- //
+  // ----------COMPONENT LIFE CYCLE---------- //
 
   useEffect(() => {
+    if (sentStatus && sentStatus.status === 200) {
+      disableInputs();
+      setIsCapthaVisible(false);
+    }
+
+    handleSubmitButtonMessage();
+
+    // ----------EVENT LISTENERS---------- //
+
     const inputFields = [nameInput, emailInput, feedbackInput];
 
     if (form) {
@@ -117,7 +151,20 @@ const ContactForm = ({
         }
       });
     };
-  });
+  }, [
+    nameInput,
+    emailInput,
+    feedbackInput,
+    sentStatus,
+    handleSubmitButtonMessage,
+    form,
+    disableInputs,
+    handleFormSubmit,
+    setDarkCursor,
+    setLightCursor,
+    hideCursor,
+    showCursor,
+  ]);
 
   // ----------JSX---------- //
 
@@ -157,11 +204,11 @@ const ContactForm = ({
           onChange={(event) => handleInputChange(event, feedbackInput, feedbackPattern)}
         />
       </div>
-      <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />
+      {isCaptchaVisible && <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />}
       <input
         className="contact__form_button contact__form_button--submit"
         type="submit"
-        value="Submit"
+        value={submitButtonMessage}
         ref={submitButtonRef}
       />
     </form>

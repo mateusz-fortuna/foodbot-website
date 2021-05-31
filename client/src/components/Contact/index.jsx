@@ -32,6 +32,7 @@ const Contact = ({ reference, setPreventNavigation }) => {
           setCursorColor={setCursorColor}
           setPreventNavigation={setPreventNavigation}
           submitButtonRef={submitButtonRef}
+          submitButton={submitButton}
         />
       </Col>
     </Row>
