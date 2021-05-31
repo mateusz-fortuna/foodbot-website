@@ -86,7 +86,7 @@ const Home = (props) => {
         {/* ----------CONTENT TEXT---------- */}
 
         <div className="homeDescription" style={state.style.homeDescription}>
-          <MultiLinesText category="multiline" index={0} textID="description" />
+          <MultiLinesText category="home" textID="description" />
           <br />
 
           <a

@@ -9,7 +9,7 @@ import './index.sass';
 const Gallery = ({ reference, navigationButtons }) => {
   // Get number of the images
   const languageContext = useContext(LanguageContext);
-  const { imagesQuantity } = languageContext.dictionary.gallery;
+  const { imagesQuantity } = languageContext.dictionary.gallery[0];
 
   // Set paths to the images and the thumbnails
   const imagesPath = require.context('../../assets/images/gallery', true);

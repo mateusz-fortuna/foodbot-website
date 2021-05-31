@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { LanguageContext } from '../../../assets/js/context/languageContext';
 
-const MultiLinesText = ({ category, index, textID }) => {
+const MultiLinesText = ({ category, index = 0, textID }) => {
   const languageContext = useContext(LanguageContext);
 
   return (
