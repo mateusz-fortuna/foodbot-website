@@ -4,6 +4,11 @@
     "subtitle": "Create your own dream dessert"
   },
   "menu": "Menu",
+  "multiline": [
+    {
+      "description": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert."
+    }
+  ],
   "home": {
     "title": "FoodBot",
     "description": "FoodBot 3D printer\nis an equipment which\ncan make food quickly.\nIt allows you to create\nyour own dream dessert.",
