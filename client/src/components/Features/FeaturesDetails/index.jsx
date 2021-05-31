@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
+import MultiLinesText from '../../Text/MultiLinesText';
 import './index.sass';
 
 const FeaturesDetails = React.forwardRef((props, ref) => {
@@ -162,6 +163,9 @@ const FeaturesDetails = React.forwardRef((props, ref) => {
                   <span className="crossLine" />
                   <span className="crossLine" />
                 </button>
+                <div className="aboutDetails__data_description">
+                  <MultiLinesText category="features" index={0} textID="description" />
+                </div>
                 <div className="linkWrapper homeTitle" style={{ height: homeTitleFontSize }}>
                   <CSSTransition
                     in={mount && animationDone}
