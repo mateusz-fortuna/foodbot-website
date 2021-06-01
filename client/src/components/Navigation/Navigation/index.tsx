@@ -25,8 +25,8 @@ export const Navigation = (props: Props) => {
   // ----------GENERATE PATCH NAME ON SCROLL---------- //
 
   const generatePatchName = (isScrollingUp: boolean, isScrollingDown: boolean, index: number) => {
-    if (isScrollingDown) return urlEnds[index + 1];
     if (isScrollingUp) return urlEnds[index - 1];
+    if (isScrollingDown) return urlEnds[index + 1];
     return '';
   };
 
@@ -75,8 +75,8 @@ export const Navigation = (props: Props) => {
 
   const handleWheelNavigation = (event: WheelEvent) => {
     if (!isNavigationException()) {
-      const isScrollingDown = event.deltaY > 0;
       const isScrollingUp = event.deltaY < 0;
+      const isScrollingDown = event.deltaY > 0;
       changeUrlWithTransitions(isScrollingUp, isScrollingDown);
     }
   };
@@ -92,8 +92,8 @@ export const Navigation = (props: Props) => {
   const handleTouchNavigation = (event: TouchEvent) => {
     if (!isNavigationException()) {
       const touchEnd = event.changedTouches[0].clientY;
-      const isScrollingDown = touchStart > touchEnd + 5;
       const isScrollingUp = touchStart < touchEnd - 5;
+      const isScrollingDown = touchStart > touchEnd + 5;
       changeUrlWithTransitions(isScrollingUp, isScrollingDown);
     }
   };
@@ -111,12 +111,21 @@ export const Navigation = (props: Props) => {
     }
   };
 
+  // ----------HANDLE ARROWS NAVIGATION---------- //
+
+  const handleArrowsNavigation = ({ key }: KeyboardEvent) => {
+    const isScrollingUp = key === 'ArrowUp' || key === 'Down';
+    const isScrollingDown = key === 'ArrowDown' || key === 'Up';
+    changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+  };
+
   useEffect(() => {
     const passive: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
     window.addEventListener('wheel', throttledWheelNavigation, passive);
     window.addEventListener('touchstart', setTouchStartValue, passive);
     window.addEventListener('touchend', handleTouchNavigation, passive);
+    window.addEventListener('keyup', handleArrowsNavigation);
 
     if (buttonNavigation) {
       buttonNavigation.map((button) => {
@@ -131,6 +140,7 @@ export const Navigation = (props: Props) => {
       window.removeEventListener('wheel', throttledWheelNavigation, passive);
       window.removeEventListener('touchstart', setTouchStartValue, passive);
       window.removeEventListener('touchend', handleTouchNavigation, passive);
+      window.removeEventListener('keyup', handleArrowsNavigation);
 
       if (buttonNavigation) {
         buttonNavigation.map((button) => {

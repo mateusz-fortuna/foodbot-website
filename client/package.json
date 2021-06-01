@@ -12,6 +12,7 @@
     "caniuse-lite": "^1.0.30001223",
     "gh-pages": "^2.2.0",
     "gsap": "^3.0.5",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^17.0.2",

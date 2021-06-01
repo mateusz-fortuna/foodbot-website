@@ -2,11 +2,8 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { debounce, delay } from 'lodash';
 import XRegExp from 'xregexp';
 import ReCAPTCHA from 'react-google-recaptcha';
-import dotenv from 'dotenv';
 import axios from 'axios';
 import './index.sass';
-
-dotenv.config();
 
 const ContactForm = ({
   setRenderCursor,
@@ -54,11 +51,16 @@ const ContactForm = ({
     return element.classList.add('is-invalid');
   };
 
-  const setData = (key, value) => setFormData((formData) => ({ ...formData, [key]: value }));
+  const setData = (key, value) => setFormData((data) => ({ ...data, [key]: value }));
+
+  const disableElement = (el) => {
+    const element = el;
+    element.disabled = true;
+  };
 
   const disableInputs = useCallback(() => {
     const formInputs = [nameInput, emailInput, feedbackInput, submitButton];
-    formInputs.forEach((el) => (el.disabled = true));
+    formInputs.forEach((el) => disableElement(el));
   }, [nameInput, emailInput, feedbackInput, submitButton]);
 
   const handleSubmitButtonMessage = useCallback(() => {
@@ -71,6 +73,11 @@ const ContactForm = ({
     }
   }, [isFormSubmitted, sentStatus]);
 
+  const submitButtonWidth = () => {
+    if (submitButtonMessage === 'Submit') return undefined;
+    return '100%';
+  };
+
   // ----------HANDLERS---------- //
 
   const showCursor = useCallback(() => setRenderCursor(true), [setRenderCursor]);
@@ -78,11 +85,10 @@ const ContactForm = ({
   const setDarkCursor = useCallback(() => setCursorColor('dark'), [setCursorColor]);
   const setLightCursor = useCallback(() => setCursorColor('light'), [setCursorColor]);
 
-  const captchaAuthorization = async (authCode) => {
-    return axios
+  const captchaAuthorization = async (authCode) =>
+    axios
       .post('http://localhost:3001/contact/authorization', { authCode })
-      .catch((err) => console.error(err));
-  };
+      .catch(setSubmitButtonMessage('ReCaptha authorization error. Please try again.'));
 
   const handleFormSubmit = useCallback(
     async (event) => {
@@ -91,15 +97,15 @@ const ContactForm = ({
         .post('http://localhost:3001/contact/submit', formData)
         .then(setIsFormSubmitted(true))
         .then((res) => setSentStatus(res))
-        .catch((err) => console.error(err));
+        .catch(setSubmitButtonMessage('An error occurred. Please try again.'));
     },
     [formData]
   );
 
   const handleInputChange = (event, element, pattern) => {
     const { target } = event;
-    const name = target.name;
-    const value = target.value;
+    const { name } = target;
+    const { value } = target;
 
     event.preventDefault();
     preventNavigation(value);
@@ -171,42 +177,56 @@ const ContactForm = ({
   return (
     <form className="contact__form" ref={formRef}>
       <div className="contact__form_group form-group">
-        <label htmlFor="inputName">Name</label>
-        <input
-          type="text"
-          name="name"
-          className="form-control"
-          placeholder="Your Name"
-          ref={nameRef}
-          onChange={(event) => handleInputChange(event, nameInput, namePattern)}
-        />
+        <label htmlFor="inputName" className="w-100">
+          Name
+          <input
+            id="inputName"
+            type="text"
+            name="name"
+            className="form-control"
+            placeholder="Your Name"
+            ref={nameRef}
+            onChange={(event) => handleInputChange(event, nameInput, namePattern)}
+          />
+        </label>
         <div className="invalid-feedback">Input valid text.</div>
       </div>
+
       <div className="contact__form_group form-group">
-        <label htmlFor="inputEmail">Email address</label>
-        <input
-          type="email"
-          name="email"
-          className="form-control"
-          placeholder="your.email@sample.com"
-          ref={emailRef}
-          onChange={(event) => handleInputChange(event, emailInput, emailPattern)}
-        />
+        <label htmlFor="inputEmail" className="w-100">
+          Email address
+          <input
+            id="inputEmail"
+            type="email"
+            name="email"
+            className="form-control"
+            placeholder="your.email@sample.com"
+            ref={emailRef}
+            onChange={(event) => handleInputChange(event, emailInput, emailPattern)}
+          />
+        </label>
       </div>
+
       <div className="contact__form_group form-group">
-        <label htmlFor="inputMessage">Message</label>
-        <textarea
-          name="feedback"
-          rows="4"
-          className="form-control"
-          placeholder="What would you like to chat about?"
-          ref={feedbackRef}
-          onChange={(event) => handleInputChange(event, feedbackInput, feedbackPattern)}
-        />
+        <label htmlFor="inputMessage" className="w-100">
+          Message
+          <textarea
+            id="inputMessage"
+            name="feedback"
+            rows="4"
+            className="form-control"
+            placeholder="What would you like to chat about?"
+            ref={feedbackRef}
+            onChange={(event) => handleInputChange(event, feedbackInput, feedbackPattern)}
+          />
+        </label>
       </div>
+
       {isCaptchaVisible && <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />}
+
       <input
         className="contact__form_button contact__form_button--submit"
+        style={{ width: submitButtonWidth() }}
         type="submit"
         value={submitButtonMessage}
         ref={submitButtonRef}
