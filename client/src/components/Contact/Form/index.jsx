@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { debounce, delay } from 'lodash';
+import { debounce } from 'lodash';
 import XRegExp from 'xregexp';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
@@ -27,7 +27,6 @@ const ContactForm = ({
   const [feedbackInput, setFeedbackInput] = useState(null);
   const [formData, setFormData] = useState({});
   const [sentStatus, setSentStatus] = useState(null);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isCaptchaVisible, setIsCapthaVisible] = useState(true);
   const [submitButtonMessage, setSubmitButtonMessage] = useState('Submit');
 
@@ -63,20 +62,19 @@ const ContactForm = ({
     formInputs.forEach((el) => disableElement(el));
   }, [nameInput, emailInput, feedbackInput, submitButton]);
 
-  const handleSubmitButtonMessage = useCallback(() => {
-    if (sentStatus && sentStatus.status === 200)
-      setSubmitButtonMessage('Message sent successfully!');
-    if (isFormSubmitted && !sentStatus) {
-      delay(() => {
-        setSubmitButtonMessage('Failed to send the message. Try again.');
-      }, 1000);
-    }
-  }, [isFormSubmitted, sentStatus]);
-
   const submitButtonWidth = () => {
     if (submitButtonMessage === 'Submit') return undefined;
     return '100%';
   };
+
+  const handleSubmitButtonMessage = useCallback(() => {
+    if (sentStatus && sentStatus.config.data === '{}')
+      return setSubmitButtonMessage('You cannot send the message without any data.');
+
+    if (sentStatus) return setSubmitButtonMessage('Message sent successfully!');
+
+    return setSubmitButtonMessage('Submit');
+  }, [sentStatus]);
 
   // ----------HANDLERS---------- //
 
@@ -88,16 +86,15 @@ const ContactForm = ({
   const captchaAuthorization = async (authCode) =>
     axios
       .post('http://localhost:3001/contact/authorization', { authCode })
-      .catch(setSubmitButtonMessage('ReCaptha authorization error. Please try again.'));
+      .catch(setSubmitButtonMessage('Authorization failed. Please try again.'));
 
   const handleFormSubmit = useCallback(
     async (event) => {
       event.preventDefault();
       return axios
         .post('http://localhost:3001/contact/submit', formData)
-        .then(setIsFormSubmitted(true))
         .then((res) => setSentStatus(res))
-        .catch(setSubmitButtonMessage('An error occurred. Please try again.'));
+        .catch(setSubmitButtonMessage('A submitting error occurred. Please try again.'));
     },
     [formData]
   );
@@ -121,7 +118,7 @@ const ContactForm = ({
   // ----------COMPONENT LIFE CYCLE---------- //
 
   useEffect(() => {
-    if (sentStatus && sentStatus.status === 200) {
+    if (sentStatus && sentStatus.config.data !== '{}') {
       disableInputs();
       setIsCapthaVisible(false);
     }
