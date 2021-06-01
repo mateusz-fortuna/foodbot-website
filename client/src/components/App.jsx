@@ -116,7 +116,7 @@ const App = () => {
 
   const handleKeyUpForMenu = ({ code }) => {
     // Open menu
-    if (!menuButtonIsClicked && code === 'KeyM') handleMenuButtonClick();
+    if (!menuButtonIsClicked && code === 'KeyM' && urlEnd !== 'contact') handleMenuButtonClick();
     // Close menu
     if (menuButtonIsClicked && (code === 'Escape' || code === 'KeyM')) handleMenuButtonClick();
   };
