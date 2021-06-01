@@ -102,7 +102,7 @@ const App = () => {
     setHeight(window.innerHeight);
   };
 
-  // ----------HOME TITILE HANDLER----------//
+  // ----------HOME TITLE HANDLER----------//
 
   const setDocumentTitle = () => {
     if (urlEnd === 'home' || urlEnd === '') {
@@ -114,8 +114,11 @@ const App = () => {
 
   // ----------EXIT MENU USING ESC KEY----------//
 
-  const exitMenuUsingEsc = (event) => {
-    if (menuButtonIsClicked && event.key === 'Escape') handleMenuButtonClick();
+  const handleKeyUpForMenu = ({ code }) => {
+    // Open menu
+    if (!menuButtonIsClicked && code === 'KeyM') handleMenuButtonClick();
+    // Close menu
+    if (menuButtonIsClicked && (code === 'Escape' || code === 'KeyM')) handleMenuButtonClick();
   };
 
   // ----------DON'T MOUNT LOGO ON THOSE PAGES---------- //
@@ -137,7 +140,7 @@ const App = () => {
 
     window.addEventListener('hashchange', menuButtonColorChange);
     window.addEventListener('resize', updateWidth);
-    document.addEventListener('keyup', exitMenuUsingEsc);
+    document.addEventListener('keyup', handleKeyUpForMenu);
 
     // ----------MOUNT INTRO----------//
 
@@ -149,7 +152,7 @@ const App = () => {
       clearTimeout(setTimeout(() => setShowIntro(false), 2500));
       clearTimeout(setTimeout(() => setMountIntro(false), 4000));
       window.removeEventListener('resize', updateWidth);
-      document.removeEventListener('keyup', exitMenuUsingEsc);
+      document.removeEventListener('keyup', handleKeyUpForMenu);
     };
   });
 
