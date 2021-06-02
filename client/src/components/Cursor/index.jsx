@@ -154,7 +154,10 @@ export class Cursor extends Component {
       } else if (type === 'solid' && color === 'light') {
         polygon.strokeColor = 'rgba( 224, 244, 244, 0.5 )';
         smallCursorBgColor.style.backgroundColor = '#e0e0e0';
-      } else if (type === 'solid' && color === 'dark') {
+      } else if (
+        (type === 'solid' || type === undefined) &&
+        (color === 'dark' || color === undefined)
+      ) {
         polygon.strokeColor = 'rgba( 14, 14, 14, 0.5 )';
         smallCursorBgColor.style.backgroundColor = '#0e0e0e';
       } else if (type === 'about') {

@@ -7,13 +7,11 @@ import Cursor from '../Cursor';
 import FeaturesDetails from './FeaturesDetails';
 import Image from '../../assets/images/printer-perspective.png';
 
-const Features = (props) => {
+const Features = ({ reference, clientWidth, clientHeight, isCursorVisible }) => {
   const [exitButton, setExitButton] = useState(true);
   const [detailsOpened, setDetailsOpened] = useState(false);
   const [activeCircleName, setActiveCircleName] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const { reference, clientWidth, clientHeight } = props;
 
   // ----------CURSOR REFs WITH EXIT BUTTON----------//
 
@@ -94,7 +92,7 @@ const Features = (props) => {
     <Row className="about">
       {/* ----------INTERACTIVE CURSOR----------*/}
 
-      {clientWidth > 768 && (
+      {isCursorVisible && (
         <Cursor
           reference={aboutRefs}
           type="about"

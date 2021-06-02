@@ -1,11 +1,13 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 import TransitionOut from '../Transitions/TransitionOut';
+import { Cursor } from '../Cursor';
 import './index.sass';
 
-const Blog = () => (
+const Blog = ({ isCursorVisible, reference }) => (
   <Row className="blog">
     <TransitionOut />
+    {isCursorVisible && <Cursor reference={reference} />}
     <p
       style={{
         fontSize: '3em',

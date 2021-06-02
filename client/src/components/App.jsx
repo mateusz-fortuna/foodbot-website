@@ -30,6 +30,9 @@ const App = () => {
   const [mountIntro, setMountIntro] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
+  const [startTouches, setStartTouches] = useState(0);
+  const [endTouches, setEndTouches] = useState(0);
+  const [isCursorVisible, setIsCursorVisible] = useState(true);
 
   const menuButtonRef = useRef();
   const discoverFeaturesButtonRef = useRef();
@@ -129,6 +132,30 @@ const App = () => {
 
   const [preventNavigation, setPreventNavigation] = useState(false);
 
+  // ----------HIDE CURSOR ON TOUCH SCREENS---------- //
+
+  const showCursor = () => {
+    const initialValues = startTouches === 0 && endTouches === 0;
+    const tap = startTouches === endTouches;
+
+    if (!isCursorVisible && !initialValues && !tap) setIsCursorVisible(true);
+
+    // Clear the screen tap (setting a value different than initial)
+    // to get the ability showing up the cursor after the tap
+    setStartTouches(1);
+  };
+
+  const handleStartTouches = ({ touches }) => {
+    setStartTouches(touches[0].clientY);
+    if (isCursorVisible) setIsCursorVisible(false);
+  };
+
+  const hideCursor = ({ changedTouches }) => {
+    const endTouchesClientY = changedTouches[0].clientY;
+    setEndTouches(endTouchesClientY);
+    if (isCursorVisible && startTouches === endTouchesClientY) setIsCursorVisible(false);
+  };
+
   useEffect(() => {
     // ----------SET MENU COLOR ON PAGE LOAD----------//
 
@@ -140,18 +167,24 @@ const App = () => {
 
     window.addEventListener('hashchange', menuButtonColorChange);
     window.addEventListener('resize', updateWidth);
+    window.addEventListener('mousemove', showCursor);
+    window.addEventListener('touchstart', handleStartTouches, { passive: true });
+    window.addEventListener('touchend', hideCursor, { passive: true });
     document.addEventListener('keyup', handleKeyUpForMenu);
 
     // ----------MOUNT INTRO----------//
 
-    setTimeout(() => setShowIntro(false), 2500);
-    setTimeout(() => setMountIntro(false), 4000);
+    const showIntroTimeout = setTimeout(() => setShowIntro(false), 2500);
+    const mountIntroTimeout = setTimeout(() => setMountIntro(false), 4000);
 
     return () => {
+      clearTimeout(showIntroTimeout);
+      clearTimeout(mountIntroTimeout);
       window.removeEventListener('hashchange', menuButtonColorChange);
-      clearTimeout(setTimeout(() => setShowIntro(false), 2500));
-      clearTimeout(setTimeout(() => setMountIntro(false), 4000));
       window.removeEventListener('resize', updateWidth);
+      window.removeEventListener('mousemove', showCursor);
+      window.addEventListener('touchstart', handleStartTouches, { passive: true });
+      window.removeEventListener('touchend', hideCursor, { passive: true });
       document.removeEventListener('keyup', handleKeyUpForMenu);
     };
   });
@@ -235,6 +268,7 @@ const App = () => {
             <Route exact path="/">
               {mountIntro && <Intro showIntro={showIntro} clientWidth={width} />}
               <Home
+                isCursorVisible={isCursorVisible}
                 clientWidth={width}
                 reference={[menuButtonRef]}
                 isAnimationDone={animationDone}
@@ -244,6 +278,7 @@ const App = () => {
             </Route>
             <Route path="/features">
               <Features
+                isCursorVisible={isCursorVisible}
                 clientWidth={width}
                 clientHeight={height}
                 reference={[menuButtonRef, logoRef]}
@@ -253,18 +288,20 @@ const App = () => {
             </Route>
             <Route path="/gallery">
               <Gallery
+                isCursorVisible={isCursorVisible}
                 reference={[menuButtonRef, logoRef, featuresNavButton, contactNavButton]}
                 navigationButtons={{ featuresNavButton, contactNavButton }}
               />
             </Route>
             <Route path="/contact">
               <Contact
+                isCursorVisible={isCursorVisible}
                 reference={[menuButtonRef, logoRef]}
                 setPreventNavigation={setPreventNavigation}
               />
             </Route>
             <Route path="/blog">
-              <Blog reference={[menuButtonRef, logoRef]} />
+              <Blog isCursorVisible={isCursorVisible} reference={[menuButtonRef, logoRef]} />
             </Route>
           </Switch>
         </Container>

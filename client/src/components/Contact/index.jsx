@@ -5,7 +5,7 @@ import Cursor from '../Cursor';
 import ContactForm from './Form';
 import './index.sass';
 
-const Contact = ({ reference, setPreventNavigation }) => {
+const Contact = ({ reference, setPreventNavigation, isCursorVisible }) => {
   // ----------STATE---------- //
 
   const [renderCursor, setRenderCursor] = useState(true);
@@ -22,7 +22,9 @@ const Contact = ({ reference, setPreventNavigation }) => {
   return (
     <Row className="contact align-items-center">
       <TransitionOut />
-      {renderCursor && <Cursor reference={cursorReferences} type="solid" color={cursorColor} />}
+      {isCursorVisible && renderCursor && (
+        <Cursor reference={cursorReferences} type="solid" color={cursorColor} />
+      )}
 
       <Col md={2} />
       <Col md={6}>

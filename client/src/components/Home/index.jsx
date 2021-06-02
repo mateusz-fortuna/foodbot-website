@@ -8,12 +8,16 @@ import Text from '../Text/Text';
 import MultiLinesText from '../Text/MultiLinesText';
 import DiscoverFeaturesButton from './DiscoverFeaturesButton';
 
-const Home = (props) => {
+const Home = ({
+  clientWidth,
+  isAnimationDone,
+  reference,
+  discoverFeaturesButtonRef,
+  isCursorVisible,
+}) => {
   const homeImageWrapperRef = useRef();
   const homeContentRef = useRef();
   const homeRef = useRef();
-
-  const { clientWidth, isAnimationDone, reference, discoverFeaturesButtonRef } = props;
 
   // ----------STATE STYLES----------//
 
@@ -59,7 +63,7 @@ const Home = (props) => {
 
       {/* ----------INTERACTIVE CURSOR----------*/}
 
-      {clientWidth > 768 && (
+      {isCursorVisible && (
         <Cursor
           reference={reference.concat([discoverFeaturesButtonRef])}
           type={isAnimationDone ? 'solid' : 'variable'}

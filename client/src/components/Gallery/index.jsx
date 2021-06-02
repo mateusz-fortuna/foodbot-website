@@ -6,7 +6,7 @@ import TransitionOut from '../Transitions/TransitionOut';
 import ParallaxSlider from '../ParallaxSlider/index.tsx';
 import './index.sass';
 
-const Gallery = ({ reference, navigationButtons }) => {
+const Gallery = ({ reference, navigationButtons, isCursorVisible }) => {
   // Get number of the images
   const languageContext = useContext(LanguageContext);
   const { imagesQuantity } = languageContext.dictionary.gallery[0];
@@ -29,7 +29,7 @@ const Gallery = ({ reference, navigationButtons }) => {
   return (
     <Row className="gallery">
       <TransitionOut />
-      <Cursor reference={reference} type="solid" color="dark" />
+      {isCursorVisible && <Cursor reference={reference} type="solid" color="dark" />}
       <Col sm={12}>
         <ParallaxSlider
           imagesURLs={imagesURLs}
