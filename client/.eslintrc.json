@@ -3,9 +3,14 @@
     "browser": true,
     "node": true
   },
+  "parser": "@typescript-eslint/parser",
   "extends": ["airbnb", "prettier", "eslint:recommended"],
-  "plugins": ["prettier", "react-hooks"],
+  "plugins": ["prettier", "react-hooks", "@typescript-eslint"],
   "rules": {
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "react/require-default-props": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
     "prettier/prettier": 0,
     "semi": ["error", "always"],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],

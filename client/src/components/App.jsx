@@ -15,7 +15,7 @@ import Gallery from './Gallery';
 import Contact from './Contact';
 import Blog from './Blog';
 import Logo from './Logo';
-import { Navigation } from './Navigation/Navigation/index.tsx';
+import Navigation from './Navigation/Navigation/index.tsx';
 import Transition from './Transitions/TransitionIn/index.tsx';
 
 import { capitalize } from '../assets/js/capitalize.ts';
@@ -31,8 +31,7 @@ const App = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
   const [startTouches, setStartTouches] = useState(0);
-  const [endTouches, setEndTouches] = useState(0);
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
+  const [isCursorVisible, setIsCursorVisible] = useState(false);
 
   const menuButtonRef = useRef();
   const discoverFeaturesButtonRef = useRef();
@@ -134,26 +133,18 @@ const App = () => {
 
   // ----------HIDE CURSOR ON TOUCH SCREENS---------- //
 
-  const showCursor = () => {
-    const initialValues = startTouches === 0 && endTouches === 0;
-    const tap = startTouches === endTouches;
-
-    if (!isCursorVisible && !initialValues && !tap) setIsCursorVisible(true);
-
-    // Clear the screen tap (setting a value different than initial)
-    // to get the ability showing up the cursor after the tap
-    setStartTouches(1);
-  };
-
   const handleStartTouches = ({ touches }) => {
     setStartTouches(touches[0].clientY);
     if (isCursorVisible) setIsCursorVisible(false);
   };
 
   const hideCursor = ({ changedTouches }) => {
-    const endTouchesClientY = changedTouches[0].clientY;
-    setEndTouches(endTouchesClientY);
-    if (isCursorVisible && startTouches === endTouchesClientY) setIsCursorVisible(false);
+    const isScreenTap = startTouches === changedTouches[0].clientY;
+    if (isCursorVisible || isScreenTap) setIsCursorVisible(false);
+  };
+
+  const showCursor = () => {
+    if (!isCursorVisible) setIsCursorVisible(true);
   };
 
   useEffect(() => {
@@ -183,7 +174,7 @@ const App = () => {
       window.removeEventListener('hashchange', menuButtonColorChange);
       window.removeEventListener('resize', updateWidth);
       window.removeEventListener('mousemove', showCursor);
-      window.addEventListener('touchstart', handleStartTouches, { passive: true });
+      window.removeEventListener('touchstart', handleStartTouches, { passive: true });
       window.removeEventListener('touchend', hideCursor, { passive: true });
       document.removeEventListener('keyup', handleKeyUpForMenu);
     };

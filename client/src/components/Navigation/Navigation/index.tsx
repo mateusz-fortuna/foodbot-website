@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { throttle } from '../../../assets/js/throttle';
@@ -13,24 +14,32 @@ interface Props {
   navigationExceptions?: string[];
 }
 
-export const Navigation = (props: Props) => {
-  const [touchStart, setTouchStart] = useState(0);
+const Navigation = ({
+  urlEnd,
+  urlEnds,
+  setIsMountedTransition,
+  buttonNavigation,
+  navigationExceptions,
+}: Props) => {
+  // ----------STATE---------- //
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [swipeUp, setSwipeUp] = useState(false);
+  const [swipeDown, setSwipeDown] = useState(false);
   const history = useHistory();
   const timeout = 600;
   let delayedUnmount: ReturnType<typeof setTimeout>;
   let delayedURLChange: ReturnType<typeof setTimeout>;
 
-  const { urlEnd, urlEnds, setIsMountedTransition, buttonNavigation, navigationExceptions } = props;
+  // ----------GENERATE PATH NAME ON SCROLL---------- //
 
-  // ----------GENERATE PATCH NAME ON SCROLL---------- //
-
-  const generatePatchName = (isScrollingUp: boolean, isScrollingDown: boolean, index: number) => {
+  const generatePathName = (isScrollingUp: boolean, isScrollingDown: boolean, index: number) => {
     if (isScrollingUp) return urlEnds[index - 1];
     if (isScrollingDown) return urlEnds[index + 1];
     return '';
   };
 
-  // ----------SET THE PATCH AFTER ANIMATIONS---------- //
+  // ----------SET THE PATH AFTER ANIMATIONS---------- //
 
   const changeURLAfterAnimations = (newURL: string) => {
     delayedURLChange = setTimeout(() => {
@@ -57,7 +66,7 @@ export const Navigation = (props: Props) => {
 
     if (!isArrayBoundary && (isScrollingUp || isScrollingDown)) {
       mountTransition();
-      changeURLAfterAnimations(generatePatchName(isScrollingUp, isScrollingDown, index));
+      changeURLAfterAnimations(generatePathName(isScrollingUp, isScrollingDown, index));
       unmountTransition();
     }
   };
@@ -85,17 +94,35 @@ export const Navigation = (props: Props) => {
 
   // ----------HANDLE TOUCH NAVIGATION---------- //
 
-  const setTouchStartValue = (event: TouchEvent) => {
-    setTouchStart(event.changedTouches[0].clientY);
+  const setTouchStartCoords = ({ touches }: TouchEvent) => {
+    setTouchStartX(touches[0].clientX);
+    setTouchStartY(touches[0].clientY);
   };
 
-  const handleTouchNavigation = (event: TouchEvent) => {
-    if (!isNavigationException()) {
-      const touchEnd = event.changedTouches[0].clientY;
-      const isScrollingUp = touchStart < touchEnd - 5;
-      const isScrollingDown = touchStart > touchEnd + 5;
-      changeUrlWithTransitions(isScrollingUp, isScrollingDown);
+  const handleTouchNavigation = ({ touches }: TouchEvent) => {
+    if (touchStartX === 0 && touchStartY === 0) return;
+
+    // Detect swipe direction
+
+    const touchMoveX = touches[0].clientX;
+    const touchMoveY = touches[0].clientY;
+
+    const diffX = touchStartX - touchMoveX;
+    const diffY = touchStartY - touchMoveY;
+
+    // Vertical swipe
+    if (Math.abs(diffX) < Math.abs(diffY)) {
+      if (diffY > 0) {
+        // Swipe up
+        changeUrlWithTransitions(false, true);
+      } else {
+        // Swipe down
+        changeUrlWithTransitions(true, false);
+      }
     }
+
+    setTouchStartX(0);
+    setTouchStartY(0);
   };
 
   // ----------HANDLE CLICK NAVIGATION---------- //
@@ -123,8 +150,8 @@ export const Navigation = (props: Props) => {
     const passive: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
     window.addEventListener('wheel', throttledWheelNavigation, passive);
-    window.addEventListener('touchstart', setTouchStartValue, passive);
-    window.addEventListener('touchend', handleTouchNavigation, passive);
+    window.addEventListener('touchstart', setTouchStartCoords, passive);
+    window.addEventListener('touchmove', handleTouchNavigation, passive);
     window.addEventListener('keyup', handleArrowsNavigation);
 
     if (buttonNavigation) {
@@ -138,8 +165,8 @@ export const Navigation = (props: Props) => {
       clearTimeout(delayedUnmount);
       clearTimeout(delayedURLChange);
       window.removeEventListener('wheel', throttledWheelNavigation, passive);
-      window.removeEventListener('touchstart', setTouchStartValue, passive);
-      window.removeEventListener('touchend', handleTouchNavigation, passive);
+      window.removeEventListener('touchstart', setTouchStartCoords, passive);
+      window.removeEventListener('touchmove', handleTouchNavigation, passive);
       window.removeEventListener('keyup', handleArrowsNavigation);
 
       if (buttonNavigation) {
@@ -153,3 +180,5 @@ export const Navigation = (props: Props) => {
 
   return <div className="navigation" />;
 };
+
+export default Navigation;
