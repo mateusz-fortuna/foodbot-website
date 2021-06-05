@@ -41,7 +41,8 @@ app.post("/contact/submit", (req, response) => {
 
     return axios
       .post("https://api.emailjs.com/api/v1.0/email/send", data)
-      .then(response.send("Email sent successfully"))
+      .then((apiRes) => response.send(apiRes))
+      .then(console.log("Email sent successfully."))
       .catch((err) => console.error("Failed to sent email: ", err));
   }
 

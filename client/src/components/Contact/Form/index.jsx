@@ -110,7 +110,7 @@ const ContactForm = ({
   const captchaAuthorization = async (authCode) =>
     axios
       .post('http://localhost:3001/contact/authorization', { authCode })
-      .catch(setSubmitButtonMessage('Authorization failed. Please try again.'));
+      .catch(() => setSubmitButtonMessage('Authorization failed. Please try again.'));
 
   const handleFormSubmit = useCallback(
     async (event) => {
