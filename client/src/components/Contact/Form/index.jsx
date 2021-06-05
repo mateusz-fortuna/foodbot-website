@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { debounce } from 'lodash';
 import XRegExp from 'xregexp';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
+import { debounce } from 'lodash';
 import './index.sass';
 
 const ContactForm = ({
@@ -15,22 +15,27 @@ const ContactForm = ({
   // ----------STATE---------- //
 
   const captchaSiteKey = '6LerWc0aAAAAAHshuCVA20zxcp1UbBPCDFGXL1Dg';
+
   const namePattern = XRegExp('[\\p{L}]+');
-  const emailPattern = XRegExp(
-    '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$'
-  );
+  const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const feedbackPattern = XRegExp('[p{L}ds]+');
 
-  const [form, setForm] = useState(null);
-  const [nameInput, setNameInput] = useState(null);
-  const [emailInput, setEmailInput] = useState(null);
-  const [feedbackInput, setFeedbackInput] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [feedback, setFeedback] = useState('');
+
   const [sentStatus, setSentStatus] = useState(null);
   const [isCaptchaVisible, setIsCapthaVisible] = useState(true);
   const [submitButtonMessage, setSubmitButtonMessage] = useState('Submit');
 
   // ----------REFERENCES---------- //
+
+  const [form, setForm] = useState(null);
+  const [nameInput, setNameInput] = useState(null);
+  const [emailInput, setEmailInput] = useState(null);
+  const [feedbackInput, setFeedbackInput] = useState(null);
+
+  const inputFields = [nameInput, emailInput, feedbackInput];
 
   const formRef = useCallback((node) => setForm(node), []);
   const nameRef = useCallback((node) => setNameInput(node), []);
@@ -45,12 +50,29 @@ const ContactForm = ({
     return setPreventNavigation(false);
   };
 
-  const showValidationStatus = (element, status) => {
-    if (status) return element.classList.remove('is-invalid');
-    return element.classList.add('is-invalid');
+  // Validation
+
+  const setValidationStatus = (element, status) => {
+    if (status) {
+      element.classList.remove('is-invalid');
+      element.classList.add('is-valid');
+    } else {
+      element.classList.add('is-invalid');
+      element.classList.remove('is-valid');
+    }
   };
 
-  const setData = (key, value) => setFormData((data) => ({ ...data, [key]: value }));
+  const isFormValid = useCallback(
+    (inputs) => inputs.every((el) => [...el.classList].indexOf('is-valid') !== -1),
+    []
+  );
+
+  const getHTMLValidationMessage = (el) => {
+    if (el) return el.validationMessage;
+    return 'Please input a valid text.';
+  };
+
+  // Form submitting
 
   const disableElement = (el) => {
     const element = el;
@@ -62,18 +84,20 @@ const ContactForm = ({
     formInputs.forEach((el) => disableElement(el));
   }, [nameInput, emailInput, feedbackInput, submitButton]);
 
-  const submitButtonWidth = () => {
+  const areAllFieldsFilled = useCallback(() => [name, email, feedback].every((str) => str !== ''), [
+    name,
+    email,
+    feedback,
+  ]);
+
+  const setSubmitButtonWidth = () => {
     if (submitButtonMessage === 'Submit') return undefined;
     return '100%';
   };
 
   const handleSubmitButtonMessage = useCallback(() => {
-    if (sentStatus && sentStatus.config.data === '{}')
-      return setSubmitButtonMessage('You cannot send the message without any data.');
-
-    if (sentStatus) return setSubmitButtonMessage('Message sent successfully!');
-
-    return setSubmitButtonMessage('Submit');
+    if (sentStatus && sentStatus.status === 200)
+      setSubmitButtonMessage('Message sent successfully!');
   }, [sentStatus]);
 
   // ----------HANDLERS---------- //
@@ -91,29 +115,29 @@ const ContactForm = ({
   const handleFormSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      return axios
-        .post('http://localhost:3001/contact/submit', formData)
-        .then((res) => setSentStatus(res))
-        .catch(setSubmitButtonMessage('A submitting error occurred. Please try again.'));
+
+      const formData = { name, email, feedback };
+
+      if (areAllFieldsFilled() && isFormValid(inputFields))
+        return axios
+          .post('http://localhost:3001/contact/submit', formData)
+          .then((res) => setSentStatus(res))
+          .catch(setSubmitButtonMessage('A submitting error occurred. Please try again.'));
+
+      return setSubmitButtonMessage('Please fill all the fields properly.');
     },
-    [formData]
+    [email, feedback, name, areAllFieldsFilled, isFormValid, inputFields, setSubmitButtonMessage]
   );
 
-  const handleInputChange = (event, element, pattern) => {
-    const { target } = event;
-    const { name } = target;
-    const { value } = target;
+  const handleInputChange = debounce((event, setter, el, pattern) => {
+    const { value } = event.target;
 
     event.preventDefault();
     preventNavigation(value);
 
-    setData(name, value);
-
-    const isValid = pattern.test(value);
-    showValidationStatus(element, isValid);
-
-    return debounce(handleInputChange, 300);
-  };
+    setter(value);
+    setValidationStatus(el, value.match(pattern));
+  }, 700);
 
   // ----------COMPONENT LIFE CYCLE---------- //
 
@@ -126,8 +150,6 @@ const ContactForm = ({
     handleSubmitButtonMessage();
 
     // ----------EVENT LISTENERS---------- //
-
-    const inputFields = [nameInput, emailInput, feedbackInput];
 
     if (form) {
       form.addEventListener('submit', handleFormSubmit);
@@ -159,14 +181,15 @@ const ContactForm = ({
     emailInput,
     feedbackInput,
     sentStatus,
-    handleSubmitButtonMessage,
     form,
+    handleSubmitButtonMessage,
     disableInputs,
     handleFormSubmit,
     setDarkCursor,
     setLightCursor,
     hideCursor,
     showCursor,
+    inputFields,
   ]);
 
   // ----------JSX---------- //
@@ -174,56 +197,66 @@ const ContactForm = ({
   return (
     <form className="contact__form" ref={formRef}>
       <div className="contact__form_group form-group">
-        <label htmlFor="inputName" className="w-100">
+        <label htmlFor="nameInput" className="w-100">
           Name
-          <input
-            id="inputName"
-            type="text"
-            name="name"
-            className="form-control"
-            placeholder="Your Name"
-            ref={nameRef}
-            onChange={(event) => handleInputChange(event, nameInput, namePattern)}
-          />
         </label>
-        <div className="invalid-feedback">Input valid text.</div>
+        <input
+          id="nameInput"
+          type="text"
+          name="name"
+          className="form-control"
+          placeholder="Your Name"
+          ref={nameRef}
+          onChange={(event) => handleInputChange(event, setName, nameInput, namePattern)}
+        />
+        <div className="invalid-feedback">
+          {name === '' ? 'Input your name.' : 'Numbers are not allowed.'}
+        </div>
       </div>
 
       <div className="contact__form_group form-group">
-        <label htmlFor="inputEmail" className="w-100">
+        <label htmlFor="emailInput" className="w-100">
           Email address
-          <input
-            id="inputEmail"
-            type="email"
-            name="email"
-            className="form-control"
-            placeholder="your.email@sample.com"
-            ref={emailRef}
-            onChange={(event) => handleInputChange(event, emailInput, emailPattern)}
-          />
         </label>
+        <input
+          id="emailInput"
+          type="email"
+          name="email"
+          className="form-control"
+          placeholder="your.email@sample.com"
+          ref={emailRef}
+          onChange={(event) => handleInputChange(event, setEmail, emailInput, emailPattern)}
+        />
+        <div className="invalid-feedback">
+          {email === '' ? 'Input your email address.' : getHTMLValidationMessage(emailInput)}
+        </div>
       </div>
 
       <div className="contact__form_group form-group">
-        <label htmlFor="inputMessage" className="w-100">
+        <label htmlFor="messageInput" className="w-100">
           Message
-          <textarea
-            id="inputMessage"
-            name="feedback"
-            rows="4"
-            className="form-control"
-            placeholder="What would you like to chat about?"
-            ref={feedbackRef}
-            onChange={(event) => handleInputChange(event, feedbackInput, feedbackPattern)}
-          />
         </label>
+        <textarea
+          id="messageInput"
+          name="feedback"
+          rows="4"
+          className="form-control"
+          placeholder="What would you like to chat about?"
+          ref={feedbackRef}
+          onChange={(event) =>
+            handleInputChange(event, setFeedback, feedbackInput, feedbackPattern)
+          }
+        />
+        {feedback === '' ? (
+          <div className="invalid-feedback">The message field cannot be empty.</div>
+        ) : null}
       </div>
 
       {isCaptchaVisible && <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />}
 
       <input
         className="contact__form_button contact__form_button--submit"
-        style={{ width: submitButtonWidth() }}
+        style={{ width: setSubmitButtonWidth() }}
         type="submit"
         value={submitButtonMessage}
         ref={submitButtonRef}

@@ -24,8 +24,6 @@ const Navigation = ({
   // ----------STATE---------- //
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
-  const [swipeUp, setSwipeUp] = useState(false);
-  const [swipeDown, setSwipeDown] = useState(false);
   const history = useHistory();
   const timeout = 600;
   let delayedUnmount: ReturnType<typeof setTimeout>;
