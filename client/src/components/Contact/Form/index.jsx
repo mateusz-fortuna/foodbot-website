@@ -61,7 +61,6 @@ const ContactForm = ({
       element.classList.remove('is-valid');
     }
   };
-
   const isFormValid = useCallback(
     (inputs) => inputs.every((el) => [...el.classList].indexOf('is-valid') !== -1),
     []
@@ -134,7 +133,6 @@ const ContactForm = ({
 
     event.preventDefault();
     preventNavigation(value);
-
     setter(value);
     setValidationStatus(el, value.match(pattern));
   }, 700);
@@ -252,7 +250,11 @@ const ContactForm = ({
         ) : null}
       </div>
 
-      {isCaptchaVisible && <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />}
+      {isCaptchaVisible && (
+        <div className="reCaptha">
+          <ReCAPTCHA sitekey={captchaSiteKey} onChange={captchaAuthorization} />
+        </div>
+      )}
 
       <input
         className="contact__form_button contact__form_button--submit"

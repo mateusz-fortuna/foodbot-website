@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { capitalize } from '../../assets/js/capitalize.ts';
 
-const Logo = ({ mount, urlEnd, width, innerRef }) => {
+const Logo = ({ mount, urlEnd, innerRef }) => {
   const timeout = {
     appear: 2000,
     enter: 2000,
@@ -29,16 +29,9 @@ const Logo = ({ mount, urlEnd, width, innerRef }) => {
   return (
     <CSSTransition unmountOnExit timeout={timeout} appear in={mount}>
       <div className="logo__wrapper">
-        <Link to="/" className="d-block logoLink" style={{ height: 0.025 * width }}>
+        <Link to="/" className="d-block logoLink">
           <CSSTransition classNames="logo" unmountOnExit timeout={timeout} appear in={mount}>
-            <h1
-              className="logo"
-              style={{
-                fontSize: 0.02 * width,
-                color: setColorDependingOnURL(),
-              }}
-              ref={innerRef}
-            >
+            <h1 className="logo" style={{ color: setColorDependingOnURL() }} ref={innerRef}>
               {insertText()}
             </h1>
           </CSSTransition>

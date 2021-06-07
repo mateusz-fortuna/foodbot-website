@@ -21,22 +21,10 @@ const Home = ({
 
   // ----------STATE STYLES----------//
 
-  const descriptionFontSize = clientWidth >= 1200 ? Math.floor(0.018 * clientWidth) : null;
-  const linkFontSize = clientWidth >= 1200 ? Math.floor(0.018 * clientWidth * 0.72) : null;
-
   const state = {
     style: {
       homeImage: {
         backgroundImage: `url( ${PrinterImage} )`,
-      },
-      homeTitle: {
-        fontSize: Math.floor(0.08 * clientWidth),
-      },
-      homeDescription: {
-        fontSize: descriptionFontSize,
-      },
-      link: {
-        fontSize: linkFontSize,
       },
     },
   };
@@ -89,10 +77,8 @@ const Home = ({
 
         {/* ----------CONTENT TEXT---------- */}
 
-        <div className="homeDescription" style={state.style.homeDescription}>
+        <div className="homeDescription">
           <MultiLinesText category="home" textID="description" />
-          <br />
-
           <a
             className="learnMore"
             href="/about"
@@ -104,12 +90,11 @@ const Home = ({
               reference={discoverFeaturesButtonRef}
               target="features"
               clientWidth={clientWidth}
-              style={state.style.link}
             />
           </a>
         </div>
 
-        <h1 className="homeTitle" style={state.style.homeTitle}>
+        <h1 className="homeTitle">
           <Text category="home" textID="title" />
         </h1>
       </Col>

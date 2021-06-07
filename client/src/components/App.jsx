@@ -147,6 +147,10 @@ const App = () => {
     if (!isCursorVisible) setIsCursorVisible(true);
   };
 
+  // ---------DON'T MOUNT LOGO ON THE CONTACT PAGE ON SMALL DEVICES---------- //
+
+  const contactPageOnSmallDevices = height < 700 && urlEnd === 'contact';
+
   useEffect(() => {
     // ----------SET MENU COLOR ON PAGE LOAD----------//
 
@@ -220,7 +224,7 @@ const App = () => {
 
           {/* ----------LOGO----------*/}
 
-          {includeUrlExceptions() && (
+          {includeUrlExceptions() && !contactPageOnSmallDevices && (
             <Logo width={width} mount={!isMountedTransition} ref={logoRef} urlEnd={urlEnd} />
           )}
 
@@ -289,6 +293,8 @@ const App = () => {
                 isCursorVisible={isCursorVisible}
                 reference={[menuButtonRef, logoRef]}
                 setPreventNavigation={setPreventNavigation}
+                windowHeight={height}
+                windowWidth={width}
               />
             </Route>
             <Route path="/blog">
