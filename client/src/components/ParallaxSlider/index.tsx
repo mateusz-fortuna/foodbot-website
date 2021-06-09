@@ -159,12 +159,14 @@ class ParallaxSlider extends Component<Props, State> {
   // ----------COMPONENT LIFE CYCLE---------- //
 
   componentDidMount() {
+    const { thumbnailsURLs } = this.props;
     // Set a state property which allows rendering the thumbnails
-    this.props.thumbnailsURLs?.forEach(() =>
-      this.setState(({ isThumbnailMounted }) => ({
-        isThumbnailMounted: [...isThumbnailMounted, true],
-      }))
-    );
+    if (thumbnailsURLs)
+      thumbnailsURLs.forEach(() =>
+        this.setState(({ isThumbnailMounted }) => ({
+          isThumbnailMounted: [...isThumbnailMounted, true],
+        }))
+      );
 
     const slider = this.sliderRef.current;
     if (slider) this.setState({ sliderMargin: slider.getBoundingClientRect().x });

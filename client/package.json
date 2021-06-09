@@ -11,7 +11,7 @@
     "bootstrap": "^4.4.1",
     "caniuse-lite": "^1.0.30001223",
     "gh-pages": "^2.2.0",
-    "gsap": "^3.0.5",
+    "gsap": "^3.6.1",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^1.0.0-beta.16",
@@ -64,9 +64,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "jquery": "^3.5.0",
     "paper": "^0.12.8",
-    "prettier": "^2.2.1",
-    "simplex-noise": "^2.4.0",
-    "typescript": "^4.3.2"
-  },
-  "proxy": "http://localhost:3001"
+    "prettier": "^2.2.1"
+  }
 }
+
