@@ -7,21 +7,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "caniuse-lite": "^1.0.30001223",
+    "emailjs-com": "^2.6.4",
     "gh-pages": "^2.2.0",
-    "gsap": "^3.6.1",
-    "lodash": "^4.17.21",
+    "gsap": "^3.0.5",
     "react": "^17.0.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^17.0.2",
-    "react-google-recaptcha": "^2.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
-    "react-transition-group": "^4.3.0",
-    "sass": "^1.34.1",
-    "xregexp": "^5.0.2"
+    "react-transition-group": "^4.3.0"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -46,11 +42,8 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
-    "@types/react-google-recaptcha": "^2.1.0",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-transition-group": "^4.4.1",
-    "@typescript-eslint/eslint-plugin": "^4.26.0",
-    "@typescript-eslint/parser": "^4.26.0",
     "autoprefixer": "^9.7.4",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
@@ -63,8 +56,11 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
     "jquery": "^3.5.0",
+    "node-sass": "^4.14.1",
     "paper": "^0.12.8",
-    "prettier": "^2.2.1"
-  }
+    "prettier": "^2.2.1",
+    "simplex-noise": "^2.4.0",
+    "typescript": "^4.1.5"
+  },
+  "proxy": "http://localhost:3001"
 }
-
