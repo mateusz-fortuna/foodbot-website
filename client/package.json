@@ -12,6 +12,7 @@
     "emailjs-com": "^2.6.4",
     "gh-pages": "^2.2.0",
     "gsap": "^3.0.5",
+    "mkdirp": "^0.5.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^17.0.2",
